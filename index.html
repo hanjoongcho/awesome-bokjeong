@@ -14,96 +14,102 @@
     <style type="text/css">
     #wrap .buttons { position:absolute;top:0;left:0;z-index:1000;padding:5px; }
     #wrap .buttons .control-btn { margin:0 5px 5px 0; }
+    #wrap {display: inline-block; width: calc(100% - 303px);}
+    #lnb {display: inline-block; vertical-align: top; margin-top: 20px; width: 300px;}
+    .section {padding: 0px;}
 </style>
 </head>
 <body>
 
-<div class="ui vertical accordion menu">
-  <div class="item">
-    <a class="active title">
-      <i class="dropdown icon"></i>
-      Size
-    </a>
-    <div class="active content">
-      <div class="ui form">
-        <div class="grouped fields">
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" name="size" value="small">
-              <label>Small</label>
+<div>
+    <div id="lnb" class="ui vertical accordion menu">
+      <div class="item">
+        <a class="active title">
+          <i class="dropdown icon"></i>
+          Size
+        </a>
+        <div class="active content">
+          <div class="ui form">
+            <div class="grouped fields">
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" name="size" value="small">
+                  <label>Small</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" name="size" value="medium">
+                  <label>Medium</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" name="size" value="large">
+                  <label>Large</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" name="size" value="x-large">
+                  <label>X-Large</label>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" name="size" value="medium">
-              <label>Medium</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" name="size" value="large">
-              <label>Large</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" name="size" value="x-large">
-              <label>X-Large</label>
+        </div>
+      </div>
+      <div class="item">
+        <a class="title">
+          <i class="dropdown icon"></i>
+          Colors
+        </a>
+        <div class="content">
+          <div class="ui form">
+            <div class="grouped fields">
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="small">
+                  <label>Red</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="medium">
+                  <label>Orange</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="large">
+                  <label>Green</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="x-large">
+                  <label>Blue</label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="item">
-    <a class="title">
-      <i class="dropdown icon"></i>
-      Colors
-    </a>
-    <div class="content">
-      <div class="ui form">
-        <div class="grouped fields">
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" name="small">
-              <label>Red</label>
+    
+    <div id="wrap" class="section">
+        <div id="map" style="width:100%;height:600px;">
+            <div class="buttons">
+                <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
+                <input id="kinetic" type="button" name="관성 드래깅" value="관성 드래깅" class="control-btn" />
+                <input id="tile-transition" type="button" name="타일 fadeIn 효과" value="타일 fadeIn 효과" class="control-btn" />
+                <input id="controls" type="button" name="모든 지도 컨트롤" value="모든 지도 컨트롤" class="control-btn" />
+                <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" />
             </div>
-          </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" name="medium">
-              <label>Orange</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" name="large">
-              <label>Green</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" name="x-large">
-              <label>Blue</label>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
-<div id="wrap" class="section">
-    <div id="map" style="width:100%;height:600px;">
-        <div class="buttons">
-            <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
-            <input id="kinetic" type="button" name="관성 드래깅" value="관성 드래깅" class="control-btn" />
-            <input id="tile-transition" type="button" name="타일 fadeIn 효과" value="타일 fadeIn 효과" class="control-btn" />
-            <input id="controls" type="button" name="모든 지도 컨트롤" value="모든 지도 컨트롤" class="control-btn" />
-            <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" />
-        </div>
-    </div>
-</div>
 <script id="code">
 //지도 생성시에 옵션을 지정할 수 있습니다.
 var map = new naver.maps.Map('map', {
