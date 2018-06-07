@@ -14,89 +14,97 @@
     <style type="text/css">
     #wrap .buttons { position:absolute;top:0;left:0;z-index:1000;padding:5px; }
     #wrap .buttons .control-btn { margin:0 5px 5px 0; }
-    #wrap {display: inline-block; width: calc(100% - 303px);}
-    #lnb {display: inline-block; vertical-align: top; margin-top: 20px; width: 300px;}
-    .section {padding: 0px;}
+    #wrap { display: inline-block; width: calc(100% - 303px); }
+    #lnb { display: inline-block; vertical-align: top; margin-top: 20px; }
+    .ui.vertical.accordion.menu { width: 300px; }
+    .section { padding: 0px; }
 </style>
 </head>
 <body>
 
 <div>
-    <div id="lnb" class="ui vertical accordion menu">
-      <div class="item">
-        <a class="active title">
-          <i class="dropdown icon"></i>
-          Size
-        </a>
-        <div class="active content">
-          <div class="ui form">
-            <div class="grouped fields">
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio" name="size" value="small">
-                  <label>Small</label>
+    <div id="lnb">
+        <div class="ui vertical accordion menu">
+          <div class="item">
+            <a class="active title">
+              <i class="dropdown icon"></i>
+              Size
+            </a>
+            <div class="active content">
+              <div class="ui form">
+                <div class="grouped fields">
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="size" value="small">
+                      <label>Small</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="size" value="medium">
+                      <label>Medium</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="size" value="large">
+                      <label>Large</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="size" value="x-large">
+                      <label>X-Large</label>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio" name="size" value="medium">
-                  <label>Medium</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio" name="size" value="large">
-                  <label>Large</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio" name="size" value="x-large">
-                  <label>X-Large</label>
+            </div>
+          </div>
+          <div class="item">
+            <a class="title">
+              <i class="dropdown icon"></i>
+              Colors
+            </a>
+            <div class="content">
+              <div class="ui form">
+                <div class="grouped fields">
+                  <div class="field">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="small">
+                      <label>Red</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="medium">
+                      <label>Orange</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="large">
+                      <label>Green</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="x-large">
+                      <label>Blue</label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="item">
-        <a class="title">
-          <i class="dropdown icon"></i>
-          Colors
-        </a>
-        <div class="content">
-          <div class="ui form">
-            <div class="grouped fields">
-              <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" name="small">
-                  <label>Red</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" name="medium">
-                  <label>Orange</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" name="large">
-                  <label>Green</label>
-                </div>
-              </div>
-              <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" name="x-large">
-                  <label>Blue</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+
+        <button id="to-seoul" class="ui primary button">panToBounds 서울</button>
+        <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
+
     </div>
-    
+
     <div id="wrap" class="section">
         <div id="map" style="width:100%;height:600px;">
             <div class="buttons">
@@ -111,10 +119,21 @@
 </div>
 
 <script id="code">
+
+var jeju = new naver.maps.LatLng(33.3590628, 126.534361),
+    busan = new naver.maps.LatLng(35.1797865, 129.0750194),
+    dokdo = new naver.maps.LatLngBounds(
+                new naver.maps.LatLng(37.2380651, 131.8562652),
+                new naver.maps.LatLng(37.2444436, 131.8786475)),
+    seoul = new naver.maps.LatLngBounds(
+                new naver.maps.LatLng(37.42829747263545, 126.76620435615891),
+                new naver.maps.LatLng(37.7010174173061, 127.18379493229875)),
+    bokjeong = new naver.maps.LatLng(37.46561, 127.127075);
+
 //지도 생성시에 옵션을 지정할 수 있습니다.
 var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(37.3595704, 127.105399), //지도의 초기 중심 좌표
-        zoom: 8, //지도의 초기 줌 레벨
+        center: new naver.maps.LatLng(bokjeong), //지도의 초기 중심 좌표
+        zoom: 10, //지도의 초기 줌 레벨
         minZoom: 1, //지도의 최소 줌 레벨
         zoomControl: true, //줌 컨트롤의 표시 여부
         zoomControlOptions: { //줌 컨트롤의 옵션
@@ -230,6 +249,18 @@ $("#controls").on("click", function(e) {
 
 $("#interaction, #tile-transition, #controls").addClass("control-on");
 
+$("#to-seoul").on("click", function(e) {
+    e.preventDefault();
+    map.panToBounds(seoul);
+});
+
+$("#to-bokjeong").on("click", function(e) {
+    e.preventDefault();
+    map.panTo(bokjeong);
+});
+
+
+// Semantic-UI
 $('.ui.accordion').accordion();
 </script>
 
