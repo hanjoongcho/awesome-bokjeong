@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>어썸 복정</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ZAooYirnD5HsX7SfbG4G&submodules=geocoder"></script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ZAooYirnD5HsX7SfbG4G"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
     <link rel="stylesheet" type="text/css" href="docs/css/examples-base.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
@@ -15,14 +15,61 @@
     #wrap .buttons { position:absolute;top:0;left:0;z-index:1000;padding:5px; }
     #wrap .buttons .control-btn { margin:0 5px 5px 0; }
     #wrap { display: inline-block; width: calc(100% - 303px); }
-    #lnb { display: inline-block; vertical-align: top; margin-top: 20px; }
+    #wrap.section { margin: auto; }
+    #lnb { display: inline-block; vertical-align: top; margin-top: 0px; }
     .ui.vertical.accordion.menu { width: 300px; }
     .section { padding: 0px; }
+    .ui.toggle.checkbox {
+        vertical-align: middle;
+    }
+    #mainContainer { padding: 10px; }
+    .buttonGroup { margin-bottom: 10px }
 </style>
 </head>
 <body>
 
-<div>
+<div id="mainContainer">
+    <div class="buttonGroup">
+        <button id="to-seoul" class="ui primary button">panToBounds 서울</button>
+        <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
+    </div>
+    <div class="buttonGroup">
+        <a class="ui blue label">자전거도로</a>
+        <div class="ui toggle checkbox">
+          <input id="bicycleLayer" type="checkbox" name="public">
+          <label></label>
+        </div>
+
+        <a class="ui blue label">지적도</a>
+        <div class="ui toggle checkbox">
+          <input id="cadastralLayer" type="checkbox" name="public">
+          <label></label>
+        </div>
+
+        <a class="ui blue label">POI</a>
+        <div class="ui toggle checkbox">
+          <input id="labelLayer" type="checkbox" name="public" checked="checked">
+          <label></label>
+        </div>
+    </div>
+    <div class="buttonGroup">
+        <a class="ui blue label">지도컨트롤</a>
+        <div class="ui toggle checkbox">
+          <input id="mapControl" type="checkbox" name="public" checked="checked">
+          <label></label>
+        </div>
+        <a class="ui blue label">관성효과</a>
+        <div class="ui toggle checkbox">
+          <input id="kinetic" type="checkbox" name="public" checked="checked">
+          <label></label>
+        </div>
+         <a class="ui blue label">타일 fade in</a>
+        <div class="ui toggle checkbox">
+          <input id="tileTransition" type="checkbox" name="public">
+          <label></label>
+        </div>
+    </div>
+
     <div id="lnb">
         <div class="ui vertical accordion menu">
           <div class="item">
@@ -98,21 +145,13 @@
             </div>
           </div>
         </div>
-
-
-        <button id="to-seoul" class="ui primary button">panToBounds 서울</button>
-        <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
-
     </div>
 
     <div id="wrap" class="section">
         <div id="map" style="width:100%;height:600px;">
             <div class="buttons">
-                <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
-                <input id="kinetic" type="button" name="관성 드래깅" value="관성 드래깅" class="control-btn" />
-                <input id="tile-transition" type="button" name="타일 fadeIn 효과" value="타일 fadeIn 효과" class="control-btn" />
-                <input id="controls" type="button" name="모든 지도 컨트롤" value="모든 지도 컨트롤" class="control-btn" />
-                <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" />
+                <!-- <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
+                <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" /> -->
             </div>
         </div>
     </div>
@@ -120,148 +159,181 @@
 
 <script id="code">
 
-var jeju = new naver.maps.LatLng(33.3590628, 126.534361),
-    busan = new naver.maps.LatLng(35.1797865, 129.0750194),
-    dokdo = new naver.maps.LatLngBounds(
-                new naver.maps.LatLng(37.2380651, 131.8562652),
-                new naver.maps.LatLng(37.2444436, 131.8786475)),
-    seoul = new naver.maps.LatLngBounds(
-                new naver.maps.LatLng(37.42829747263545, 126.76620435615891),
-                new naver.maps.LatLng(37.7010174173061, 127.18379493229875)),
-    bokjeong = new naver.maps.LatLng(37.46561, 127.127075);
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Layer 초기화
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var jeju = new naver.maps.LatLng(33.3590628, 126.534361),
+        busan = new naver.maps.LatLng(35.1797865, 129.0750194),
+        dokdo = new naver.maps.LatLngBounds(
+                    new naver.maps.LatLng(37.2380651, 131.8562652),
+                    new naver.maps.LatLng(37.2444436, 131.8786475)),
+        seoul = new naver.maps.LatLngBounds(
+                    new naver.maps.LatLng(37.42829747263545, 126.76620435615891),
+                    new naver.maps.LatLng(37.7010174173061, 127.18379493229875)),
+        bokjeong = new naver.maps.LatLng(37.46561, 127.127075);
 
-//지도 생성시에 옵션을 지정할 수 있습니다.
-var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(bokjeong), //지도의 초기 중심 좌표
-        zoom: 10, //지도의 초기 줌 레벨
-        minZoom: 1, //지도의 최소 줌 레벨
-        zoomControl: true, //줌 컨트롤의 표시 여부
-        zoomControlOptions: { //줌 컨트롤의 옵션
-            position: naver.maps.Position.TOP_RIGHT
+    var bicycleLayer = new naver.maps.BicycleLayer();
+    var cadastralLayer = new naver.maps.CadastralLayer();
+    var labelMapType = new naver.maps.NaverMapTypeOption.getNormalLabelLayer();
+    var labelMapTypeRegistry = new naver.maps.MapTypeRegistry({
+        'label': labelMapType
+    });
+    var labelLayer = new naver.maps.Layer('label', labelMapTypeRegistry);
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Map 초기화
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(bokjeong), //지도의 초기 중심 좌표
+            zoom: 10, //지도의 초기 줌 레벨
+            minZoom: 1, //지도의 최소 줌 레벨
+            zoomControl: true, //줌 컨트롤의 표시 여부
+            zoomControlOptions: { //줌 컨트롤의 옵션
+            	style: naver.maps.ZoomControlStyle.SMALL,
+                position: naver.maps.Position.TOP_RIGHT
+            },
+            mapTypes: new naver.maps.MapTypeRegistry({
+                'normal': naver.maps.NaverMapTypeOption.getVectorMap()
+            })
+        });
+
+    // map.setOptions("mapTypeControl", true); //지도 유형 컨트롤의 표시 여부
+    map.setOptions("disableKineticPan", false);
+    map.setOptions("tileTransition", false);
+    labelLayer.setMap(map);
+
+
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Naver Map V3 이벤트 처리 ++++++++++++++++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    $("#to-seoul").on("click", function(e) {
+        e.preventDefault();
+        map.panToBounds(seoul);
+    });
+
+    $("#to-bokjeong").on("click", function(e) {
+        e.preventDefault();
+        map.panTo(bokjeong);
+    });
+
+    $('#bicycleLayer').on('change', function() {
+    	if ($('#bicycleLayer').prop('checked')) {
+    		bicycleLayer.setMap(map);
+    	} else {
+    		 bicycleLayer.setMap(null);
+    	}
+    	// console.log($('#bicycleLayerC').prop('checked'))
+	})
+
+	$('#cadastralLayer').on('change', function() {
+        if ($('#cadastralLayer').prop('checked')) {
+        	cadastralLayer.setMap(map);
+        } else {
+        	cadastralLayer.setMap(null);
+        }
+    })
+
+	$('#labelLayer').on('change', function() {
+        if ($('#labelLayer').prop('checked')) {
+        	labelLayer.setMap(map);
+        } else {
+        	labelLayer.setMap(null);
+        }
+    })
+
+    //지도 컨트롤
+    $("#mapControl").on("change", function(e) {
+        if (map.getOptions("scaleControl") && !$(this).prop('checked')) {
+            map.setOptions({ //모든 지도 컨트롤 숨기기
+                scaleControl: false,
+                logoControl: false,
+                mapDataControl: false,
+                zoomControl: false,
+                mapTypeControl: false
+            });
+        } else {
+            map.setOptions({ //모든 지도 컨트롤 보이기
+                scaleControl: true,
+                logoControl: true,
+                mapDataControl: true,
+                zoomControl: true,
+                mapTypeControl: true
+            });
         }
     });
 
-//setOptions 메서드를 통해 옵션을 조정할 수도 있습니다.
-map.setOptions("mapTypeControl", true); //지도 유형 컨트롤의 표시 여부
+    // 관성 드래깅 옵션
+    $("#kinetic").on("change", function(e) {
+        if (map.getOptions("disableKineticPan") && $(this).prop('checked')) {
+            map.setOptions("disableKineticPan", false); //관성 드래깅 켜기
+        } else {
+            map.setOptions("disableKineticPan", true); //관성 드래깅 끄기
+        }
+    });
 
+    // 타일 fadeIn 효과
+    $("#tileTransition").on("change", function(e) {
+        if (map.getOptions("tileTransition") && !$(this).prop('checked')) {
+            map.setOptions("tileTransition", false); //타일 fadeIn 효과 끄기
+        } else {
+            map.setOptions("tileTransition", true); //타일 fadeIn 효과 켜기
+        }
+    });
 
-// 지도 인터랙션 옵션
-$("#interaction").on("click", function(e) {
-    e.preventDefault();
+    // 지도 인터랙션 옵션
+    $("#interaction").on("click", function(e) {
+        e.preventDefault();
+        if (map.getOptions("draggable")) {
+            map.setOptions({ //지도 인터랙션 끄기
+                draggable: false,
+                pinchZoom: false,
+                scrollWheel: false,
+                keyboardShortcuts: false,
+                disableDoubleTapZoom: true,
+                disableDoubleClickZoom: true,
+                disableTwoFingerTapZoom: true
+            });
 
-    if (map.getOptions("draggable")) {
-        map.setOptions({ //지도 인터랙션 끄기
-            draggable: false,
-            pinchZoom: false,
-            scrollWheel: false,
-            keyboardShortcuts: false,
-            disableDoubleTapZoom: true,
-            disableDoubleClickZoom: true,
-            disableTwoFingerTapZoom: true
-        });
+            $(this).removeClass("control-on");
+        } else {
+            map.setOptions({ //지도 인터랙션 켜기
+                draggable: true,
+                pinchZoom: true,
+                scrollWheel: true,
+                keyboardShortcuts: true,
+                disableDoubleTapZoom: false,
+                disableDoubleClickZoom: false,
+                disableTwoFingerTapZoom: false
+            });
 
-        $(this).removeClass("control-on");
-    } else {
-        map.setOptions({ //지도 인터랙션 켜기
-            draggable: true,
-            pinchZoom: true,
-            scrollWheel: true,
-            keyboardShortcuts: true,
-            disableDoubleTapZoom: false,
-            disableDoubleClickZoom: false,
-            disableTwoFingerTapZoom: false
-        });
+            $(this).addClass("control-on");
+        }
+    });
 
-        $(this).addClass("control-on");
-    }
-});
+    // min/max 줌 레벨
+    $("#min-max-zoom").on("click", function(e) {
+        e.preventDefault();
 
-// 관성 드래깅 옵션
-$("#kinetic").on("click", function(e) {
-    e.preventDefault();
+        if (map.getOptions("minZoom") === 10) {
+            map.setOptions({
+                minZoom: 1,
+                maxZoom: 14
+            });
+            $(this).val(this.name + ': 1 ~ 14');
+        } else {
+            map.setOptions({
+                minZoom: 10,
+                maxZoom: 12
+            });
+            $(this).val(this.name + ': 10 ~ 12');
+        }
+    });
 
-    if (map.getOptions("disableKineticPan")) {
-        map.setOptions("disableKineticPan", false); //관성 드래깅 켜기
-        $(this).addClass("control-on");
-    } else {
-        map.setOptions("disableKineticPan", true); //관성 드래깅 끄기
-        $(this).removeClass("control-on");
-    }
-});
-
-// 타일 fadeIn 효과
-$("#tile-transition").on("click", function(e) {
-    e.preventDefault();
-
-    if (map.getOptions("tileTransition")) {
-        map.setOptions("tileTransition", false); //타일 fadeIn 효과 끄기
-
-        $(this).removeClass("control-on");
-    } else {
-        map.setOptions("tileTransition", true); //타일 fadeIn 효과 켜기
-        $(this).addClass("control-on");
-    }
-});
-
-// min/max 줌 레벨
-$("#min-max-zoom").on("click", function(e) {
-    e.preventDefault();
-
-    if (map.getOptions("minZoom") === 10) {
-        map.setOptions({
-            minZoom: 1,
-            maxZoom: 14
-        });
-        $(this).val(this.name + ': 1 ~ 14');
-    } else {
-        map.setOptions({
-            minZoom: 10,
-            maxZoom: 12
-        });
-        $(this).val(this.name + ': 10 ~ 12');
-    }
-});
-
-//지도 컨트롤
-$("#controls").on("click", function(e) {
-    e.preventDefault();
-
-    if (map.getOptions("scaleControl")) {
-        map.setOptions({ //모든 지도 컨트롤 숨기기
-            scaleControl: false,
-            logoControl: false,
-            mapDataControl: false,
-            zoomControl: false,
-            mapTypeControl: false
-        });
-        $(this).removeClass('control-on');
-    } else {
-        map.setOptions({ //모든 지도 컨트롤 보이기
-            scaleControl: true,
-            logoControl: true,
-            mapDataControl: true,
-            zoomControl: true,
-            mapTypeControl: true
-        });
-        $(this).addClass('control-on');
-    }
-});
-
-$("#interaction, #tile-transition, #controls").addClass("control-on");
-
-$("#to-seoul").on("click", function(e) {
-    e.preventDefault();
-    map.panToBounds(seoul);
-});
-
-$("#to-bokjeong").on("click", function(e) {
-    e.preventDefault();
-    map.panTo(bokjeong);
-});
-
-
-// Semantic-UI
-$('.ui.accordion').accordion();
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Semantic-UI +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    $('.ui.accordion').accordion();
 </script>
 
 </body>
