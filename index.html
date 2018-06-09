@@ -12,12 +12,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
     <!-- @category Map -->
     <style type="text/css">
+    #wrap { margin-left: 10px; }
     #wrap .buttons { position:absolute;top:0;left:0;z-index:1000;padding:5px; }
     #wrap .buttons .control-btn { margin:0 5px 5px 0; }
-    #wrap { display: inline-block; width: calc(100% - 303px); }
-    #wrap.section { margin: auto; }
+    #wrap { display: inline-block; width: calc(100% - 313px); }
+    #wrap.section { margin-left: 10px; }
     #lnb { display: inline-block; vertical-align: top; margin-top: 0px; }
     .ui.vertical.accordion.menu { width: 300px; }
+    .ui.two.cards { width: 300px; margin: auto;}
     .section { padding: 0px; }
     .ui.toggle.checkbox {
         vertical-align: middle;
@@ -145,6 +147,28 @@
               </div>
             </div>
           </div>
+        </div>
+        <div>
+            <div class="ui two cards">
+              <div class="card">
+                <div class="image">
+                  <img src="https://semantic-ui.com/images/wireframe/image.png">
+                </div>
+                <div class="extra">
+                  Rating:
+                  <div class="ui star rating" data-rating="4"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="image">
+                  <img src="https://semantic-ui.com/images/wireframe/image.png">
+                </div>
+                <div class="extra">
+                  Rating:
+                  <div class="ui star rating" data-rating="2"></div>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
 
@@ -471,7 +495,7 @@
             });
 
             var infoWindow = new naver.maps.InfoWindow({
-                content: '<div style="width:150px;text-align:center;padding:10px;">The Letter is <b>"'+ key.substr(0, 1) +'"</b>.</div>'
+                content: '<div style="width:170px;text-align:center;padding:10px 0px 10px 0px;">The Letter is <b>"'+ key.substr(0, 1) +'"</b>.</div>'
             });
 
             markers.push(marker);
@@ -501,6 +525,7 @@
     //+++ Semantic-UI +++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $('.ui.accordion').accordion();
+    $('.ui.rating').rating();
 </script>
 
 </body>
