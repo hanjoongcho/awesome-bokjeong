@@ -34,7 +34,8 @@
     <div class="buttonGroup">
         <button id="to-seoul" class="ui primary button">panToBounds 서울</button>
         <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
-        <button id="addMarker" class="ui primary button">테스트마커 추가</button>
+        <button id="addMarker" class="ui primary button"><i class="map marker alternate icon"></i>테스트마커</button>
+        <button id="addConvenienceStore" class="ui primary button"><i class="map marker alternate icon"></i>편의점</button>
     </div>
     <div class="buttonGroup">
         <a class="ui blue label">자전거도로</a>
@@ -463,18 +464,16 @@
         "I2": [MARKER_SPRITE_X_OFFSET*8, MARKER_SPRITE_Y_OFFSET*2]
     };
 
-    var bounds = map.getBounds(),
-    southWest = bounds.getSW(),
-    northEast = bounds.getNE(),
-    lngSpan = northEast.lng() - southWest.lng(),
-    latSpan = northEast.lat() - southWest.lat();
-
     var markers = [],
     infoWindows = [];
 
-
-
     $("#addMarker").on("click", function(e) {
+    	var bounds = map.getBounds(),
+        southWest = bounds.getSW(),
+        northEast = bounds.getNE(),
+        lngSpan = northEast.lng() - southWest.lng(),
+        latSpan = northEast.lat() - southWest.lat();
+
         $(this).addClass('disabled');
          for (var key in MARKER_SPRITE_POSITION) {
             var position = new naver.maps.LatLng(
@@ -519,6 +518,54 @@
         for (var i=0, ii=markers.length; i<ii; i++) {
             naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
         }
+    });
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Overlay Convenience Store
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var cuContent = "<div style='border: 1px solid black;'><img src='https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg'/></div>";
+    var cuPoiArray = [
+        {'title': 'CU 성남복정점', 'lat': 37.4560254, 'lon': 127.1275402},
+        {'title': 'CU 동서울대도서관점', 'lat': 37.4597360, 'lon': 127.1292230},
+        {'title': 'CU 복정으뜸점', 'lat': 37.4540048, 'lon': 127.1298521},
+        {'title': 'CU 복정원룸점', 'lat': 37.4614161, 'lon': 127.1285966},
+        {'title': 'CU 복정성공점', 'lat': 37.4624596, 'lon': 127.1270250},
+        {'title': 'CU 복정빌리지점', 'lat': 37.4640511, 'lon': 127.1288717},
+        {'title': 'CU 경원대점', 'lat': 37.4487913, 'lon': 127.1270425},
+        {'title': 'CU 복정하나점', 'lat': 37.4652563, 'lon': 127.1269675},
+        {'title': 'CU 성남복정타운점', 'lat': 37.4673763, 'lon': 127.1293548}
+    ];
+    var a = [new naver.maps.LatLng(cuPoiArray[0].lat, cuPoiArray[0].lon),
+        new naver.maps.LatLng(cuPoiArray[1].lat, cuPoiArray[1].lon)]
+    var tempLatLon = new naver.maps.LatLngBounds(
+            new naver.maps.LatLng(cuPoiArray[0].lat, cuPoiArray[0].lon),
+            new naver.maps.LatLng(cuPoiArray[1].lat, cuPoiArray[1].lon));
+    var minX, minY, maxX, maxY;
+    $("#addConvenienceStore").on("click", function(e) {
+    	$.each(cuPoiArray, function(index, item) {
+    	    if (minX == undefined || item.lon < minX) minX = item.lon;
+    	    if (minY == undefined || item.lat < minY) minY = item.lat;
+    	    if (maxX == undefined || item.lon > maxX) maxX = item.lon;
+    	    if (maxY == undefined || item.lat > maxY) maxY = item.lat;
+
+    		var loc = new naver.maps.LatLng(item.lat, item.lon);
+            var marker = new naver.maps.Marker({
+                    map: map,
+                    position: loc,
+                    title: item.title,
+                    icon: {
+                        content: cuContent,
+                        size: new naver.maps.Size(25, 25),
+                        anchor: new naver.maps.Point(0, 0)
+                    },
+                    zIndex: 100
+                });
+    	})
+
+    	map.panToBounds(new naver.maps.LatLngBounds(
+                new naver.maps.LatLng(minY, minX),
+                new naver.maps.LatLng(maxY, maxX))
+    	);
     });
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
