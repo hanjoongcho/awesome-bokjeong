@@ -25,6 +25,7 @@
         vertical-align: middle;
     }
     #mainContainer { padding: 10px; }
+    #cardContainer { overflow: auto; height: 300px;}
     #map { width: 100%; height: 500px; }
     .buttonGroup { margin-bottom: 10px }
     body { overflow:hidden; }
@@ -157,7 +158,7 @@
             </div>
           </div>
         </div>
-        <div>
+        <div id="cardContainer">
             <div class="ui one cards">
               <div class="card">
                 <div class="image">
@@ -166,6 +167,33 @@
                 <div class="extra">
                   Rating:
                   <div class="ui star rating" data-rating="4"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="image">
+                  <img src="https://semantic-ui.com/images/wireframe/image.png">
+                </div>
+                <div class="extra">
+                  Rating:
+                  <div class="ui star rating" data-rating="2"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="image">
+                  <img src="https://semantic-ui.com/images/wireframe/image.png">
+                </div>
+                <div class="extra">
+                  Rating:
+                  <div class="ui star rating" data-rating="2"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="image">
+                  <img src="https://semantic-ui.com/images/wireframe/image.png">
+                </div>
+                <div class="extra">
+                  Rating:
+                  <div class="ui star rating" data-rating="2"></div>
                 </div>
               </div>
               <div class="card">
@@ -670,6 +698,9 @@
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $('.ui.accordion').accordion();
     $('.ui.rating').rating();
+    $( window ).resize(function() {
+    	$('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 30);
+	});
 </script>
 
 </body>
