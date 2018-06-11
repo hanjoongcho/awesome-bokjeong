@@ -36,6 +36,8 @@
         <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
         <button id="addMarker" class="ui primary button"><i class="map marker alternate icon"></i>테스트마커</button>
         <button id="addConvenienceStore" class="ui primary button"><i class="map marker alternate icon"></i>편의점</button>
+        <button id="bokjeingLayer" class="ui primary button"><i class="eraser icon"></i>복정동 행정경계</button>
+        <button id="removeMarker" class="ui red button"><i class="eraser icon"></i>마커삭제</button>
     </div>
     <div class="buttonGroup">
         <a class="ui blue label">자전거도로</a>
@@ -523,7 +525,7 @@
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Overlay Convenience Store
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    var cuContent = "<div style='border: 1px solid black;'><img src='https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg'/></div>";
+    var cuContent = "<div style='border: 1px solid black; width=25px; height=25px;'><img src='https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg'/></div>";
     var cuPoiArray = [
         {'title': 'CU 성남복정점', 'lat': 37.4560254, 'lon': 127.1275402},
         {'title': 'CU 동서울대도서관점', 'lat': 37.4597360, 'lon': 127.1292230},
@@ -560,6 +562,7 @@
                     },
                     zIndex: 100
                 });
+            markers.push(marker);
     	})
 
     	map.panToBounds(new naver.maps.LatLngBounds(
@@ -567,6 +570,47 @@
                 new naver.maps.LatLng(maxY, maxX))
     	);
     });
+
+    $('#removeMarker').on('click', function() {
+    	this.blur();
+    	markers.map(x => x.setMap(null));
+	    markers = [];
+    });
+
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Geo Json
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    $('#bokjeingLayer').on('click', function() {
+        this.blur();
+        $.ajax({
+            url: '/docs/data/bokjeong.json',
+            success: function(geojson) {
+            	map.data.setStyle(function(feature) {
+                    var styleOptions = {
+                        fillColor: '#ff0000',
+                        fillOpacity: 0.0001,
+                        strokeColor: '#ff0000',
+                        strokeWeight: 2,
+                        strokeOpacity: 0.4
+                    };
+
+                    if (feature.getProperty('focus')) {
+                        styleOptions.fillOpacity = 0.6;
+                        styleOptions.fillColor = '#0f0';
+                        styleOptions.strokeColor = '#0f0';
+                        styleOptions.strokeWeight = 4;
+                        styleOptions.strokeOpacity = 1;
+                    }
+
+                    return styleOptions;
+                });
+
+                map.data.addGeoJson(geojson);
+            }
+        });
+    });
+
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Semantic-UI +++++++++++++++++++++++++++++++++++++++++++++++++++++++
