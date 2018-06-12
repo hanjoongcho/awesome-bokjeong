@@ -167,11 +167,19 @@
 
     <div id="wrap" class="section">
         <div id="map">
+            <div style="z-index:100; text-align:center; position: absolute; top: 10px; width: 100%;">
+                <span id=latLon style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+            </div>
+            <div style="z-index:100; text-align:center; position: absolute; bottom: 20px; right: 20px;">
+                <span id=zoomLevel style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+            </div>
             <div class="buttons">
                 <!-- <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
                 <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" /> -->
+
             </div>
         </div>
+
     </div>
 </div>
 <div class="ui tiny modal">
@@ -234,6 +242,15 @@
     map.setOptions("disableKineticPan", false);
     map.setOptions("tileTransition", false);
     labelLayer.setMap(map);
+
+    naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
+    	$('#latLon').html(map.getCenter().y + ", " + map.getCenter().x);
+    });
+
+    naver.maps.Event.addListener(map, 'zoom_changed', function(zoom) {
+        $('#zoomLevel').html(zoom);
+    });
+
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Manager 초기화
@@ -665,6 +682,8 @@
         	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>");
         }
     });
+
+
 
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
