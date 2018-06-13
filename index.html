@@ -13,30 +13,30 @@
     <link rel="icon" type="image/png" href="img/icon-60x60.png" />
     <!-- @category Map -->
     <style type="text/css">
-    #wrap { margin-left: 10px; }
+    #wrap { display: inline-block; width: calc(100% - 303px); height: calc(100% - 0px); position: absolute; right: 0px;}
     #wrap .buttons { position:absolute;top:0;left:0;z-index:1000;padding:5px; }
     #wrap .buttons .control-btn { margin:0 5px 5px 0; }
-    #wrap { display: inline-block; width: calc(100% - 313px); }
-    #wrap.section { margin: 0px 0px 0px 10px; }
-    #lnb { display: inline-block; vertical-align: top; margin-top: 0px; }
+    #wrap.section { margin: 0px 0px 0px 0px; }
+    #lnb { display: inline-block; margin-top: 0px; height: calc(100% - 0px); border: solid black 0px; position: absolute;}
     .ui.vertical.accordion.menu { width: 300px; }
     .ui.one.cards { width: 200px; margin: auto;}
     .section { padding: 0px; }
     .ui.toggle.checkbox {
         vertical-align: middle;
     }
-    #mainContainer { padding: 10px; }
-    #cardContainer { overflow: auto; height: 300px;}
-    #map { width: 100%; height: 500px; }
-    .buttonGroup { margin-bottom: 0px; text-align: right; }
     body { overflow:hidden; }
+    #mainContainer { padding: 5px; height: 100%; }
+    #cardContainer { overflow: auto; height: 300px; width: 100%; position: absolute; bottom: 0px; }
+    #map { width: calc(100% - 0px); height: calc(100% - 0px); }
+    .buttonGroup { margin-bottom: 0px; text-align: right; }
     .accordionItem { margin-top: 5px; }
     .ui.toggle.checkbox.floatR { float: right; }
     .btn100px { width: 120px; text-align: center; }
     .title.bold { font-weight: bold; }
     .ui.blue.label { width: 100%; margin-top: 10px; }
-    #heaerContainer { height: 50px; }
+    #heaerContainer { height: 60px; line-height: 60px; vertical-align: middle; }
     #titleContainer { display: inline-block; float: left; }
+    #contents { height: calc(100% - 60px); position: relative;}
 </style>
 </head>
 <body>
@@ -54,155 +54,157 @@
         </div>
     </div>
 
-
-    <div id="lnb">
-        <div class="ui vertical accordion menu">
-          <div class="item" id="panel" >
-            <a class="active title bold">
-              <i class="dropdown icon"></i>
-                                지도 설정
-            </a>
-            <div class="active content">
-              <div class="ui form">
-                <div class="accordionItem">
-                    <a class="ui blue label">Layer</a>
-                </div>
-                <div class="accordionItem">
-                    <a class="ui label btn100px">자전거도로</a>
-                    <div class="ui toggle checkbox floatR">
-                      <input id="bicycleLayer" type="checkbox" name="public">
-                      <label></label>
+    <div id="contents">
+        <div id="lnb">
+            <div id="accordionMenu" class="ui vertical accordion menu">
+              <div class="item" id="panel" >
+                <a class="active title bold">
+                  <i class="dropdown icon"></i>
+                                    지도 설정
+                </a>
+                <div class="active content">
+                  <div class="ui form">
+                    <div class="accordionItem">
+                        <a class="ui blue label">Layer</a>
                     </div>
-                </div>
-                <div class="accordionItem">
-                    <a class="ui label btn100px">지적도</a>
-                    <div class="ui toggle checkbox floatR">
-                      <input id="cadastralLayer" type="checkbox" name="public">
-                      <label></label>
+                    <div class="accordionItem">
+                        <a class="ui label btn100px">자전거도로</a>
+                        <div class="ui toggle checkbox floatR">
+                          <input id="bicycleLayer" type="checkbox" name="public">
+                          <label></label>
+                        </div>
                     </div>
-                </div>
-                <div class="accordionItem">
-                    <a class="ui label btn100px">POI</a>
-                    <div class="ui toggle checkbox floatR">
-                      <input id="labelLayer" type="checkbox" name="public" checked="checked">
-                      <label></label>
+                    <div class="accordionItem">
+                        <a class="ui label btn100px">지적도</a>
+                        <div class="ui toggle checkbox floatR">
+                          <input id="cadastralLayer" type="checkbox" name="public">
+                          <label></label>
+                        </div>
                     </div>
-                </div>
-                <div class="accordionItem">
-                    <a class="ui label btn100px">복정동 행정경계</a>
-                    <div class="ui toggle checkbox floatR">
-                      <input id="bokjeingLayer" type="checkbox" name="public">
-                      <label></label>
+                    <div class="accordionItem">
+                        <a class="ui label btn100px">POI</a>
+                        <div class="ui toggle checkbox floatR">
+                          <input id="labelLayer" type="checkbox" name="public" checked="checked">
+                          <label></label>
+                        </div>
                     </div>
-                </div>
-                <div class="accordionItem">
-                    <a class="ui blue label">지도컨트롤</a>
-                </div>
-                <div class="accordionItem">
-                    <a class="ui label btn100px">지도컨트롤</a>
-                    <div class="ui toggle checkbox floatR">
-                      <input id="mapControl" type="checkbox" name="public" checked="checked">
-                      <label></label>
+                    <div class="accordionItem">
+                        <a class="ui label btn100px">복정동 행정경계</a>
+                        <div class="ui toggle checkbox floatR">
+                          <input id="bokjeingLayer" type="checkbox" name="public">
+                          <label></label>
+                        </div>
                     </div>
-                </div>
-                <div class="accordionItem">
-                    <a class="ui label btn100px">관성효과</a>
-                    <div class="ui toggle checkbox floatR">
-                      <input id="kinetic" type="checkbox" name="public" checked="checked">
-                      <label></label>
+                    <div class="accordionItem">
+                        <a class="ui blue label">지도컨트롤</a>
                     </div>
-                </div>
-                <div class="accordionItem">
-                    <a class="ui label btn100px">타일 fade in</a>
-                    <div class="ui toggle checkbox floatR">
-                      <input id="tileTransition" type="checkbox" name="public">
-                      <label></label>
+                    <div class="accordionItem">
+                        <a class="ui label btn100px">지도컨트롤</a>
+                        <div class="ui toggle checkbox floatR">
+                          <input id="mapControl" type="checkbox" name="public" checked="checked">
+                          <label></label>
+                        </div>
                     </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item" id="panel" >
-            <a class="title bold">
-              <i class="dropdown icon"></i>
-                                그리기도구 스타일
-            </a>
-            <div class="content">
-              <div class="ui form">
-                <div class="grouped fields">
-                  <div class="field">
-                    <div class="ui radio checkbox">
-                      <input type="radio" name="size" value="1">
-                      <label>가로1줄</label>
+                    <div class="accordionItem">
+                        <a class="ui label btn100px">관성효과</a>
+                        <div class="ui toggle checkbox floatR">
+                          <input id="kinetic" type="checkbox" name="public" checked="checked">
+                          <label></label>
+                        </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui radio checkbox">
-                      <input type="radio" name="size" value="2" checked="checked">
-                      <label>세로1줄</label>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui radio checkbox">
-                      <input type="radio" name="size" value="3">
-                      <label>가로2줄</label>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui radio checkbox">
-                      <input type="radio" name="size" value="4">
-                      <label>세로2줄</label>
+                    <div class="accordionItem">
+                        <a class="ui label btn100px">타일 fade in</a>
+                        <div class="ui toggle checkbox floatR">
+                          <input id="tileTransition" type="checkbox" name="public">
+                          <label></label>
+                        </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="item">
-            <a class="title bold">
-            <i class="dropdown icon"></i>
-                             테스트 기능
-            </a>
-            <div class="content">
-              <div class="ui form">
-                <div class="accordionItem">
-                    <button id="to-seoul" class="ui primary button">panToBounds 서울</button>
+              <div class="item" id="panel" >
+                <a class="title bold">
+                  <i class="dropdown icon"></i>
+                                    그리기도구 스타일
+                </a>
+                <div class="content">
+                  <div class="ui form">
+                    <div class="grouped fields">
+                      <div class="field">
+                        <div class="ui radio checkbox">
+                          <input type="radio" name="size" value="1">
+                          <label>가로1줄</label>
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui radio checkbox">
+                          <input type="radio" name="size" value="2" checked="checked">
+                          <label>세로1줄</label>
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui radio checkbox">
+                          <input type="radio" name="size" value="3">
+                          <label>가로2줄</label>
+                        </div>
+                      </div>
+                      <div class="field">
+                        <div class="ui radio checkbox">
+                          <input type="radio" name="size" value="4">
+                          <label>세로2줄</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="accordionItem">
-                    <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
-                </div>
-                <div class="accordionItem">
-                    <button id="createCardVide" class="ui primary button"><i class="map outline icon"></i>카드뷰 추가</button>
-                </div>
+              </div>
+              <div class="item">
+                <a class="title bold">
+                <i class="dropdown icon"></i>
+                                 테스트 기능
+                </a>
+                <div class="content">
+                  <div class="ui form">
+                    <div class="accordionItem">
+                        <button id="to-seoul" class="ui primary button">panToBounds 서울</button>
+                    </div>
+                    <div class="accordionItem">
+                        <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
+                    </div>
+                    <div class="accordionItem">
+                        <button id="createCardVide" class="ui primary button"><i class="map outline icon"></i>카드뷰 추가</button>
+                    </div>
 
 
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div id="cardContainer">
-            <div class="ui one cards">
-            </div>
-        </div>
-    </div>
-
-    <div id="wrap" class="section">
-        <div id="map">
-            <div style="z-index:100; text-align:center; position: absolute; top: 10px; width: 100%;">
-                <span id=latLon style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
-            </div>
-            <div style="z-index:100; text-align:center; position: absolute; bottom: 20px; right: 20px;">
-                <span id=zoomLevel style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
-            </div>
-            <div class="buttons">
-                <!-- <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
-                <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" /> -->
-
+            <div id="cardContainer">
+                <div class="ui one cards">
+                </div>
             </div>
         </div>
 
+        <div id="wrap" class="section">
+            <div id="map">
+                <div style="z-index:100; text-align:center; position: absolute; top: 10px; width: 100%;">
+                    <span id=latLon style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+                </div>
+                <div style="z-index:100; text-align:center; position: absolute; bottom: 20px; right: 20px;">
+                    <span id=zoomLevel style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+                </div>
+                <div class="buttons">
+                    <!-- <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
+                    <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" /> -->
+
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
+
 <div class="ui tiny modal">
   <i class="close icon"></i>
   <div class="header">
@@ -711,14 +713,23 @@
     //+++ Semantic-UI +++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     function updateMapSize() {
-    	$('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 22);
+    	// $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 12);
     }
-    
+
+    function updateCardViewSize() {
+    	$('#cardContainer').css('height', parseFloat($('#lnb').css('height')) - parseFloat($('.ui.vertical.accordion.menu').css('height')) - 15);
+    }
+
     $( window ).resize(function() {
     	updateMapSize();
     });
 
-    $('.ui.accordion').accordion();
+    // $('.ui.accordion').accordion();
+    $('.ui.accordion')
+    .accordion({
+    	onOpen: function() { updateCardViewSize(); },
+    });
+
     $('#createCardVide').on('click', function() {
     	this.blur();
     	for (var i = 0; i < 10; i++) {
@@ -729,6 +740,7 @@
     });
 
     $('#createCardVide').trigger('click');
+    updateCardViewSize();
 
 </script>
 
