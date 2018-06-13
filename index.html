@@ -583,43 +583,53 @@
         {'title': 'CU 복정하나점', 'lat': 37.4652563, 'lon': 127.1269675},
         {'title': 'CU 성남복정타운점', 'lat': 37.4673763, 'lon': 127.1293548}
     ];
-    var a = [new naver.maps.LatLng(cuPoiArray[0].lat, cuPoiArray[0].lon),
-        new naver.maps.LatLng(cuPoiArray[1].lat, cuPoiArray[1].lon)]
-    var tempLatLon = new naver.maps.LatLngBounds(
-            new naver.maps.LatLng(cuPoiArray[0].lat, cuPoiArray[0].lon),
-            new naver.maps.LatLng(cuPoiArray[1].lat, cuPoiArray[1].lon));
+    var gsContent = "<div style='border: 1px solid black; width=25px; height=25px;'><img src='https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg'/></div>";
+    var gsPoiArray = [
+        {'title': 'GS25 복정타운점', 'lat': 37.4669761, 'lon': 127.1287884},
+        {'title': 'GS25 동서울대점', 'lat': 37.4592078, 'lon': 127.1267924},
+        {'title': 'GS25 복정도서관점', 'lat': 37.4633777, 'lon': 127.1279417},
+        {'title': 'GS25 복정미소점', 'lat': 37.4547189, 'lon': 127.1304631}
+    ];
     var minX, minY, maxX, maxY;
     $("#addConvenienceStore").on("click", function(e) {
     	$.each(cuPoiArray, function(index, item) {
-    	    if (minX == undefined || item.lon < minX) minX = item.lon;
-    	    if (minY == undefined || item.lat < minY) minY = item.lat;
-    	    if (maxX == undefined || item.lon > maxX) maxX = item.lon;
-    	    if (maxY == undefined || item.lat > maxY) maxY = item.lat;
-
-    		var loc = new naver.maps.LatLng(item.lat, item.lon);
-            var marker = new naver.maps.Marker({
-                    map: map,
-                    position: loc,
-                    title: item.title,
-                    icon: {
-                        content: cuContent,
-                        size: new naver.maps.Size(25, 25),
-                        anchor: new naver.maps.Point(0, 0)
-                    },
-                    zIndex: 100
-                });
-            markers.push(marker);
-            naver.maps.Event.addListener(marker, 'click', function() {
-            	$('.ui.tiny.modal').modal('show');
-            	$('.ui.tiny.modal .header').html(item.title);
-        	});
+    		addConvenienceStorePoi(index, item, cuContent);
     	})
+
+    	$.each(gsPoiArray, function(index, item) {
+            addConvenienceStorePoi(index, item, gsContent);
+        })
 
     	map.panToBounds(new naver.maps.LatLngBounds(
                 new naver.maps.LatLng(minY, minX),
                 new naver.maps.LatLng(maxY, maxX))
     	);
     });
+
+    var addConvenienceStorePoi = function(index, item, content) {
+    	if (minX == undefined || item.lon < minX) minX = item.lon;
+        if (minY == undefined || item.lat < minY) minY = item.lat;
+        if (maxX == undefined || item.lon > maxX) maxX = item.lon;
+        if (maxY == undefined || item.lat > maxY) maxY = item.lat;
+
+        var loc = new naver.maps.LatLng(item.lat, item.lon);
+        var marker = new naver.maps.Marker({
+                map: map,
+                position: loc,
+                title: item.title,
+                icon: {
+                    content: content,
+                    size: new naver.maps.Size(25, 25),
+                    anchor: new naver.maps.Point(0, 0)
+                },
+                zIndex: 100
+            });
+        markers.push(marker);
+        naver.maps.Event.addListener(marker, 'click', function() {
+            $('.ui.tiny.modal').modal('show');
+            $('.ui.tiny.modal .header').html(item.title);
+        });
+    }
 
     $('#removeMarker').on('click', function() {
     	this.blur();
