@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
     <link rel="stylesheet" type="text/css" href="docs/css/examples-base.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    <link rel="icon" type="image/png" href="img/icon-60x60.png" />
     <!-- @category Map -->
     <style type="text/css">
     #wrap { margin-left: 10px; }
@@ -27,9 +28,15 @@
     #mainContainer { padding: 10px; }
     #cardContainer { overflow: auto; height: 300px;}
     #map { width: 100%; height: 500px; }
-    .buttonGroup { margin-bottom: 10px }
+    .buttonGroup { margin-bottom: 0px; text-align: right; }
     body { overflow:hidden; }
-
+    .accordionItem { margin-top: 5px; }
+    .ui.toggle.checkbox.floatR { float: right; }
+    .btn100px { width: 120px; text-align: center; }
+    .title.bold { font-weight: bold; }
+    .ui.blue.label { width: 100%; margin-top: 10px; }
+    #heaerContainer { height: 50px; }
+    #titleContainer { display: inline-block; float: left; }
 </style>
 </head>
 <body>
@@ -37,49 +44,13 @@
 <div id="mainContainer">
     <div id="heaerContainer">
         <div class="buttonGroup">
-            <button id="to-seoul" class="ui primary button">panToBounds 서울</button>
-            <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
+            <div id="titleContainer">
+                <img src="./img/ic_launcher.png" /> <span style="font-weight: bold; margin-left: 5px;">복정동 생활지도</span><span style="color: blue; font-weight: bold; margin-left: 5px;">어썸 복정</span>
+            </div>
             <button id="addMarker" class="ui primary button"><i class="map marker alternate icon"></i>테스트마커</button>
             <button id="addConvenienceStore" class="ui primary button"><i class="map marker alternate icon"></i>편의점</button>
-            <button id="bokjeingLayer" class="ui primary button"><i class="map outline icon"></i>복정동 행정경계 ON</button>
-            <button id="createCardVide" class="ui primary button"><i class="map outline icon"></i>카드뷰 추가</button>
+            <!-- <button id="bokjeingLayer" class="ui primary button"><i class="map outline icon"></i>복정동 행정경계 ON</button> -->
             <button id="removeMarker" class="ui red button"><i class="eraser icon"></i>마커삭제</button>
-        </div>
-        <div class="buttonGroup">
-            <a class="ui blue label">자전거도로</a>
-            <div class="ui toggle checkbox">
-              <input id="bicycleLayer" type="checkbox" name="public">
-              <label></label>
-            </div>
-
-            <a class="ui blue label">지적도</a>
-            <div class="ui toggle checkbox">
-              <input id="cadastralLayer" type="checkbox" name="public">
-              <label></label>
-            </div>
-
-            <a class="ui blue label">POI</a>
-            <div class="ui toggle checkbox">
-              <input id="labelLayer" type="checkbox" name="public" checked="checked">
-              <label></label>
-            </div>
-        </div>
-        <div class="buttonGroup">
-            <a class="ui blue label">지도컨트롤</a>
-            <div class="ui toggle checkbox">
-              <input id="mapControl" type="checkbox" name="public" checked="checked">
-              <label></label>
-            </div>
-            <a class="ui blue label">관성효과</a>
-            <div class="ui toggle checkbox">
-              <input id="kinetic" type="checkbox" name="public" checked="checked">
-              <label></label>
-            </div>
-             <a class="ui blue label">타일 fade in</a>
-            <div class="ui toggle checkbox">
-              <input id="tileTransition" type="checkbox" name="public">
-              <label></label>
-            </div>
         </div>
     </div>
 
@@ -87,11 +58,76 @@
     <div id="lnb">
         <div class="ui vertical accordion menu">
           <div class="item" id="panel" >
-            <a class="active title">
+            <a class="active title bold">
+              <i class="dropdown icon"></i>
+                                지도 설정
+            </a>
+            <div class="active content">
+              <div class="ui form">
+                <div class="accordionItem">
+                    <a class="ui blue label">Layer</a>
+                </div>
+                <div class="accordionItem">
+                    <a class="ui label btn100px">자전거도로</a>
+                    <div class="ui toggle checkbox floatR">
+                      <input id="bicycleLayer" type="checkbox" name="public">
+                      <label></label>
+                    </div>
+                </div>
+                <div class="accordionItem">
+                    <a class="ui label btn100px">지적도</a>
+                    <div class="ui toggle checkbox floatR">
+                      <input id="cadastralLayer" type="checkbox" name="public">
+                      <label></label>
+                    </div>
+                </div>
+                <div class="accordionItem">
+                    <a class="ui label btn100px">POI</a>
+                    <div class="ui toggle checkbox floatR">
+                      <input id="labelLayer" type="checkbox" name="public" checked="checked">
+                      <label></label>
+                    </div>
+                </div>
+                <div class="accordionItem">
+                    <a class="ui label btn100px">복정동 행정경계</a>
+                    <div class="ui toggle checkbox floatR">
+                      <input id="bokjeingLayer" type="checkbox" name="public">
+                      <label></label>
+                    </div>
+                </div>
+                <div class="accordionItem">
+                    <a class="ui blue label">지도컨트롤</a>
+                </div>
+                <div class="accordionItem">
+                    <a class="ui label btn100px">지도컨트롤</a>
+                    <div class="ui toggle checkbox floatR">
+                      <input id="mapControl" type="checkbox" name="public" checked="checked">
+                      <label></label>
+                    </div>
+                </div>
+                <div class="accordionItem">
+                    <a class="ui label btn100px">관성효과</a>
+                    <div class="ui toggle checkbox floatR">
+                      <input id="kinetic" type="checkbox" name="public" checked="checked">
+                      <label></label>
+                    </div>
+                </div>
+                <div class="accordionItem">
+                    <a class="ui label btn100px">타일 fade in</a>
+                    <div class="ui toggle checkbox floatR">
+                      <input id="tileTransition" type="checkbox" name="public">
+                      <label></label>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="item" id="panel" >
+            <a class="title bold">
               <i class="dropdown icon"></i>
                                 그리기도구 스타일
             </a>
-            <div class="active content">
+            <div class="content">
               <div class="ui form">
                 <div class="grouped fields">
                   <div class="field">
@@ -123,38 +159,23 @@
             </div>
           </div>
           <div class="item">
-            <a class="title">
-              <i class="dropdown icon"></i>
-              Colors
+            <a class="title bold">
+            <i class="dropdown icon"></i>
+                             테스트 기능
             </a>
             <div class="content">
               <div class="ui form">
-                <div class="grouped fields">
-                  <div class="field">
-                    <div class="ui checkbox">
-                      <input type="checkbox" name="small">
-                      <label>Red</label>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui checkbox">
-                      <input type="checkbox" name="medium">
-                      <label>Orange</label>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui checkbox">
-                      <input type="checkbox" name="large">
-                      <label>Green</label>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui checkbox">
-                      <input type="checkbox" name="x-large">
-                      <label>Blue</label>
-                    </div>
-                  </div>
+                <div class="accordionItem">
+                    <button id="to-seoul" class="ui primary button">panToBounds 서울</button>
                 </div>
+                <div class="accordionItem">
+                    <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
+                </div>
+                <div class="accordionItem">
+                    <button id="createCardVide" class="ui primary button"><i class="map outline icon"></i>카드뷰 추가</button>
+                </div>
+
+
               </div>
             </div>
           </div>
@@ -189,7 +210,7 @@
   </div>
   <div class="image content">
     <div class="ui medium image">
-      <img src="/images/avatar/large/chris.jpg">
+      <img src="img/ic_launcher.png">
     </div>
     <div class="description">
       <div class="ui header">We've auto-chosen a profile image for you.</div>
@@ -223,7 +244,7 @@
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Map 초기화
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 30);
+    updateMapSize();
     var map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(bokjeong), //지도의 초기 중심 좌표
             zoom: 10, //지도의 초기 줌 레벨
@@ -611,14 +632,14 @@
     var tooltip = $('<div style="position:absolute;z-index:1000;padding:5px 10px;background-color:#fff;border:solid 2px #000;font-size:14px;pointer-events:none;display:none;"></div>');
     tooltip.appendTo(map.getPanes().floatPane);
     var bokjeingLayer = null;
-    $('#bokjeingLayer').on('click', function() {
+    $('#bokjeingLayer').on('change', function() {
         this.blur();
-        if (bokjeingLayer == null) {
+        if (bokjeingLayer == null && $(this).prop('checked')) {
         	$.ajax({
                 url: 'docs/data/bokjeong.json',
                 success: function(geojson) {
-                	$('#bokjeingLayer').text("복정동 행정경계 OFF");
-                	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>");
+                	/* $('#bokjeingLayer').text("복정동 행정경계 OFF");
+                	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
                     bokjeingLayer = geojson;
                     map.data.setStyle(function(feature) {
                         var styleOptions = {
@@ -678,8 +699,8 @@
         } else {
         	map.data.removeGeoJson(bokjeingLayer);
         	bokjeingLayer = null;
-        	$('#bokjeingLayer').text("복정동 행정경계 ON")
-        	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>");
+        	/* $('#bokjeingLayer').text("복정동 행정경계 ON")
+        	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
         }
     });
 
@@ -689,19 +710,25 @@
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Semantic-UI +++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    function updateMapSize() {
+    	$('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 22);
+    }
+    
     $( window ).resize(function() {
-        $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 30);
+    	updateMapSize();
     });
 
     $('.ui.accordion').accordion();
     $('#createCardVide').on('click', function() {
     	this.blur();
     	for (var i = 0; i < 10; i++) {
-        	$('.ui.one.cards').append('<div class=\"card\"><div class=\"image\"><img src=\"https://semantic-ui.com/images/wireframe/image.png\"></div><div class=\"extra\">Rating:<div class=\"ui star rating\" data-rating=\"2\"></div></div></div>');
+        	$('.ui.one.cards').append('<div class=\"card\"><div class=\"image\"><img src=\"./img/vanagon-1919554_640.jpg\"></div><div class=\"extra\">Rating:<div class=\"ui star rating\" data-rating=\"2\"></div></div></div>');
     	}
 
     	$('.ui.rating').rating();
     });
+
+    $('#createCardVide').trigger('click');
 
 </script>
 
