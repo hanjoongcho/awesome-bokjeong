@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>어썸 복정</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ZAooYirnD5HsX7SfbG4G&submodules=drawing,visualization"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="docs/css/examples-base.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    <link rel="icon" type="image/png" href="img/icon-60x60.png" />
+    <!-- @category Map -->
+    <style type="text/css">
+    #wrap { display: inline-block; width: calc(100% - 0px); height: calc(100% - 0px); position: absolute; right: 0px;}
+    #wrap .buttons { position:absolute;bottom:0;right:0;z-index:1000;padding:5px; }
+    #wrap .buttons .control-btn { margin:0 5px 5px 0; }
+    #wrap.section { margin: 0px 0px 0px 0px; }
+    #lnb { display: inline-block; margin-top: 0px; height: calc(100% - 0px); border: solid black 0px; position: absolute;}
+    .ui.vertical.accordion.menu { width: 300px; }
+    .ui.one.cards { width: 200px; margin: auto;}
+    .section { padding: 0px; }
+    .ui.toggle.checkbox {
+        vertical-align: middle;
+    }
+    body { overflow:hidden; }
+    #mainContainer { padding: 5px; height: 100%; }
+    #cardContainer { overflow: auto; height: 300px; width: 100%; position: absolute; bottom: 0px; }
+    #map { width: calc(100% - 0px); height: calc(100% - 0px); }
+    .buttonGroup { margin-bottom: 0px; text-align: right; }
+    .accordionItem { margin-top: 5px; }
+    .ui.toggle.checkbox.floatR { float: right; }
+    .btn100px { width: 120px; text-align: center; }
+    .title.bold { font-weight: bold; }
+    .ui.blue.label { width: 100%; margin-top: 10px; }
+    #heaerContainer { height: 60px; line-height: 60px; vertical-align: middle; }
+    #titleContainer { display: inline-block; float: left; }
+    #contents { height: calc(100% - 60px); position: relative;}
+    .ui.modal>.content>.image+.description { width: 100%; }
+</style>
+</head>
+<body>
+
+<div id="mainContainer">
+    <div id="heaerContainer">
+        <div class="buttonGroup">
+            <div id="titleContainer">
+                <img src="./img/ic_launcher.png" /> <span style="font-weight: bold; margin-left: 5px;">복정동 생활지도</span><span style="color: blue; font-weight: bold; margin-left: 5px;">어썸 복정</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="contents">
+        <div id="wrap" class="section">
+            <div id="map"> 
+                <div style="z-index:100; text-align:center; position: absolute; top: 10px; width: 100%;">
+                    <span id=latLon style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+                </div>
+                <div style="z-index:100; text-align:center; position: absolute; bottom: 20px; right: 20px;">
+                    <span id=zoomLevel style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+                </div>
+                <div class="buttons">
+                    <!-- <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
+                    <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" /> -->
+                    <button id="addMarker" class="ui primary button"><i class="map marker alternate icon"></i>테스트마커</button>
+                    <button id="addConvenienceStore" class="ui primary button"><i class="map marker alternate icon"></i>편의점</button>
+                    <!-- <button id="bokjeingLayer" class="ui primary button"><i class="map outline icon"></i>복정동 행정경계 ON</button> -->
+                    <button id="removeMarker" class="ui red button"><i class="eraser icon"></i>마커삭제</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="ui tiny modal">
+  <i class="close icon"></i>
+  <div class="header">
+  </div>
+  <div class="image content">
+    <div class="ui medium image">
+      <img id="infoIcon" src="img/ic_launcher.png">
+    </div>
+    <div class="description">
+      <div class="ui header"></div>
+      <p id="infoAddress"></p>
+    </div>
+  </div>
+</div>
+<script id="code">
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Layer 초기화
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var jeju = new naver.maps.LatLng(33.3590628, 126.534361),
+        busan = new naver.maps.LatLng(35.1797865, 129.0750194),
+        dokdo = new naver.maps.LatLngBounds(
+                    new naver.maps.LatLng(37.2380651, 131.8562652),
+                    new naver.maps.LatLng(37.2444436, 131.8786475)),
+        seoul = new naver.maps.LatLngBounds(
+                    new naver.maps.LatLng(37.42829747263545, 126.76620435615891),
+                    new naver.maps.LatLng(37.7010174173061, 127.18379493229875)),
+        bokjeong = new naver.maps.LatLng(37.46561, 127.127075);
+
+    var bicycleLayer = new naver.maps.BicycleLayer();
+    var cadastralLayer = new naver.maps.CadastralLayer();
+    var labelMapType = new naver.maps.NaverMapTypeOption.getNormalLabelLayer();
+    var labelMapTypeRegistry = new naver.maps.MapTypeRegistry({
+        'label': labelMapType
+    });
+    var labelLayer = new naver.maps.Layer('label', labelMapTypeRegistry);
+    
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Map 초기화
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    updateMapSize();
+    var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(bokjeong), //지도의 초기 중심 좌표
+            zoom: 10, //지도의 초기 줌 레벨
+            minZoom: 1, //지도의 최소 줌 레벨
+            zoomControl: true, //줌 컨트롤의 표시 여부
+            zoomControlOptions: { //줌 컨트롤의 옵션
+                style: naver.maps.ZoomControlStyle.SMALL,
+                position: naver.maps.Position.TOP_RIGHT
+            },
+            mapTypes: new naver.maps.MapTypeRegistry({
+                'normal': naver.maps.NaverMapTypeOption.getVectorMap()
+            })
+        });
+
+    // map.setOptions("mapTypeControl", true); //지도 유형 컨트롤의 표시 여부
+    map.setOptions("disableKineticPan", false);
+    map.setOptions("tileTransition", false);
+    labelLayer.setMap(map);
+    
+    naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
+    	$('#latLon').html(map.getCenter().y + ", " + map.getCenter().x);
+    });
+    
+    naver.maps.Event.addListener(map, 'zoom_changed', function(zoom) {
+        $('#zoomLevel').html(zoom);
+    });
+    
+   
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Manager 초기화
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var drawingManager = new naver.maps.drawing.DrawingManager({
+        map: map,
+        drawingControl: [
+            naver.maps.drawing.DrawingMode.HAND,
+            naver.maps.drawing.DrawingMode.RECTANGLE,
+            naver.maps.drawing.DrawingMode.ELLIPSE,
+            naver.maps.drawing.DrawingMode.POLYLINE,
+            naver.maps.drawing.DrawingMode.ARROWLINE,
+            naver.maps.drawing.DrawingMode.POLYGON,
+            naver.maps.drawing.DrawingMode.MARKER
+        ],
+        drawingControlOptions: {
+            position: naver.maps.Position.TOP_LEFT,
+            style: naver.maps.drawing.DrawingStyle.VERTICAL
+        },
+        controlPointOptions: {
+            anchorPointOptions: {
+                radius: 5,
+                fillColor: '#ff0000',
+                strokeColor: '#0000ff',
+                strokeWeight: 2
+            },
+            midPointOptions: {
+                radius: 4,
+                fillColor: '#ff0000',
+                strokeColor: '#0000ff',
+                strokeWeight: 2,
+                fillOpacity: 0.5
+            }
+        },
+        rectangleOptions: {
+            fillColor: '#ff0000',
+            fillOpacity: 0.5,
+            strokeWeight: 3,
+            strokeColor: '#ff0000'
+        },
+        ellipseOptions: {
+            fillColor: '#ff25dc',
+            fillOpacity: 0.5,
+            strokeWeight: 3,
+            strokeColor: '#ff25dc'
+        },
+        polylineOptions: { // 화살표 아이콘 계열 옵션은 무시됩니다.
+            strokeColor: '#222',
+            strokeWeight: 3
+        },
+        arrowlineOptions: { // startIcon || endIcon 옵션이 없으면 endIcon 을 BLOCK_OPEN 으로 설정합니다.
+            endIconSize: 16,
+            strokeWeight: 3
+        },
+        polygonOptions: {
+            fillColor: '#ffc300',
+            fillOpacity: 0.5,
+            strokeWeight: 3,
+            strokeColor:'#ffc300'
+        },
+        markerOptions: {
+            icon: {
+                content: '<img src="/img/pin_default.png" alt="" ' +
+                    'style="margin:0px;padding:0px;border:0px solid transparent;display:block;max-width:none;max-height:none; ' +
+                    '-webkit-user-select: none; position: absolute; width: 22px; height: 35px; left: 0px; top: 0px;">',
+                size: new naver.maps.Size(22, 35),
+                anchor: new naver.maps.Point(11, 35)
+            }
+        }
+    });
+  
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Naver Map V3 이벤트 처리 
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    $("#to-seoul").on("click", function(e) {
+        e.preventDefault();
+        map.panToBounds(seoul);
+    });
+
+    $("#to-bokjeong").on("click", function(e) {
+        e.preventDefault();
+        map.panTo(bokjeong);
+    });
+
+    $('#bicycleLayer').on('change', function() {
+        if ($('#bicycleLayer').prop('checked')) {
+            bicycleLayer.setMap(map);
+        } else {
+             bicycleLayer.setMap(null);
+        }
+        // console.log($('#bicycleLayerC').prop('checked'))
+    })
+
+    $('#cadastralLayer').on('change', function() {
+        if ($('#cadastralLayer').prop('checked')) {
+            cadastralLayer.setMap(map);
+        } else {
+            cadastralLayer.setMap(null);
+        }
+    })
+
+    $('#labelLayer').on('change', function() {
+        if ($('#labelLayer').prop('checked')) {
+            labelLayer.setMap(map);
+        } else {
+            labelLayer.setMap(null);
+        }
+    })
+
+    //지도 컨트롤
+    $("#mapControl").on("change", function(e) {
+        if (map.getOptions("scaleControl") && !$(this).prop('checked')) {
+            map.setOptions({ //모든 지도 컨트롤 숨기기
+                scaleControl: false,
+                logoControl: false,
+                mapDataControl: false,
+                zoomControl: false,
+                mapTypeControl: false
+            });
+        } else {
+            map.setOptions({ //모든 지도 컨트롤 보이기
+                scaleControl: true,
+                logoControl: true,
+                mapDataControl: true,
+                zoomControl: true,
+                mapTypeControl: true
+            });
+        }
+    });
+
+    // 관성 드래깅 옵션
+    $("#kinetic").on("change", function(e) {
+        if (map.getOptions("disableKineticPan") && $(this).prop('checked')) {
+            map.setOptions("disableKineticPan", false); //관성 드래깅 켜기
+        } else {
+            map.setOptions("disableKineticPan", true); //관성 드래깅 끄기
+        }
+    });
+
+    // 타일 fadeIn 효과
+    $("#tileTransition").on("change", function(e) {
+        if (map.getOptions("tileTransition") && !$(this).prop('checked')) {
+            map.setOptions("tileTransition", false); //타일 fadeIn 효과 끄기
+        } else {
+            map.setOptions("tileTransition", true); //타일 fadeIn 효과 켜기
+        }
+    });
+
+    // 지도 인터랙션 옵션
+    $("#interaction").on("click", function(e) {
+        e.preventDefault();
+        if (map.getOptions("draggable")) {
+            map.setOptions({ //지도 인터랙션 끄기
+                draggable: false,
+                pinchZoom: false,
+                scrollWheel: false,
+                keyboardShortcuts: false,
+                disableDoubleTapZoom: true,
+                disableDoubleClickZoom: true,
+                disableTwoFingerTapZoom: true
+            });
+
+            $(this).removeClass("control-on");
+        } else {
+            map.setOptions({ //지도 인터랙션 켜기
+                draggable: true,
+                pinchZoom: true,
+                scrollWheel: true,
+                keyboardShortcuts: true,
+                disableDoubleTapZoom: false,
+                disableDoubleClickZoom: false,
+                disableTwoFingerTapZoom: false
+            });
+
+            $(this).addClass("control-on");
+        }
+    });
+
+    // min/max 줌 레벨
+    $("#min-max-zoom").on("click", function(e) {
+        e.preventDefault();
+
+        if (map.getOptions("minZoom") === 10) {
+            map.setOptions({
+                minZoom: 1,
+                maxZoom: 14
+            });
+            $(this).val(this.name + ': 1 ~ 14');
+        } else {
+            map.setOptions({
+                minZoom: 10,
+                maxZoom: 12
+            });
+            $(this).val(this.name + ': 10 ~ 12');
+        }
+    });
+    
+    $('#panel input[type=radio]').change(function() {
+    	drawingManager.setOptions('drawingControlOptions', {style: + this.value});
+    });
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ 테스트용 마커
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var MARKER_SPRITE_X_OFFSET = 29,
+    MARKER_SPRITE_Y_OFFSET = 50,
+    MARKER_SPRITE_POSITION = {
+        "A0": [0, 0],
+        "B0": [MARKER_SPRITE_X_OFFSET, 0],
+        "C0": [MARKER_SPRITE_X_OFFSET*2, 0],
+        "D0": [MARKER_SPRITE_X_OFFSET*3, 0],
+        "E0": [MARKER_SPRITE_X_OFFSET*4, 0],
+        "F0": [MARKER_SPRITE_X_OFFSET*5, 0],
+        "G0": [MARKER_SPRITE_X_OFFSET*6, 0],
+        "H0": [MARKER_SPRITE_X_OFFSET*7, 0],
+        "I0": [MARKER_SPRITE_X_OFFSET*8, 0],
+
+        "A1": [0, MARKER_SPRITE_Y_OFFSET],
+        "B1": [MARKER_SPRITE_X_OFFSET, MARKER_SPRITE_Y_OFFSET],
+        "C1": [MARKER_SPRITE_X_OFFSET*2, MARKER_SPRITE_Y_OFFSET],
+        "D1": [MARKER_SPRITE_X_OFFSET*3, MARKER_SPRITE_Y_OFFSET],
+        "E1": [MARKER_SPRITE_X_OFFSET*4, MARKER_SPRITE_Y_OFFSET],
+        "F1": [MARKER_SPRITE_X_OFFSET*5, MARKER_SPRITE_Y_OFFSET],
+        "G1": [MARKER_SPRITE_X_OFFSET*6, MARKER_SPRITE_Y_OFFSET],
+        "H1": [MARKER_SPRITE_X_OFFSET*7, MARKER_SPRITE_Y_OFFSET],
+        "I1": [MARKER_SPRITE_X_OFFSET*8, MARKER_SPRITE_Y_OFFSET],
+
+        "A2": [0, MARKER_SPRITE_Y_OFFSET*2],
+        "B2": [MARKER_SPRITE_X_OFFSET, MARKER_SPRITE_Y_OFFSET*2],
+        "C2": [MARKER_SPRITE_X_OFFSET*2, MARKER_SPRITE_Y_OFFSET*2],
+        "D2": [MARKER_SPRITE_X_OFFSET*3, MARKER_SPRITE_Y_OFFSET*2],
+        "E2": [MARKER_SPRITE_X_OFFSET*4, MARKER_SPRITE_Y_OFFSET*2],
+        "F2": [MARKER_SPRITE_X_OFFSET*5, MARKER_SPRITE_Y_OFFSET*2],
+        "G2": [MARKER_SPRITE_X_OFFSET*6, MARKER_SPRITE_Y_OFFSET*2],
+        "H2": [MARKER_SPRITE_X_OFFSET*7, MARKER_SPRITE_Y_OFFSET*2],
+        "I2": [MARKER_SPRITE_X_OFFSET*8, MARKER_SPRITE_Y_OFFSET*2]
+    };
+    
+    var markers = [],
+    infoWindows = [];
+    
+    $("#addMarker").on("click", function(e) {
+    	var bounds = map.getBounds(),
+        southWest = bounds.getSW(),
+        northEast = bounds.getNE(),
+        lngSpan = northEast.lng() - southWest.lng(),
+        latSpan = northEast.lat() - southWest.lat();
+    	
+        $(this).addClass('disabled');	
+         for (var key in MARKER_SPRITE_POSITION) {
+            var position = new naver.maps.LatLng(
+                southWest.lat() + latSpan * Math.random(),
+                southWest.lng() + lngSpan * Math.random());
+        
+            var marker = new naver.maps.Marker({
+                map: map,
+                position: position,
+                title: key,
+                icon: {
+                    url: 'img/sp_pins_spot_v3.png',
+                    size: new naver.maps.Size(24, 37),
+                    anchor: new naver.maps.Point(12, 37),
+                    origin: new naver.maps.Point(MARKER_SPRITE_POSITION[key][0], MARKER_SPRITE_POSITION[key][1])
+                },
+                zIndex: 100
+            });
+        
+            var infoWindow = new naver.maps.InfoWindow({
+                content: '<div style="width:170px;text-align:center;padding:10px 0px 10px 0px;">The Letter is <b>"'+ key.substr(0, 1) +'"</b>.</div>'
+            });
+        
+            markers.push(marker);
+            infoWindows.push(infoWindow);
+        };
+        
+        // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+        function getClickHandler(seq) {
+            return function(e) {
+                var marker = markers[seq],
+                    infoWindow = infoWindows[seq];
+
+                if (infoWindow.getMap()) {
+                    infoWindow.close();
+                } else {
+                    infoWindow.open(map, marker);
+                }
+            }
+        }
+
+        for (var i=0, ii=markers.length; i<ii; i++) {
+            naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+        }
+    });
+    
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Overlay Convenience Store
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var cuPoiArray = [
+        {'title': 'CU 성남복정점', 'lat': 37.4560254, 'lon': 127.1275402, roadAddress: "경기도 성남시 수정구 복정로32번길 1"},
+        {'title': 'CU 동서울대도서관점', 'lat': 37.4597360, 'lon': 127.1292230, roadAddress: ''},
+        {'title': 'CU 복정으뜸점', 'lat': 37.4540048, 'lon': 127.1298521, roadAddress: ''},
+        {'title': 'CU 복정원룸점', 'lat': 37.4614161, 'lon': 127.1285966, roadAddress: ''},
+        {'title': 'CU 복정성공점', 'lat': 37.4624596, 'lon': 127.1270250, roadAddress: ''},
+        {'title': 'CU 복정빌리지점', 'lat': 37.4640511, 'lon': 127.1288717, roadAddress: ''},
+        {'title': 'CU 경원대점', 'lat': 37.4487913, 'lon': 127.1270425, roadAddress: ''},
+        {'title': 'CU 복정하나점', 'lat': 37.4652563, 'lon': 127.1269675, roadAddress: ''},
+        {'title': 'CU 성남복정타운점', 'lat': 37.4673763, 'lon': 127.1293548, roadAddress: ''}
+    ];
+    var gsContent = "<div style='border: 1px solid black; width=25px; height=25px;'><img src='https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg'/></div>";
+    var gsPoiArray = [
+        {'title': 'GS25 복정타운점', 'lat': 37.4669761, 'lon': 127.1287884, roadAddress: ''},
+        {'title': 'GS25 동서울대점', 'lat': 37.4592078, 'lon': 127.1267924, roadAddress: ''},
+        {'title': 'GS25 복정도서관점', 'lat': 37.4633777, 'lon': 127.1279417, roadAddress: ''},
+        {'title': 'GS25 복정미소점', 'lat': 37.4547189, 'lon': 127.1304631, roadAddress: ''}
+    ];
+    var minX, minY, maxX, maxY;
+    $("#addConvenienceStore").on("click", function(e) {
+    	var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
+    	var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
+    	$.each(cuPoiArray, function(index, item) {
+    		addConvenienceStorePoi(index, item, cuUrl);
+    	})
+    	
+    	$.each(gsPoiArray, function(index, item) {
+            addConvenienceStorePoi(index, item, gsUrl);
+        })
+        
+    	map.panToBounds(new naver.maps.LatLngBounds(
+                new naver.maps.LatLng(minY, minX),
+                new naver.maps.LatLng(maxY, maxX))
+    	);
+    });
+    
+    var addConvenienceStorePoi = function(index, item, imageUrl) {
+    	if (minX == undefined || item.lon < minX) minX = item.lon;
+        if (minY == undefined || item.lat < minY) minY = item.lat;
+        if (maxX == undefined || item.lon > maxX) maxX = item.lon;
+        if (maxY == undefined || item.lat > maxY) maxY = item.lat;
+        
+        var content = "<div style='border: 1px solid black; width=25px; height=25px;'><img src='" + imageUrl +  "'/></div>";
+        var loc = new naver.maps.LatLng(item.lat, item.lon);
+        var marker = new naver.maps.Marker({
+                map: map,
+                position: loc,
+                title: item.title,
+                icon: {
+                    content: content,
+                    size: new naver.maps.Size(25, 25),
+                    anchor: new naver.maps.Point(0, 0)
+                },
+                zIndex: 100
+            });
+        markers.push(marker);
+        naver.maps.Event.addListener(marker, 'click', function() { 
+            $('.ui.tiny.modal').modal('show');
+            $('.ui.tiny.modal .header').html(item.title);
+            $('#infoIcon').attr('src', imageUrl.replace('size=25x25', 'size=100x100'));
+            $("#infoAddress").html(item.roadAddress);
+        });
+    }
+    
+    $('#removeMarker').on('click', function() {
+    	this.blur();
+    	markers.map(x => x.setMap(null));
+	    markers = [];
+    });
+    
+    
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Geo Json
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var tooltip = $('<div style="position:absolute;z-index:1000;padding:5px 10px;background-color:#fff;border:solid 2px #000;font-size:14px;pointer-events:none;display:none;"></div>');
+    tooltip.appendTo(map.getPanes().floatPane);
+    var bokjeingLayer = null;
+    $('#bokjeingLayer').on('change', function() {
+        this.blur();
+        if (bokjeingLayer == null && $(this).prop('checked')) {
+        	$.ajax({
+                url: 'docs/data/bokjeong.json',
+                success: function(geojson) {
+                	/* $('#bokjeingLayer').text("복정동 행정경계 OFF");
+                	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
+                    bokjeingLayer = geojson;
+                    map.data.setStyle(function(feature) {
+                        var styleOptions = {
+                            fillColor: '#ff0000',
+                            fillOpacity: 0.3,
+                            strokeColor: '#ff0000',
+                            strokeWeight: 2,
+                            strokeOpacity: 0.4
+                        };
+
+                        if (feature.getProperty('focus')) {
+                            styleOptions.fillOpacity = 0.6;
+                            styleOptions.fillColor = '#0f0';
+                            styleOptions.strokeColor = '#0f0';
+                            styleOptions.strokeWeight = 4;
+                            styleOptions.strokeOpacity = 1;
+                        }
+
+                        return styleOptions;
+                    });
+                    
+                    map.data.addGeoJson(bokjeingLayer);
+                    
+                    map.data.addListener('mouseover', function(e) {
+                        var feature = e.feature,
+                            regionName = feature.getProperty('area1') + ' ' + feature.getProperty('area2') + ' ' + feature.getProperty('area1');
+
+                        tooltip.css({
+                            display: '',
+                            left: e.offset.x,
+                            top: e.offset.y
+                        }).text(regionName);
+
+                        map.data.overrideStyle(feature, {
+                            fillOpacity: 0.6,
+                            strokeWeight: 4,
+                            strokeOpacity: 1
+                        });
+                    });
+                    
+                    map.data.addListener('mouseout', function(e) {
+                        tooltip.hide().empty();
+                        map.data.revertStyle();
+                    });
+                    
+                    map.data.addListener('click', function(e) {
+                        var feature = e.feature;
+
+                        if (feature.getProperty('focus') !== true) {
+                            feature.setProperty('focus', true);
+                        } else {
+                            feature.setProperty('focus', false);
+                        }
+                    });
+                }
+            });
+        } else {
+        	map.data.removeGeoJson(bokjeingLayer);
+        	bokjeingLayer = null;
+        	/* $('#bokjeingLayer').text("복정동 행정경계 ON")
+        	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
+        }
+    });
+    
+    
+    
+    
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Semantic-UI +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    function updateMapSize() {
+    	// $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 12);
+    }
+    
+    function updateCardViewSize() {
+    	$('#cardContainer').css('height', parseFloat($('#lnb').css('height')) - parseFloat($('.ui.vertical.accordion.menu').css('height')) - 15);
+    }
+    
+    $( window ).resize(function() {
+    	updateMapSize();
+    });
+    
+    // $('.ui.accordion').accordion();
+    $('.ui.accordion')
+    .accordion({
+    	onOpen: function() { updateCardViewSize(); },
+    	onClose: function() { updateCardViewSize(); }
+    });
+    
+    $('#createCardVide').on('click', function() {
+    	this.blur();
+    	for (var i = 0; i < 10; i++) {
+        	$('.ui.one.cards').append('<div class=\"card\"><div class=\"image\"><img src=\"./img/vanagon-1919554_640.jpg\"></div><div class=\"extra\">Rating:<div class=\"ui star rating\" data-rating=\"2\"></div></div></div>');
+    	}
+    	
+    	$('.ui.rating').rating();
+    });
+    
+    $('#createCardVide').trigger('click');
+    updateCardViewSize();
+    
+</script>
+
+</body>
+</html>
