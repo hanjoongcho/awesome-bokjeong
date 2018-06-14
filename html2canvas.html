@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+    <script src="html2canvas/html2canvas.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    <link rel="icon" type="image/png" href="img/icon-60x60.png" />
+    <style type="text/css">
+        #cardView, #canvasView, canvas { display: inline-block; }
+    </style>
+</head>
+<body>
+<div>
+    <button id="addMarker" class="ui primary button">canvas에 복사</button>
+    <button id="addImage" class="ui primary button">image생성 (encoderOptions 1.0)</button>
+    <button id="addImageB" class="ui primary button">image생성 (encoderOptions 0.5)</button>
+</div>
+<div id='cardView' class="ui card" data-html="<div class='header'>User Rating</div><div class='content'><div class='ui star rating'><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i><i class='icon'></i><i class='icon'></i></div></div>">
+  <div class="image">
+    <img src="img/vanagon-1919554_640.jpg">
+  </div>
+  <div class="content">
+    <div class="header">My Neighbor Totoro</div>
+    <div class="description">
+      Two sisters move to the country with their father in order to be closer to their hospitalized mother, and discover the surrounding trees are inhabited by magical spirits.
+    </div>
+  </div>
+  <div class="ui two bottom attached buttons">
+    <div class="ui button">
+      <i class="add icon"></i>
+      Queue
+    </div>
+    <div class="ui primary button">
+      <i class="play icon"></i>
+      Watch
+    </div>
+  </div>
+</div>
+<div id="canvasView"></div>
+<img id="imageView" />
+
+<script type="text/javascript">
+$('#addMarker').on('click', function() {
+	html2canvas($('#cardView')[0]).then(function(canvas) {
+		$('#canvasView').append(canvas);
+	});
+});
+
+$('#addImage').on('click', function() {
+	$('#imageView').attr('src', $('canvas')[0].toDataURL('image/jpeg', 1.0));
+});
+
+$('#addImageB').on('click', function() {
+    $('#imageView').attr('src', $('canvas')[0].toDataURL('image/jpeg', 0.5));
+});
+</script>
+</body>
+</html>
