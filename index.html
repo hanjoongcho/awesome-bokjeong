@@ -39,6 +39,8 @@
     #titleContainer { display: inline-block; float: left; }
     #contents { height: calc(100% - 60px); position: relative;}
     .ui.modal>.content>.image+.description { width: 100%; }
+    #cardContainer .ui.cards { margin: 0px; }
+    #cardContainer .ui.cards>.card>.content>.header:not(.ui) { font-size: 1.0em; }
 </style>
 </head>
 <body>
@@ -175,7 +177,7 @@
                         <button id="to-bokjeong" class="ui primary button">panTo 복정</button>
                     </div>
                     <div class="accordionItem">
-                        <button id="createCardVide" class="ui primary button"><i class="map outline icon"></i>카드뷰 추가</button>
+                        <button id="createCardView" class="ui primary button"><i class="map outline icon"></i>카드뷰 추가</button>
                     </div>
 
 
@@ -183,8 +185,9 @@
                 </div>
               </div>
             </div>
+
             <div id="cardContainer">
-                <div class="ui one cards">
+                <div class="ui cards">
                 </div>
             </div>
         </div>
@@ -573,33 +576,57 @@
     //+++ Overlay Convenience Store
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     var cuPoiArray = [
-        {'title': 'CU 성남복정점', 'lat': 37.4560254, 'lon': 127.1275402, roadAddress: "경기도 성남시 수정구 복정로32번길 1"},
-        {'title': 'CU 동서울대도서관점', 'lat': 37.4597360, 'lon': 127.1292230, roadAddress: ''},
-        {'title': 'CU 복정으뜸점', 'lat': 37.4540048, 'lon': 127.1298521, roadAddress: ''},
-        {'title': 'CU 복정원룸점', 'lat': 37.4614161, 'lon': 127.1285966, roadAddress: ''},
-        {'title': 'CU 복정성공점', 'lat': 37.4624596, 'lon': 127.1270250, roadAddress: ''},
-        {'title': 'CU 복정빌리지점', 'lat': 37.4640511, 'lon': 127.1288717, roadAddress: ''},
-        {'title': 'CU 경원대점', 'lat': 37.4487913, 'lon': 127.1270425, roadAddress: ''},
-        {'title': 'CU 복정하나점', 'lat': 37.4652563, 'lon': 127.1269675, roadAddress: ''},
-        {'title': 'CU 성남복정타운점', 'lat': 37.4673763, 'lon': 127.1293548, roadAddress: ''}
+    	{name: 'CU 동서울대도서관점', address: '경기도 성남시 수정구 복정동 423 동서울대학교 학산도서관', x: 127.1292230, y: 37.4597360},
+    	{name: 'CU 복정원룸점', address: '경기도 성남시 수정구 복정동 669', x: 127.1285966, y: 37.4614161},
+    	{name: 'CU 복정빌리지점', address: '경기도 성남시 수정구 복정동 652-5', x: 127.1288717, y: 37.4640511},
+    	{name: 'CU 복정성공점', address: '경기도 성남시 수정구 복정동 660-8', x: 127.1270250, y: 37.4624596},
+    	{name: 'CU 성남복정점', address: '경기도 성남시 수정구 복정동 695-1', x: 127.1275402, y: 37.4560254},
+    	{name: 'CU 복정하나점', address: '경기도 성남시 수정구 복정동 645', x: 127.1269675, y: 37.4652563},
+    	{name: 'CU 위례우남역점', address: '경기도 성남시 수정구 창곡동 550-5', x: 127.1381279, y: 37.4654968},
+    	{name: 'CU 복정으뜸점', address: '경기도 성남시 수정구 복정동 704-4', x: 127.1298521, y: 37.4540048},
+    	{name: 'CU 성남복정타운점', address: '경기도 성남시 수정구 복정동 631-15', x: 127.1293548, y: 37.4673763},
+    	{name: 'CU 위례프라자점', address: '경기도 성남시 수정구 창곡동 387-2', x: 127.1378650, y: 37.4664320}
     ];
-    var gsContent = "<div style='border: 1px solid black; width=25px; height=25px;'><img src='https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg'/></div>";
     var gsPoiArray = [
-        {'title': 'GS25 복정타운점', 'lat': 37.4669761, 'lon': 127.1287884, roadAddress: ''},
-        {'title': 'GS25 동서울대점', 'lat': 37.4592078, 'lon': 127.1267924, roadAddress: ''},
-        {'title': 'GS25 복정도서관점', 'lat': 37.4633777, 'lon': 127.1279417, roadAddress: ''},
-        {'title': 'GS25 복정미소점', 'lat': 37.4547189, 'lon': 127.1304631, roadAddress: ''}
+    	{name: 'GS25 복정미소점', address: '경기도 성남시 수정구 복정동 704-11', x: 127.1304631, y: 37.4547189},
+    	{name: 'GS25 동서울대점', address: '경기도 성남시 수정구 복정동 686', x: 127.1267924, y: 37.4592078},
+    	{name: 'GS25 복정제일점', address: '경기도 성남시 수정구 복정동 715 1층', x: 127.1275540, y: 37.4539580},
+    	{name: 'GS25 복정도서관점', address: '경기도 성남시 수정구 복정동 659-15 1층', x: 127.1279417, y: 37.4633777},
+    	{name: 'GS25 위례창곡점', address: '경기도 성남시 수정구 창곡동 554-5', x: 127.1383358, y: 37.4661483},
+    	{name: 'GS25 위례힐스테이트점', address: '경기도 성남시 수정구 창곡동 415-20', x: 127.1440949, y: 37.4646474},
+    	{name: 'GS25 위례타운점', address: '경기도 성남시 수정구 창곡동 537-3', x: 127.1376970, y: 37.4674593},
+    	{name: 'GS25 위례성산점', address: '경기도 성남시 수정구 창곡동 569', x: 127.1399583, y: 37.4670498},
+    	{name: 'GS25 복정타운점', address: '경기도 성남시 수정구 복정동 639-9 103호', x: 127.1287884, y: 37.4669761},
+    	{name: 'GS25 성남금빛점', address: '경기도 성남시 수정구 태평2동 3307-69', x: 127.1379821, y: 37.4471142}
+    ];
+    var sevenPoiArray = [
+    	{name: '세븐일레븐 성남복정중앙점', address: '경기도 성남시 수정구 복정동 686-9', x: 127.1269172, y: 37.4580957},
+    	{name: '세븐일레븐 가천대가천관점', address: '경기도 성남시 수정구 복정동 산53 차런대가천관 2층', x: 127.1307015, y: 37.4523915},
+    	{name: '세븐일레븐 경원대3호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지상1층 B구역 103호', x: 127.1293340, y: 37.4520673},
+    	{name: '세븐일레븐 경원대1호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지하3층 B303-2호', x: 127.1293340, y: 37.4520673},
+    	{name: '세븐일레븐 경원대2호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지상1층 A구역 103호', x: 127.1293340, y: 37.4520673},
+    	{name: '세븐일레븐 성남위례2호점', address: '경기도 성남시 수정구 창곡동 559 길', x: 127.1363734, y: 37.4657316},
+    	{name: '세븐일레븐 위례아롬타워점', address: '경기도 성남시 수정구 창곡동 561-2', x: 127.1406434, y: 37.4648934},
+    	{name: '세븐일레븐 성남위례1호점', address: '경기도 성남시 수정구 창곡동 555-1 1층', x: 127.1392187, y: 37.4668693},
+    	{name: '세븐일레븐가천대1호점', address: '경기도 성남시 수정구 복정동 623', x: 127.1272269, y: 37.4498198},
+    	{name: '세븐일레븐가천대3호점', address: '경기도 성남시 수정구 복정동 620-2', x: 127.1271829, y: 37.4495364}
     ];
     var minX, minY, maxX, maxY;
     $("#addConvenienceStore").on("click", function(e) {
     	var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
     	var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
+    	var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
+
     	$.each(cuPoiArray, function(index, item) {
     		addConvenienceStorePoi(index, item, cuUrl);
     	})
 
     	$.each(gsPoiArray, function(index, item) {
             addConvenienceStorePoi(index, item, gsUrl);
+        })
+
+        $.each(sevenPoiArray, function(index, item) {
+            addConvenienceStorePoi(index, item, sevenUrl);
         })
 
     	map.panToBounds(new naver.maps.LatLngBounds(
@@ -609,17 +636,17 @@
     });
 
     var addConvenienceStorePoi = function(index, item, imageUrl) {
-    	if (minX == undefined || item.lon < minX) minX = item.lon;
-        if (minY == undefined || item.lat < minY) minY = item.lat;
-        if (maxX == undefined || item.lon > maxX) maxX = item.lon;
-        if (maxY == undefined || item.lat > maxY) maxY = item.lat;
+    	if (minX == undefined || item.x < minX) minX = item.x;
+        if (minY == undefined || item.y < minY) minY = item.y;
+        if (maxX == undefined || item.x > maxX) maxX = item.x;
+        if (maxY == undefined || item.y > maxY) maxY = item.y;
 
         var content = "<div style='border: 1px solid black; width=25px; height=25px;'><img src='" + imageUrl +  "'/></div>";
-        var loc = new naver.maps.LatLng(item.lat, item.lon);
+        var loc = new naver.maps.LatLng(item.y, item.x);
         var marker = new naver.maps.Marker({
                 map: map,
                 position: loc,
-                title: item.title,
+                title: item.name,
                 icon: {
                     content: content,
                     size: new naver.maps.Size(25, 25),
@@ -628,11 +655,12 @@
                 zIndex: 100
             });
         markers.push(marker);
+        appendCard(item.name, item.address, imageUrl);
         naver.maps.Event.addListener(marker, 'click', function() {
             $('.ui.tiny.modal').modal('show');
-            $('.ui.tiny.modal .header').html(item.title);
+            $('.ui.tiny.modal .header').html(item.name);
             $('#infoIcon').attr('src', imageUrl.replace('size=25x25', 'size=100x100'));
-            $("#infoAddress").html(item.roadAddress);
+            $("#infoAddress").html(item.address);
         });
     }
 
@@ -725,11 +753,11 @@
     //+++ ETC
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $('#downloadScreenshot').on('click', function() {
-    	html2canvas($('#map')[0], {useCORS: true}).then(function(canvas) {
+    	html2canvas($('#map')[0], {useCORS: true/* , allowTaint: true */}).then(function(canvas) {
     		$('canvas').remove();
             $(document.body).append(canvas);
-
-            var dataURL = $('canvas')[0].toDataURL('image/jpeg', 1.0);
+            //canvas.setAttribute('crossOrigin', 'anonymous');
+            var dataURL =canvas.toDataURL('image/jpeg', 1.0);
             dataURL = dataURL.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
             dataURL = dataURL.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=screenshot.jpg');
             var aTag = document.createElement('a');
@@ -761,17 +789,52 @@
     	onClose: function() { updateCardViewSize(); }
     });
 
-    $('#createCardVide').on('click', function() {
+    $('#createCardView').on('click', function() {
     	this.blur();
+    	var infoCard = "<div class='card'>";
+        infoCard += "<div class='content'>"
+        infoCard += "<img class='right floated mini ui image' src='img/vanagon-1919554_640.jpg'>";
+        infoCard += "<div class='header'>";
+        infoCard += "Elliot Fu";
+        infoCard += "</div>";
+        infoCard += "<div class='meta'>";
+        infoCard += "Friends of Veronika";
+        infoCard += "</div>";
+        infoCard += "<div class='description'>";
+        infoCard += "Elliot requested permission to view your contact details";
+        infoCard += "</div>";
+        infoCard += "</div>";
+        infoCard += "</div>";
     	for (var i = 0; i < 10; i++) {
-        	$('.ui.one.cards').append('<div class=\"card\"><div class=\"image\"><img src=\"./img/vanagon-1919554_640.jpg\"></div><div class=\"extra\">Rating:<div class=\"ui star rating\" data-rating=\"2\"></div></div></div>');
+        	$('.ui.cards').append(infoCard);
     	}
 
     	$('.ui.rating').rating();
     });
 
-    $('#createCardVide').trigger('click');
+    function appendCard(name, address, url) {
+    	var infoCard = "<div class='card'>";
+        infoCard += "<div class='content'>"
+        infoCard += "<img class='right floated mini ui image' src='" + url + "'>";
+        infoCard += "<div class='header'>";
+        infoCard += name;
+        infoCard += "</div>";
+        infoCard += "<div class='meta'>";
+        infoCard += "Friends of Veronika";
+        infoCard += "</div>";
+        infoCard += "<div class='description'>";
+        infoCard += address;
+        infoCard += "</div>";
+        infoCard += "</div>";
+        infoCard += "</div>";
+    	$('.ui.cards').append(infoCard);
+    }
+
+    //$('#createCardView').trigger('click');
+    $('#addConvenienceStore').trigger('click');
     updateCardViewSize();
+
+
 
 </script>
 
