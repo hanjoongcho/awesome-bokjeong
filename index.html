@@ -8,6 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ZAooYirnD5HsX7SfbG4G&submodules=drawing,visualization"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+    <script src="html2canvas/html2canvas.js"></script>
     <link rel="stylesheet" type="text/css" href="docs/css/examples-base.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
     <link rel="icon" type="image/png" href="img/icon-60x60.png" />
@@ -52,6 +53,7 @@
             <button id="addConvenienceStore" class="ui primary button"><i class="map marker alternate icon"></i>편의점</button>
             <!-- <button id="bokjeingLayer" class="ui primary button"><i class="map outline icon"></i>복정동 행정경계 ON</button> -->
             <button id="removeMarker" class="ui red button"><i class="eraser icon"></i>마커삭제</button>
+            <button id="downloadScreenshot" class="ui primary button"><i class="download icon"></i>지도 스크린숏</button>
         </div>
     </div>
 
@@ -719,11 +721,26 @@
         }
     });
 
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ ETC
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    $('#downloadScreenshot').on('click', function() {
+    	html2canvas($('#map')[0], {useCORS: true}).then(function(canvas) {
+    		$('canvas').remove();
+            $(document.body).append(canvas);
 
-
+            var dataURL = $('canvas')[0].toDataURL('image/jpeg', 1.0);
+            dataURL = dataURL.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+            dataURL = dataURL.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=screenshot.jpg');
+            var aTag = document.createElement('a');
+            aTag.download = 'screenshot.jpg';
+            aTag.href = dataURL;
+            aTag.click();
+        });
+    });
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //+++ Semantic-UI +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Semantic-UI
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     function updateMapSize() {
     	// $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 12);
