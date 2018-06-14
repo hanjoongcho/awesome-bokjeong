@@ -41,6 +41,7 @@
     .ui.modal>.content>.image+.description { width: 100%; }
     #cardContainer .ui.cards { margin: 0px; }
     #cardContainer .ui.cards>.card>.content>.header:not(.ui) { font-size: 1.0em; }
+    .ui.icon.button { padding: 3px 3px 3px 3px; margin-left: 5px; }
 </style>
 </head>
 <body>
@@ -655,7 +656,7 @@
                 zIndex: 100
             });
         markers.push(marker);
-        appendCard(item.name, item.address, imageUrl);
+        appendCard(item.name, item.address, imageUrl, item.x, item.y);
         naver.maps.Event.addListener(marker, 'click', function() {
             $('.ui.tiny.modal').modal('show');
             $('.ui.tiny.modal .header').html(item.name);
@@ -812,12 +813,13 @@
     	$('.ui.rating').rating();
     });
 
-    function appendCard(name, address, url) {
+    function appendCard(name, address, url, lon, lat) {
     	var infoCard = "<div class='card'>";
         infoCard += "<div class='content'>"
         infoCard += "<img class='right floated mini ui image' src='" + url + "'>";
         infoCard += "<div class='header'>";
         infoCard += name;
+        infoCard += "<button onclick='cardIconClick(this);' lat=" + lat + " lon=" + lon + " class='ui icon button latlon'><i class='map marker alternate icon'></i></button>";
         infoCard += "</div>";
         infoCard += "<div class='meta'>";
         infoCard += "Friends of Veronika";
@@ -828,6 +830,11 @@
         infoCard += "</div>";
         infoCard += "</div>";
     	$('.ui.cards').append(infoCard);
+    }
+
+    function cardIconClick(target) {
+    	console.log($(target).attr('lat'), $(target).attr('lon'));
+    	map.updateBy(naver.maps.LatLng(parseFloat($(target).attr('lat')), parseFloat($(target).attr('lon'))), 13)
     }
 
     //$('#createCardView').trigger('click');
