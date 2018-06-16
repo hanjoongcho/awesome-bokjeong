@@ -5,67 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>어썸 복정</title>
+    <link rel="icon" type="image/png" href=".common/img/icon-60x60.png" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ZAooYirnD5HsX7SfbG4G&submodules=drawing,visualization"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
     <script src="./js/html2canvas/html2canvas.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="css/nmapv3/examples-base.css" />
-    <link rel="icon" type="image/png" href=".common/img/icon-60x60.png" />
-    <!-- @category Map -->
-    <style type="text/css">
-    #wrap { display: inline-block; width: calc(100% - 303px); height: calc(100% - 0px); position: absolute; right: 0px;}
-    #wrap .buttons { position:absolute;top:0;left:0;z-index:1000;padding:5px; }
-    #wrap .buttons .control-btn { margin:0 5px 5px 0; }
-    #wrap.section { margin: 0px 0px 0px 0px; }
-    #lnb { display: inline-block; margin-top: 0px; height: calc(100% - 0px); border: solid black 0px; position: absolute;}
-    .ui.vertical.accordion.menu { width: 300px; }
-    .ui.one.cards { width: 200px; margin: auto;}
-    .section { padding: 0px; }
-    .ui.toggle.checkbox {
-        vertical-align: middle;
-    }
-    body { overflow:hidden; }
-    #mainContainer { padding: 5px; height: calc(100% - 70px); }
-    #cardContainer { overflow: auto; height: 300px; width: 100%; position: absolute; bottom: 0px; }
-    #map { width: calc(100% - 0px); height: calc(100% - 0px); }
-    .buttonGroup { margin-bottom: 0px; text-align: right; }
-    .accordionItem { margin-top: 5px; }
-    .ui.toggle.checkbox.floatR { float: right; }
-    .btn100px { width: 120px; text-align: center; }
-    .title.bold { font-weight: bold; }
-    .ui.blue.label { width: 100%; margin-top: 10px; padding: 12px 15px 12px 15px; }
-    #heaerContainer { height: 70px; line-height: 60px; vertical-align: middle; padding: 5px 15px 5px 15px; background-color: #558fed;}
-    #titleContainer { display: inline-block; float: left; }
-    #contents { height: 100%; position: relative;}
-    .ui.modal>.content>.image+.description { width: 100%; }
-    #cardContainer .ui.cards { margin: 0px; }
-    #cardContainer .ui.cards>.card>.content>.header:not(.ui) { font-size: 1.0em; }
-    .ui.icon.button { padding: 3px 3px 3px 3px; margin-left: 5px; }
-    .ui.medium.image { text-align: center; }
-    .ui.medium.image img { display: inline-block; }
-    .mapImageIcon { background: white; border: solid black 1px; padding: 5px; border-radius: 50%; }
-    .mapImageIcon.widePadding { background: #558fed; padding: 7px; border: solid black 1px; }
-    .circleBase {
-        border-radius: 50%;
-        behavior: url(PIE.htc); /* remove if you don't care about IE8 */
-    }
-    @font-face {
-       font-family: nanumgothic;
-       src: url(fonts/나눔고딕.ttf);
-    }
-    
-    * {
-       font-family: nanumgothic;
-    }
-</style>
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
 </head>
 <body>
 
 <div id="heaerContainer">
     <div class="buttonGroup">
         <div id="titleContainer">
-            <img src="./common/img/ic_launcher.png" /> <span style="margin-left: 5px; color: white; ">복정동 생활지도</span><span style="color: white; margin-left: 5px; ">어썸 복정</span>
+            <img src="./img/ic_launcher.png" /> <span style="margin-left: 5px; color: white; ">복정동 생활지도</span><span style="color: white; margin-left: 5px; ">어썸 복정</span>
         </div>
         <button id="addConvenienceStore" class="ui inverted button"><i class="map marker alternate icon"></i>편의점</button>
         <button id="addSupermarket" class="ui inverted button"><i class="map marker alternate icon"></i>마트</button>
@@ -252,10 +206,10 @@
     var markers = [];
     var infoWindows = [];
     var symbolMap = {
-    		cart: './common/img/cart-36-24.png',
-    		empty: './common/img/store-64.png',
-    		vanagon: './common/img/vanagon-1919554_640.jpg'
-	};
+            cart: './img/cart-36-24.png',
+            empty: './img/store-64.png',
+            vanagon: './img/vanagon-1919554_640.jpg'
+    };
     
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Layer 초기화
@@ -302,7 +256,7 @@
     labelLayer.setMap(map);
     
     naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
-    	$('#latLon').html(map.getCenter().y + ", " + map.getCenter().x);
+        $('#latLon').html(map.getCenter().y + ", " + map.getCenter().x);
     });
     
     naver.maps.Event.addListener(map, 'zoom_changed', function(zoom) {
@@ -507,7 +461,7 @@
     });
     
     $('#panel input[type=radio]').change(function() {
-    	drawingManager.setOptions('drawingControlOptions', {style: + this.value});
+        drawingManager.setOptions('drawingControlOptions', {style: + this.value});
     });
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -548,13 +502,13 @@
     };
     
     $("#addMarker").on("click", function(e) {
-    	var bounds = map.getBounds(),
+        var bounds = map.getBounds(),
         southWest = bounds.getSW(),
         northEast = bounds.getNE(),
         lngSpan = northEast.lng() - southWest.lng(),
         latSpan = northEast.lat() - southWest.lat();
-    	
-        $(this).addClass('disabled');	
+        
+        $(this).addClass('disabled');   
          for (var key in MARKER_SPRITE_POSITION) {
             var position = new naver.maps.LatLng(
                 southWest.lat() + latSpan * Math.random(),
@@ -604,53 +558,53 @@
     //+++ Overlay Convenience Store
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     var cuPoiArray = [
-    	{name: 'CU 동서울대도서관점', address: '경기도 성남시 수정구 복정동 423 동서울대학교 학산도서관', x: 127.1292230, y: 37.4597360},
-    	{name: 'CU 복정원룸점', address: '경기도 성남시 수정구 복정동 669', x: 127.1285966, y: 37.4614161},
-    	{name: 'CU 복정빌리지점', address: '경기도 성남시 수정구 복정동 652-5', x: 127.1288717, y: 37.4640511},
-    	{name: 'CU 복정성공점', address: '경기도 성남시 수정구 복정동 660-8', x: 127.1270250, y: 37.4624596},
-    	{name: 'CU 성남복정점', address: '경기도 성남시 수정구 복정동 695-1', x: 127.1275402, y: 37.4560254},
-    	{name: 'CU 복정하나점', address: '경기도 성남시 수정구 복정동 645', x: 127.1269675, y: 37.4652563},
-    	{name: 'CU 위례우남역점', address: '경기도 성남시 수정구 창곡동 550-5', x: 127.1381279, y: 37.4654968},
-    	{name: 'CU 복정으뜸점', address: '경기도 성남시 수정구 복정동 704-4', x: 127.1298521, y: 37.4540048},
-    	{name: 'CU 성남복정타운점', address: '경기도 성남시 수정구 복정동 631-15', x: 127.1293548, y: 37.4673763},
-    	{name: 'CU 위례프라자점', address: '경기도 성남시 수정구 창곡동 387-2', x: 127.1378650, y: 37.4664320}
+        {name: 'CU 동서울대도서관점', address: '경기도 성남시 수정구 복정동 423 동서울대학교 학산도서관', x: 127.1292230, y: 37.4597360},
+        {name: 'CU 복정원룸점', address: '경기도 성남시 수정구 복정동 669', x: 127.1285966, y: 37.4614161},
+        {name: 'CU 복정빌리지점', address: '경기도 성남시 수정구 복정동 652-5', x: 127.1288717, y: 37.4640511},
+        {name: 'CU 복정성공점', address: '경기도 성남시 수정구 복정동 660-8', x: 127.1270250, y: 37.4624596},
+        {name: 'CU 성남복정점', address: '경기도 성남시 수정구 복정동 695-1', x: 127.1275402, y: 37.4560254},
+        {name: 'CU 복정하나점', address: '경기도 성남시 수정구 복정동 645', x: 127.1269675, y: 37.4652563},
+        {name: 'CU 위례우남역점', address: '경기도 성남시 수정구 창곡동 550-5', x: 127.1381279, y: 37.4654968},
+        {name: 'CU 복정으뜸점', address: '경기도 성남시 수정구 복정동 704-4', x: 127.1298521, y: 37.4540048},
+        {name: 'CU 성남복정타운점', address: '경기도 성남시 수정구 복정동 631-15', x: 127.1293548, y: 37.4673763},
+        {name: 'CU 위례프라자점', address: '경기도 성남시 수정구 창곡동 387-2', x: 127.1378650, y: 37.4664320}
     ];
     var gsPoiArray = [
-    	{name: 'GS25 복정미소점', address: '경기도 성남시 수정구 복정동 704-11', x: 127.1304631, y: 37.4547189},
-    	{name: 'GS25 동서울대점', address: '경기도 성남시 수정구 복정동 686', x: 127.1267924, y: 37.4592078},
-    	{name: 'GS25 복정제일점', address: '경기도 성남시 수정구 복정동 715 1층', x: 127.1275540, y: 37.4539580},
-    	{name: 'GS25 복정도서관점', address: '경기도 성남시 수정구 복정동 659-15 1층', x: 127.1279417, y: 37.4633777},
-    	{name: 'GS25 위례창곡점', address: '경기도 성남시 수정구 창곡동 554-5', x: 127.1383358, y: 37.4661483},
-    	{name: 'GS25 위례힐스테이트점', address: '경기도 성남시 수정구 창곡동 415-20', x: 127.1440949, y: 37.4646474},
-    	{name: 'GS25 위례타운점', address: '경기도 성남시 수정구 창곡동 537-3', x: 127.1376970, y: 37.4674593},
-    	{name: 'GS25 위례성산점', address: '경기도 성남시 수정구 창곡동 569', x: 127.1399583, y: 37.4670498},
-    	{name: 'GS25 복정타운점', address: '경기도 성남시 수정구 복정동 639-9 103호', x: 127.1287884, y: 37.4669761},
-    	{name: 'GS25 성남금빛점', address: '경기도 성남시 수정구 태평2동 3307-69', x: 127.1379821, y: 37.4471142}
+        {name: 'GS25 복정미소점', address: '경기도 성남시 수정구 복정동 704-11', x: 127.1304631, y: 37.4547189},
+        {name: 'GS25 동서울대점', address: '경기도 성남시 수정구 복정동 686', x: 127.1267924, y: 37.4592078},
+        {name: 'GS25 복정제일점', address: '경기도 성남시 수정구 복정동 715 1층', x: 127.1275540, y: 37.4539580},
+        {name: 'GS25 복정도서관점', address: '경기도 성남시 수정구 복정동 659-15 1층', x: 127.1279417, y: 37.4633777},
+        {name: 'GS25 위례창곡점', address: '경기도 성남시 수정구 창곡동 554-5', x: 127.1383358, y: 37.4661483},
+        {name: 'GS25 위례힐스테이트점', address: '경기도 성남시 수정구 창곡동 415-20', x: 127.1440949, y: 37.4646474},
+        {name: 'GS25 위례타운점', address: '경기도 성남시 수정구 창곡동 537-3', x: 127.1376970, y: 37.4674593},
+        {name: 'GS25 위례성산점', address: '경기도 성남시 수정구 창곡동 569', x: 127.1399583, y: 37.4670498},
+        {name: 'GS25 복정타운점', address: '경기도 성남시 수정구 복정동 639-9 103호', x: 127.1287884, y: 37.4669761},
+        {name: 'GS25 성남금빛점', address: '경기도 성남시 수정구 태평2동 3307-69', x: 127.1379821, y: 37.4471142}
     ];
     var sevenPoiArray = [
-    	{name: '세븐일레븐 성남복정중앙점', address: '경기도 성남시 수정구 복정동 686-9', x: 127.1269172, y: 37.4580957},
-    	{name: '세븐일레븐 가천대가천관점', address: '경기도 성남시 수정구 복정동 산53 차런대가천관 2층', x: 127.1307015, y: 37.4523915},
-    	{name: '세븐일레븐 경원대3호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지상1층 B구역 103호', x: 127.1293340, y: 37.4520673},
-    	{name: '세븐일레븐 경원대1호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지하3층 B303-2호', x: 127.1293340, y: 37.4520673},
-    	{name: '세븐일레븐 경원대2호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지상1층 A구역 103호', x: 127.1293340, y: 37.4520673},
-    	{name: '세븐일레븐 성남위례2호점', address: '경기도 성남시 수정구 창곡동 559 길', x: 127.1363734, y: 37.4657316},
-    	{name: '세븐일레븐 위례아롬타워점', address: '경기도 성남시 수정구 창곡동 561-2', x: 127.1406434, y: 37.4648934},
-    	{name: '세븐일레븐 성남위례1호점', address: '경기도 성남시 수정구 창곡동 555-1 1층', x: 127.1392187, y: 37.4668693},
-    	{name: '세븐일레븐가천대1호점', address: '경기도 성남시 수정구 복정동 623', x: 127.1272269, y: 37.4498198},
-    	{name: '세븐일레븐가천대3호점', address: '경기도 성남시 수정구 복정동 620-2', x: 127.1271829, y: 37.4495364}
+        {name: '세븐일레븐 성남복정중앙점', address: '경기도 성남시 수정구 복정동 686-9', x: 127.1269172, y: 37.4580957},
+        {name: '세븐일레븐 가천대가천관점', address: '경기도 성남시 수정구 복정동 산53 차런대가천관 2층', x: 127.1307015, y: 37.4523915},
+        {name: '세븐일레븐 경원대3호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지상1층 B구역 103호', x: 127.1293340, y: 37.4520673},
+        {name: '세븐일레븐 경원대1호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지하3층 B303-2호', x: 127.1293340, y: 37.4520673},
+        {name: '세븐일레븐 경원대2호점', address: '경기도 성남시 수정구 복정동 620-2 경원대학교 비젼타워 지상1층 A구역 103호', x: 127.1293340, y: 37.4520673},
+        {name: '세븐일레븐 성남위례2호점', address: '경기도 성남시 수정구 창곡동 559 길', x: 127.1363734, y: 37.4657316},
+        {name: '세븐일레븐 위례아롬타워점', address: '경기도 성남시 수정구 창곡동 561-2', x: 127.1406434, y: 37.4648934},
+        {name: '세븐일레븐 성남위례1호점', address: '경기도 성남시 수정구 창곡동 555-1 1층', x: 127.1392187, y: 37.4668693},
+        {name: '세븐일레븐가천대1호점', address: '경기도 성남시 수정구 복정동 623', x: 127.1272269, y: 37.4498198},
+        {name: '세븐일레븐가천대3호점', address: '경기도 성남시 수정구 복정동 620-2', x: 127.1271829, y: 37.4495364}
     ];
     var minX, minY, maxX, maxY;
     $("#addConvenienceStore").on("click", function(e) {
-    	removeMarkerAll();
-    	var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
-    	var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
-    	var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
-    	
-    	$.each(cuPoiArray, function(index, item) {
-    		addConvenienceStorePoi(index, item, cuUrl);
-    	})
-    	
-    	$.each(gsPoiArray, function(index, item) {
+        removeMarkerAll();
+        var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
+        var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
+        var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
+        
+        $.each(cuPoiArray, function(index, item) {
+            addConvenienceStorePoi(index, item, cuUrl);
+        })
+        
+        $.each(gsPoiArray, function(index, item) {
             addConvenienceStorePoi(index, item, gsUrl);
         })
         
@@ -658,14 +612,14 @@
             addConvenienceStorePoi(index, item, sevenUrl);
         })
         
-    	map.panToBounds(new naver.maps.LatLngBounds(
+        map.panToBounds(new naver.maps.LatLngBounds(
                 new naver.maps.LatLng(minY, minX),
                 new naver.maps.LatLng(maxY, maxX))
-    	);
+        );
     });
     
     var addConvenienceStorePoi = function(index, item, imageUrl) {
-    	if (minX == undefined || item.x < minX) minX = item.x;
+        if (minX == undefined || item.x < minX) minX = item.x;
         if (minY == undefined || item.y < minY) minY = item.y;
         if (maxX == undefined || item.x > maxX) maxX = item.x;
         if (maxY == undefined || item.y > maxY) maxY = item.y;
@@ -694,8 +648,8 @@
     }
     
     $('#removeMarker').on('click', function() {
-    	this.blur();
-    	removeMarkerAll();
+        this.blur();
+        removeMarkerAll();
     });
     
     
@@ -703,21 +657,21 @@
     //+++ Overlay Supermarket
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     var supermarketPoiArray = [
-    	{name: '하모니마트 동서울대점', address: '경기도 성남시 수정구 복정동 685-3', x: 127.1264866, y: 37.4589561},
-    	{name: '홈플러스익스프레스성남복정점', address: '경기도 성남시 수정구 복정동 689-9', x: 127.1271424, y: 37.4565166},
-    	{name: '롯데마켓999동서울대점', address: '경기도 성남시 수정구 복정동 674-7', x: 127.1266625, y: 37.4615263},
-    	{name: '나들가게다우마트', address: '경기도 성남시 수정구 복정동 706-5', x: 127.1291785, y: 37.4552886},
-    	{name: '롯데마켓999 가천대점', address: '경기도 성남시 수정구 복정동 711-1 벽산빌딩', x: 127.1272459, y: 37.4545164},
-    	{name: '동산마트', address: '경기도 성남시 수정구 복정동 647-9', x: 127.1271899, y: 37.4636840},
-    	{name: '복정할인마트', address: '경기도 성남시 수정구 복정동 714', x: 127.1273139, y: 37.4539261},
-    	{name: '월드마트', address: '경기도 성남시 수정구 복정동 639-5 1층 2호', x: 127.1280471, y: 37.4672643},
-    	{name: '올스타마트', address: '경기도 성남시 수정구 창곡동 559 1층', x: 127.1363480, y: 37.4656632}
+        {name: '하모니마트 동서울대점', address: '경기도 성남시 수정구 복정동 685-3', x: 127.1264866, y: 37.4589561},
+        {name: '홈플러스익스프레스성남복정점', address: '경기도 성남시 수정구 복정동 689-9', x: 127.1271424, y: 37.4565166},
+        {name: '롯데마켓999동서울대점', address: '경기도 성남시 수정구 복정동 674-7', x: 127.1266625, y: 37.4615263},
+        {name: '나들가게다우마트', address: '경기도 성남시 수정구 복정동 706-5', x: 127.1291785, y: 37.4552886},
+        {name: '롯데마켓999 가천대점', address: '경기도 성남시 수정구 복정동 711-1 벽산빌딩', x: 127.1272459, y: 37.4545164},
+        {name: '동산마트', address: '경기도 성남시 수정구 복정동 647-9', x: 127.1271899, y: 37.4636840},
+        {name: '복정할인마트', address: '경기도 성남시 수정구 복정동 714', x: 127.1273139, y: 37.4539261},
+        {name: '월드마트', address: '경기도 성남시 수정구 복정동 639-5 1층 2호', x: 127.1280471, y: 37.4672643},
+        {name: '올스타마트', address: '경기도 성남시 수정구 창곡동 559 1층', x: 127.1363480, y: 37.4656632}
     ];
     
     $("#addSupermarket").on("click", function(e) {
-    	removeMarkerAll();
+        removeMarkerAll();
         $.each(supermarketPoiArray, function(index, item) {
-        	var marker = addImageMarker(item.name, symbolMap.cart, item.y, item.x);
+            var marker = addImageMarker(item.name, symbolMap.cart, item.y, item.x);
             markers.push(marker);
             naver.maps.Event.addListener(marker, 'click', function() { 
                 $('.ui.tiny.modal').modal('show');
@@ -738,11 +692,11 @@
     $('#bokjeingLayer').on('change', function() {
         this.blur();
         if (bokjeingLayer == null && $(this).prop('checked')) {
-        	$.ajax({
+            $.ajax({
                 url: './data/bokjeong.json',
                 success: function(geojson) {
-                	/* $('#bokjeingLayer').text("복정동 행정경계 OFF");
-                	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
+                    /* $('#bokjeingLayer').text("복정동 행정경계 OFF");
+                    $('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
                     bokjeingLayer = geojson;
                     map.data.setStyle(function(feature) {
                         var styleOptions = {
@@ -800,10 +754,10 @@
                 }
             });
         } else {
-        	map.data.removeGeoJson(bokjeingLayer);
-        	bokjeingLayer = null;
-        	/* $('#bokjeingLayer').text("복정동 행정경계 ON")
-        	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
+            map.data.removeGeoJson(bokjeingLayer);
+            bokjeingLayer = null;
+            /* $('#bokjeingLayer').text("복정동 행정경계 ON")
+            $('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
         }
     });
     
@@ -811,8 +765,8 @@
     //+++ ETC
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $('#downloadScreenshot').on('click', function() {
-    	html2canvas($('#map')[0], {useCORS: true/* , allowTaint: true */}).then(function(canvas) {
-    		$('canvas').remove();
+        html2canvas($('#map')[0], {useCORS: true/* , allowTaint: true */}).then(function(canvas) {
+            $('canvas').remove();
             $(document.body).append(canvas);
             //canvas.setAttribute('crossOrigin', 'anonymous');
             var dataURL =canvas.toDataURL('image/jpeg', 1.0);
@@ -829,14 +783,14 @@
     //+++ Common Function 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     function addImageMarker(title, imageUrl, lat, lon) {
-    	var content = "<div class='mapImageIcon widePadding'><img style='width: 24px; height: 24px;' src='" + imageUrl +  "'/></div>";
-    	var loc = new naver.maps.LatLng(lat, lon);
+        var content = "<div class='mapImageIcon widePadding'><img style='width: 24px; height: 24px;' src='" + imageUrl +  "'/></div>";
+        var loc = new naver.maps.LatLng(lat, lon);
         var marker = new naver.maps.Marker({
                 map: map,
                 position: loc,
                 title: title, 
                 icon: {
-                	content: content, 
+                    content: content, 
                     size: new naver.maps.Size(25, 25),
                     anchor: new naver.maps.Point(12.5, 25)
                 }, 
@@ -854,27 +808,27 @@
     //+++ Semantic-UI 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     function updateMapSize() {
-    	// $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 12);
+        // $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 12);
     }
     
     function updateCardViewSize() {
-    	$('#cardContainer').css('height', parseFloat($('#lnb').css('height')) - parseFloat($('.ui.vertical.accordion.menu').css('height')) - 15);
+        $('#cardContainer').css('height', parseFloat($('#lnb').css('height')) - parseFloat($('.ui.vertical.accordion.menu').css('height')) - 15);
     }
     
     $( window ).resize(function() {
-    	updateMapSize();
+        updateMapSize();
     });
     
     // $('.ui.accordion').accordion();
     $('.ui.accordion')
     .accordion({
-    	onOpen: function() { updateCardViewSize(); },
-    	onClose: function() { updateCardViewSize(); }
+        onOpen: function() { updateCardViewSize(); },
+        onClose: function() { updateCardViewSize(); }
     });
     
     $('#createCardView').on('click', function() {
-    	this.blur();
-    	var infoCard = "<div class='card'>";
+        this.blur();
+        var infoCard = "<div class='card'>";
         infoCard += "<div class='content'>"
         infoCard += "<img class='right floated mini ui image' src='" + symbolMap.vanagon + "'>";
         infoCard += "<div class='header'>";
@@ -888,15 +842,15 @@
         infoCard += "</div>";
         infoCard += "</div>";
         infoCard += "</div>";
-    	for (var i = 0; i < 10; i++) {
-        	$('.ui.cards').append(infoCard);
-    	}
-    	
-    	$('.ui.rating').rating();
+        for (var i = 0; i < 10; i++) {
+            $('.ui.cards').append(infoCard);
+        }
+        
+        $('.ui.rating').rating();
     });
     
     function appendCard(name, address, url, lon, lat) {
-    	var infoCard = "<div class='card'>";
+        var infoCard = "<div class='card'>";
         infoCard += "<div class='content'>"
         infoCard += "<img class='right floated mini ui image' src='" + url + "'>";
         infoCard += "<div class='header'>";
@@ -911,12 +865,12 @@
         infoCard += "</div>";
         infoCard += "</div>";
         infoCard += "</div>";
-    	$('.ui.cards').append(infoCard);
+        $('.ui.cards').append(infoCard);
     }
     
     function cardIconClick(target) {
-    	console.log($(target).attr('lat'), $(target).attr('lon'));
-    	map.updateBy(naver.maps.LatLng(parseFloat($(target).attr('lat')), parseFloat($(target).attr('lon'))), 13)
+        console.log($(target).attr('lat'), $(target).attr('lon'));
+        map.updateBy(naver.maps.LatLng(parseFloat($(target).attr('lat')), parseFloat($(target).attr('lon'))), 13)
     }
     
     //$('#createCardView').trigger('click');
