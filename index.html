@@ -26,7 +26,7 @@
         vertical-align: middle;
     }
     body { overflow:hidden; }
-    #mainContainer { padding: 5px; height: 100%; }
+    #mainContainer { padding: 5px; height: calc(100% - 70px); }
     #cardContainer { overflow: auto; height: 300px; width: 100%; position: absolute; bottom: 0px; }
     #map { width: calc(100% - 0px); height: calc(100% - 0px); }
     .buttonGroup { margin-bottom: 0px; text-align: right; }
@@ -34,31 +34,42 @@
     .ui.toggle.checkbox.floatR { float: right; }
     .btn100px { width: 120px; text-align: center; }
     .title.bold { font-weight: bold; }
-    .ui.blue.label { width: 100%; margin-top: 10px; }
-    #heaerContainer { height: 60px; line-height: 60px; vertical-align: middle; }
+    .ui.blue.label { width: 100%; margin-top: 10px; padding: 12px 15px 12px 15px; }
+    #heaerContainer { height: 70px; line-height: 60px; vertical-align: middle; padding: 5px 15px 5px 15px; background-color: #558fed;}
     #titleContainer { display: inline-block; float: left; }
-    #contents { height: calc(100% - 60px); position: relative;}
+    #contents { height: 100%; position: relative;}
     .ui.modal>.content>.image+.description { width: 100%; }
     #cardContainer .ui.cards { margin: 0px; }
     #cardContainer .ui.cards>.card>.content>.header:not(.ui) { font-size: 1.0em; }
     .ui.icon.button { padding: 3px 3px 3px 3px; margin-left: 5px; }
+    
+    @font-face {
+       font-family: nanumgothic;
+       src: url(fonts/나눔고딕.ttf);
+    }
+    
+    * {
+       font-family: nanumgothic;
+    }
 </style>
 </head>
 <body>
 
-<div id="mainContainer">
-    <div id="heaerContainer">
-        <div class="buttonGroup">
-            <div id="titleContainer">
-                <img src="./img/ic_launcher.png" /> <span style="font-weight: bold; margin-left: 5px;">복정동 생활지도</span><span style="color: blue; font-weight: bold; margin-left: 5px;">어썸 복정</span>
-            </div>
-            <button id="addConvenienceStore" class="ui primary button"><i class="map marker alternate icon"></i>편의점</button>
-            <!-- <button id="bokjeingLayer" class="ui primary button"><i class="map outline icon"></i>복정동 행정경계 ON</button> -->
-            <button id="removeMarker" class="ui red button"><i class="eraser icon"></i>마커삭제</button>
-            <button id="downloadScreenshot" class="ui primary button"><i class="download icon"></i>지도 스크린숏</button>
+<div id="heaerContainer">
+    <div class="buttonGroup">
+        <div id="titleContainer">
+            <img src="./img/ic_launcher.png" /> <span style="margin-left: 5px; color: white; ">복정동 생활지도</span><span style="color: white; margin-left: 5px; ">어썸 복정</span>
         </div>
+        <button id="addConvenienceStore" class="ui grey button"><i class="map marker alternate icon"></i>편의점</button>
+        <!-- <button id="bokjeingLayer" class="ui primary button"><i class="map outline icon"></i>복정동 행정경계 ON</button> -->
+        <button id="removeMarker" class="ui grey button"><i class="eraser icon"></i>마커삭제</button>
+        <button id="downloadScreenshot" class="ui grey button"><i class="download icon"></i>지도 스크린숏</button>
     </div>
-
+</div>
+    
+<div id="mainContainer">
+    
+    
     <div id="contents">
         <div id="lnb">
             <div id="accordionMenu" class="ui vertical accordion menu">
@@ -130,7 +141,7 @@
               <div class="item" id="panel" >
                 <a class="title bold">
                   <i class="dropdown icon"></i>
-                                    그리기도구 스타일
+                                    그리기도구 스타일 
                 </a>
                 <div class="content">
                   <div class="ui form">
@@ -186,15 +197,15 @@
                 </div>
               </div>
             </div>
-
+            
             <div id="cardContainer">
                 <div class="ui cards">
                 </div>
             </div>
         </div>
-
+    
         <div id="wrap" class="section">
-            <div id="map">
+            <div id="map"> 
                 <div style="z-index:100; text-align:center; position: absolute; top: 10px; width: 100%;">
                     <span id=latLon style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
                 </div>
@@ -204,10 +215,10 @@
                 <div class="buttons">
                     <!-- <input id="interaction" type="button" name="지도 인터렉션" value="지도 인터렉션" class="control-btn" />
                     <input id="min-max-zoom" type="button" name="최소/최대 줌 레벨" value="최소/최대 줌 레벨: 1 ~ 14" class="control-btn" /> -->
-
+                   
                 </div>
             </div>
-
+            
         </div>
     </div>
 </div>
@@ -247,7 +258,7 @@
         'label': labelMapType
     });
     var labelLayer = new naver.maps.Layer('label', labelMapTypeRegistry);
-
+    
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Map 초기화
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -270,16 +281,16 @@
     map.setOptions("disableKineticPan", false);
     map.setOptions("tileTransition", false);
     labelLayer.setMap(map);
-
+    
     naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
     	$('#latLon').html(map.getCenter().y + ", " + map.getCenter().x);
     });
-
+    
     naver.maps.Event.addListener(map, 'zoom_changed', function(zoom) {
         $('#zoomLevel').html(zoom);
     });
-
-
+    
+   
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Manager 초기화
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -349,9 +360,9 @@
             }
         }
     });
-
+  
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //+++ Naver Map V3 이벤트 처리
+    //+++ Naver Map V3 이벤트 처리 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $("#to-seoul").on("click", function(e) {
         e.preventDefault();
@@ -475,7 +486,7 @@
             $(this).val(this.name + ': 10 ~ 12');
         }
     });
-
+    
     $('#panel input[type=radio]').change(function() {
     	drawingManager.setOptions('drawingControlOptions', {style: + this.value});
     });
@@ -516,23 +527,23 @@
         "H2": [MARKER_SPRITE_X_OFFSET*7, MARKER_SPRITE_Y_OFFSET*2],
         "I2": [MARKER_SPRITE_X_OFFSET*8, MARKER_SPRITE_Y_OFFSET*2]
     };
-
+    
     var markers = [],
     infoWindows = [];
-
+    
     $("#addMarker").on("click", function(e) {
     	var bounds = map.getBounds(),
         southWest = bounds.getSW(),
         northEast = bounds.getNE(),
         lngSpan = northEast.lng() - southWest.lng(),
         latSpan = northEast.lat() - southWest.lat();
-
-        $(this).addClass('disabled');
+    	
+        $(this).addClass('disabled');	
          for (var key in MARKER_SPRITE_POSITION) {
             var position = new naver.maps.LatLng(
                 southWest.lat() + latSpan * Math.random(),
                 southWest.lng() + lngSpan * Math.random());
-
+        
             var marker = new naver.maps.Marker({
                 map: map,
                 position: position,
@@ -545,15 +556,15 @@
                 },
                 zIndex: 100
             });
-
+        
             var infoWindow = new naver.maps.InfoWindow({
                 content: '<div style="width:170px;text-align:center;padding:10px 0px 10px 0px;">The Letter is <b>"'+ key.substr(0, 1) +'"</b>.</div>'
             });
-
+        
             markers.push(marker);
             infoWindows.push(infoWindow);
         };
-
+        
         // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
         function getClickHandler(seq) {
             return function(e) {
@@ -572,7 +583,7 @@
             naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
         }
     });
-
+    
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Overlay Convenience Store
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -617,31 +628,31 @@
     	var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
     	var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
     	var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
-
+    	
     	$.each(cuPoiArray, function(index, item) {
     		addConvenienceStorePoi(index, item, cuUrl);
     	})
-
+    	
     	$.each(gsPoiArray, function(index, item) {
             addConvenienceStorePoi(index, item, gsUrl);
         })
-
+        
         $.each(sevenPoiArray, function(index, item) {
             addConvenienceStorePoi(index, item, sevenUrl);
         })
-
+        
     	map.panToBounds(new naver.maps.LatLngBounds(
                 new naver.maps.LatLng(minY, minX),
                 new naver.maps.LatLng(maxY, maxX))
     	);
     });
-
+    
     var addConvenienceStorePoi = function(index, item, imageUrl) {
     	if (minX == undefined || item.x < minX) minX = item.x;
         if (minY == undefined || item.y < minY) minY = item.y;
         if (maxX == undefined || item.x > maxX) maxX = item.x;
         if (maxY == undefined || item.y > maxY) maxY = item.y;
-
+        
         var content = "<div style='border: 1px solid black; width=25px; height=25px;'><img src='" + imageUrl +  "'/></div>";
         var loc = new naver.maps.LatLng(item.y, item.x);
         var marker = new naver.maps.Marker({
@@ -657,21 +668,21 @@
             });
         markers.push(marker);
         appendCard(item.name, item.address, imageUrl, item.x, item.y);
-        naver.maps.Event.addListener(marker, 'click', function() {
+        naver.maps.Event.addListener(marker, 'click', function() { 
             $('.ui.tiny.modal').modal('show');
             $('.ui.tiny.modal .header').html(item.name);
             $('#infoIcon').attr('src', imageUrl.replace('size=25x25', 'size=100x100'));
             $("#infoAddress").html(item.address);
         });
     }
-
+    
     $('#removeMarker').on('click', function() {
     	this.blur();
     	markers.map(x => x.setMap(null));
 	    markers = [];
     });
-
-
+    
+    
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Geo Json
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -706,9 +717,9 @@
 
                         return styleOptions;
                     });
-
+                    
                     map.data.addGeoJson(bokjeingLayer);
-
+                    
                     map.data.addListener('mouseover', function(e) {
                         var feature = e.feature,
                             regionName = feature.getProperty('area1') + ' ' + feature.getProperty('area2') + ' ' + feature.getProperty('area1');
@@ -725,12 +736,12 @@
                             strokeOpacity: 1
                         });
                     });
-
+                    
                     map.data.addListener('mouseout', function(e) {
                         tooltip.hide().empty();
                         map.data.revertStyle();
                     });
-
+                    
                     map.data.addListener('click', function(e) {
                         var feature = e.feature;
 
@@ -749,7 +760,7 @@
         	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
         }
     });
-
+    
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ ETC
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -767,29 +778,29 @@
             aTag.click();
         });
     });
-
+    
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //+++ Semantic-UI
+    //+++ Semantic-UI 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     function updateMapSize() {
     	// $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 12);
     }
-
+    
     function updateCardViewSize() {
     	$('#cardContainer').css('height', parseFloat($('#lnb').css('height')) - parseFloat($('.ui.vertical.accordion.menu').css('height')) - 15);
     }
-
+    
     $( window ).resize(function() {
     	updateMapSize();
     });
-
+    
     // $('.ui.accordion').accordion();
     $('.ui.accordion')
     .accordion({
     	onOpen: function() { updateCardViewSize(); },
     	onClose: function() { updateCardViewSize(); }
     });
-
+    
     $('#createCardView').on('click', function() {
     	this.blur();
     	var infoCard = "<div class='card'>";
@@ -809,10 +820,10 @@
     	for (var i = 0; i < 10; i++) {
         	$('.ui.cards').append(infoCard);
     	}
-
+    	
     	$('.ui.rating').rating();
     });
-
+    
     function appendCard(name, address, url, lon, lat) {
     	var infoCard = "<div class='card'>";
         infoCard += "<div class='content'>"
@@ -831,18 +842,18 @@
         infoCard += "</div>";
     	$('.ui.cards').append(infoCard);
     }
-
+    
     function cardIconClick(target) {
     	console.log($(target).attr('lat'), $(target).attr('lon'));
     	map.updateBy(naver.maps.LatLng(parseFloat($(target).attr('lat')), parseFloat($(target).attr('lon'))), 13)
     }
-
+    
     //$('#createCardView').trigger('click');
     $('#addConvenienceStore').trigger('click');
     updateCardViewSize();
-
-
-
+    
+    
+    
 </script>
 
 </body>
