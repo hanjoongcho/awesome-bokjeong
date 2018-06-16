@@ -42,7 +42,14 @@
     #cardContainer .ui.cards { margin: 0px; }
     #cardContainer .ui.cards>.card>.content>.header:not(.ui) { font-size: 1.0em; }
     .ui.icon.button { padding: 3px 3px 3px 3px; margin-left: 5px; }
-    
+    .ui.medium.image { text-align: center; }
+    .ui.medium.image img { display: inline-block; }
+    .mapImageIcon { background: white; border: solid black 1px; padding: 5px; border-radius: 50%; }
+    .mapImageIcon.widePadding { background: #558fed; padding: 7px; border: solid black 1px; }
+    .circleBase {
+        border-radius: 50%;
+        behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+    }
     @font-face {
        font-family: nanumgothic;
        src: url(fonts/나눔고딕.ttf);
@@ -60,10 +67,11 @@
         <div id="titleContainer">
             <img src="./img/ic_launcher.png" /> <span style="margin-left: 5px; color: white; ">복정동 생활지도</span><span style="color: white; margin-left: 5px; ">어썸 복정</span>
         </div>
-        <button id="addConvenienceStore" class="ui grey button"><i class="map marker alternate icon"></i>편의점</button>
+        <button id="addConvenienceStore" class="ui inverted button"><i class="map marker alternate icon"></i>편의점</button>
+        <button id="addSupermarket" class="ui inverted button"><i class="map marker alternate icon"></i>마트</button>
         <!-- <button id="bokjeingLayer" class="ui primary button"><i class="map outline icon"></i>복정동 행정경계 ON</button> -->
-        <button id="removeMarker" class="ui grey button"><i class="eraser icon"></i>마커삭제</button>
-        <button id="downloadScreenshot" class="ui grey button"><i class="download icon"></i>지도 스크린숏</button>
+        <button id="removeMarker" class="ui inverted button"><i class="eraser icon"></i>마커삭제</button>
+        <button id="downloadScreenshot" class="ui inverted button"><i class="download icon"></i>지도 스크린숏</button>
     </div>
 </div>
     
@@ -238,6 +246,15 @@
   </div>
 </div>
 <script id="code">
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++  Define Global Variable
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var markers = [];
+    var infoWindows = [];
+    var symbolMap = {
+    		'cart1': './img/cart-36-24.png'
+	};
+    
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Layer 초기화
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -528,9 +545,6 @@
         "I2": [MARKER_SPRITE_X_OFFSET*8, MARKER_SPRITE_Y_OFFSET*2]
     };
     
-    var markers = [],
-    infoWindows = [];
-    
     $("#addMarker").on("click", function(e) {
     	var bounds = map.getBounds(),
         southWest = bounds.getSW(),
@@ -625,6 +639,7 @@
     ];
     var minX, minY, maxX, maxY;
     $("#addConvenienceStore").on("click", function(e) {
+    	removeMarkerAll();
     	var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
     	var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
     	var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
@@ -653,7 +668,7 @@
         if (maxX == undefined || item.x > maxX) maxX = item.x;
         if (maxY == undefined || item.y > maxY) maxY = item.y;
         
-        var content = "<div style='border: 1px solid black; width=25px; height=25px;'><img src='" + imageUrl +  "'/></div>";
+        var content = "<div class='mapImageIcon'><img style='width: 25px; height: 25px;' src='" + imageUrl +  "'/></div>";
         var loc = new naver.maps.LatLng(item.y, item.x);
         var marker = new naver.maps.Marker({
                 map: map,
@@ -662,7 +677,7 @@
                 icon: {
                     content: content,
                     size: new naver.maps.Size(25, 25),
-                    anchor: new naver.maps.Point(0, 0)
+                    anchor: new naver.maps.Point(12.5, 25)
                 },
                 zIndex: 100
             });
@@ -678,8 +693,37 @@
     
     $('#removeMarker').on('click', function() {
     	this.blur();
-    	markers.map(x => x.setMap(null));
-	    markers = [];
+    	removeMarkerAll();
+    });
+    
+    
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Overlay Supermarket
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    var supermarketPoiArray = [
+    	{name: '하모니마트 동서울대점', address: '경기도 성남시 수정구 복정동 685-3', x: 127.1264866, y: 37.4589561},
+    	{name: '홈플러스익스프레스성남복정점', address: '경기도 성남시 수정구 복정동 689-9', x: 127.1271424, y: 37.4565166},
+    	{name: '롯데마켓999동서울대점', address: '경기도 성남시 수정구 복정동 674-7', x: 127.1266625, y: 37.4615263},
+    	{name: '나들가게다우마트', address: '경기도 성남시 수정구 복정동 706-5', x: 127.1291785, y: 37.4552886},
+    	{name: '롯데마켓999 가천대점', address: '경기도 성남시 수정구 복정동 711-1 벽산빌딩', x: 127.1272459, y: 37.4545164},
+    	{name: '동산마트', address: '경기도 성남시 수정구 복정동 647-9', x: 127.1271899, y: 37.4636840},
+    	{name: '복정할인마트', address: '경기도 성남시 수정구 복정동 714', x: 127.1273139, y: 37.4539261},
+    	{name: '월드마트', address: '경기도 성남시 수정구 복정동 639-5 1층 2호', x: 127.1280471, y: 37.4672643},
+    	{name: '올스타마트', address: '경기도 성남시 수정구 창곡동 559 1층', x: 127.1363480, y: 37.4656632}
+    ];
+    
+    $("#addSupermarket").on("click", function(e) {
+    	removeMarkerAll();
+        $.each(supermarketPoiArray, function(index, item) {
+        	var marker = addImageMarker(item.name, symbolMap.cart1, item.y, item.x);
+            markers.push(marker);
+            naver.maps.Event.addListener(marker, 'click', function() { 
+                $('.ui.tiny.modal').modal('show');
+                $('.ui.tiny.modal .header').html(item.name);
+                $('#infoIcon').attr('src', './img/image-2-64.png');
+                $("#infoAddress").html(item.address);
+            });
+        })
     });
     
     
@@ -780,6 +824,31 @@
     });
     
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++ Common Function 
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    function addImageMarker(title, imageUrl, lat, lon) {
+    	var content = "<div class='mapImageIcon widePadding'><img style='width: 24px; height: 24px;' src='" + imageUrl +  "'/></div>";
+    	var loc = new naver.maps.LatLng(lat, lon);
+        var marker = new naver.maps.Marker({
+                map: map,
+                position: loc,
+                title: title, 
+                icon: {
+                	content: content, 
+                    size: new naver.maps.Size(25, 25),
+                    anchor: new naver.maps.Point(12.5, 25)
+                }, 
+                zIndex: 100
+            });
+        return marker;
+    }
+    
+    function removeMarkerAll() {
+        markers.map(x => x.setMap(null));
+        markers = [];
+    }
+    
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Semantic-UI 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     function updateMapSize() {
@@ -830,7 +899,7 @@
         infoCard += "<img class='right floated mini ui image' src='" + url + "'>";
         infoCard += "<div class='header'>";
         infoCard += name;
-        infoCard += "<button onclick='cardIconClick(this);' lat=" + lat + " lon=" + lon + " class='ui icon button latlon'><i class='map marker alternate icon'></i></button>";
+        infoCard += "<button onclick='cardIconClick(this);' lat=" + lat + " lon=" + lon + " class='ui icon blue button latlon'><i class='map marker alternate icon'></i></button>";
         infoCard += "</div>";
         infoCard += "<div class='meta'>";
         infoCard += "Friends of Veronika";
