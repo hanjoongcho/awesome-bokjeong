@@ -69,6 +69,5 @@ $(function() {
 	
 
 	//$('#createCardView').trigger('click');
-	$('#addConvenienceStore').trigger('click');
 	updateCardViewSize();
 });

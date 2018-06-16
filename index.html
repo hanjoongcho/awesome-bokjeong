@@ -13,6 +13,8 @@
     <script src="./js/data/poi_bokjeong.js"></script>
     <script src="./js/semantic/semantic.js"></script>
     <script src="./js/common/maputils.js"></script>
+    <script src="./js/nmapv3/nmap.js"></script>
+    <script src="./js/nmapv3/test.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="css/nmapv3/examples-base.css" />
     <link rel="stylesheet" type="text/css" href="css/base.css" />
@@ -202,70 +204,6 @@
 </div>
 <script id="code">
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //+++  Define Global Variable
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    var markers = [];
-    var infoWindows = [];
-    var symbolMap = {
-            cart: './img/cart-36-24.png',
-            empty: './img/store-64.png',
-            vanagon: './img/vanagon-1919554_640.jpg'
-    };
-    
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //+++ Layer 초기화
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    var jeju = new naver.maps.LatLng(33.3590628, 126.534361),
-        busan = new naver.maps.LatLng(35.1797865, 129.0750194),
-        dokdo = new naver.maps.LatLngBounds(
-                    new naver.maps.LatLng(37.2380651, 131.8562652),
-                    new naver.maps.LatLng(37.2444436, 131.8786475)),
-        seoul = new naver.maps.LatLngBounds(
-                    new naver.maps.LatLng(37.42829747263545, 126.76620435615891),
-                    new naver.maps.LatLng(37.7010174173061, 127.18379493229875)),
-        bokjeong = new naver.maps.LatLng(37.46561, 127.127075);
-
-    var bicycleLayer = new naver.maps.BicycleLayer();
-    var cadastralLayer = new naver.maps.CadastralLayer();
-    var labelMapType = new naver.maps.NaverMapTypeOption.getNormalLabelLayer();
-    var labelMapTypeRegistry = new naver.maps.MapTypeRegistry({
-        'label': labelMapType
-    });
-    var labelLayer = new naver.maps.Layer('label', labelMapTypeRegistry);
-    
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //+++ Map 초기화
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    updateMapSize();
-    var map = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng(bokjeong), //지도의 초기 중심 좌표
-            zoom: 10, //지도의 초기 줌 레벨
-            minZoom: 1, //지도의 최소 줌 레벨
-            zoomControl: true, //줌 컨트롤의 표시 여부
-            zoomControlOptions: { //줌 컨트롤의 옵션
-                style: naver.maps.ZoomControlStyle.SMALL,
-                position: naver.maps.Position.TOP_RIGHT
-            },
-            mapTypes: new naver.maps.MapTypeRegistry({
-                'normal': naver.maps.NaverMapTypeOption.getVectorMap()
-            })
-        });
-
-    // map.setOptions("mapTypeControl", true); //지도 유형 컨트롤의 표시 여부
-    map.setOptions("disableKineticPan", false);
-    map.setOptions("tileTransition", false);
-    labelLayer.setMap(map);
-    
-    naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
-        $('#latLon').html(map.getCenter().y + ", " + map.getCenter().x);
-    });
-    
-    naver.maps.Event.addListener(map, 'zoom_changed', function(zoom) {
-        $('#zoomLevel').html(zoom);
-    });
-    
-   
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Naver Map V3 이벤트 처리 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $("#to-seoul").on("click", function(e) {
@@ -394,96 +332,7 @@
     $('#panel input[type=radio]').change(function() {
         drawingManager.setOptions('drawingControlOptions', {style: + this.value});
     });
-
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //+++ 테스트용 마커
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    var MARKER_SPRITE_X_OFFSET = 29,
-    MARKER_SPRITE_Y_OFFSET = 50,
-    MARKER_SPRITE_POSITION = {
-        "A0": [0, 0],
-        "B0": [MARKER_SPRITE_X_OFFSET, 0],
-        "C0": [MARKER_SPRITE_X_OFFSET*2, 0],
-        "D0": [MARKER_SPRITE_X_OFFSET*3, 0],
-        "E0": [MARKER_SPRITE_X_OFFSET*4, 0],
-        "F0": [MARKER_SPRITE_X_OFFSET*5, 0],
-        "G0": [MARKER_SPRITE_X_OFFSET*6, 0],
-        "H0": [MARKER_SPRITE_X_OFFSET*7, 0],
-        "I0": [MARKER_SPRITE_X_OFFSET*8, 0],
-
-        "A1": [0, MARKER_SPRITE_Y_OFFSET],
-        "B1": [MARKER_SPRITE_X_OFFSET, MARKER_SPRITE_Y_OFFSET],
-        "C1": [MARKER_SPRITE_X_OFFSET*2, MARKER_SPRITE_Y_OFFSET],
-        "D1": [MARKER_SPRITE_X_OFFSET*3, MARKER_SPRITE_Y_OFFSET],
-        "E1": [MARKER_SPRITE_X_OFFSET*4, MARKER_SPRITE_Y_OFFSET],
-        "F1": [MARKER_SPRITE_X_OFFSET*5, MARKER_SPRITE_Y_OFFSET],
-        "G1": [MARKER_SPRITE_X_OFFSET*6, MARKER_SPRITE_Y_OFFSET],
-        "H1": [MARKER_SPRITE_X_OFFSET*7, MARKER_SPRITE_Y_OFFSET],
-        "I1": [MARKER_SPRITE_X_OFFSET*8, MARKER_SPRITE_Y_OFFSET],
-
-        "A2": [0, MARKER_SPRITE_Y_OFFSET*2],
-        "B2": [MARKER_SPRITE_X_OFFSET, MARKER_SPRITE_Y_OFFSET*2],
-        "C2": [MARKER_SPRITE_X_OFFSET*2, MARKER_SPRITE_Y_OFFSET*2],
-        "D2": [MARKER_SPRITE_X_OFFSET*3, MARKER_SPRITE_Y_OFFSET*2],
-        "E2": [MARKER_SPRITE_X_OFFSET*4, MARKER_SPRITE_Y_OFFSET*2],
-        "F2": [MARKER_SPRITE_X_OFFSET*5, MARKER_SPRITE_Y_OFFSET*2],
-        "G2": [MARKER_SPRITE_X_OFFSET*6, MARKER_SPRITE_Y_OFFSET*2],
-        "H2": [MARKER_SPRITE_X_OFFSET*7, MARKER_SPRITE_Y_OFFSET*2],
-        "I2": [MARKER_SPRITE_X_OFFSET*8, MARKER_SPRITE_Y_OFFSET*2]
-    };
     
-    $("#addMarker").on("click", function(e) {
-        var bounds = map.getBounds(),
-        southWest = bounds.getSW(),
-        northEast = bounds.getNE(),
-        lngSpan = northEast.lng() - southWest.lng(),
-        latSpan = northEast.lat() - southWest.lat();
-        
-        $(this).addClass('disabled');   
-         for (var key in MARKER_SPRITE_POSITION) {
-            var position = new naver.maps.LatLng(
-                southWest.lat() + latSpan * Math.random(),
-                southWest.lng() + lngSpan * Math.random());
-        
-            var marker = new naver.maps.Marker({
-                map: map,
-                position: position,
-                title: key,
-                icon: {
-                    url: 'common/img/sp_pins_spot_v3.png',
-                    size: new naver.maps.Size(24, 37),
-                    anchor: new naver.maps.Point(12, 37),
-                    origin: new naver.maps.Point(MARKER_SPRITE_POSITION[key][0], MARKER_SPRITE_POSITION[key][1])
-                },
-                zIndex: 100
-            });
-        
-            var infoWindow = new naver.maps.InfoWindow({
-                content: '<div style="width:170px;text-align:center;padding:10px 0px 10px 0px;">The Letter is <b>"'+ key.substr(0, 1) +'"</b>.</div>'
-            });
-        
-            markers.push(marker);
-            infoWindows.push(infoWindow);
-        };
-        
-        // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
-        function getClickHandler(seq) {
-            return function(e) {
-                var marker = markers[seq],
-                    infoWindow = infoWindows[seq];
-
-                if (infoWindow.getMap()) {
-                    infoWindow.close();
-                } else {
-                    infoWindow.open(map, marker);
-                }
-            }
-        }
-
-        for (var i=0, ii=markers.length; i<ii; i++) {
-            naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
-        }
-    });
     
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Overlay Convenience Store
@@ -491,10 +340,6 @@
     var minX, minY, maxX, maxY;
     $("#addConvenienceStore").on("click", function(e) {
         removeMarkerAll();
-        var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
-        var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
-        var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
-        
         $.each(cuPoiArray, function(index, item) {
             addConvenienceStorePoi(index, item, cuUrl);
         })
@@ -569,11 +414,12 @@
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //+++ Geo Json
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    var tooltip = $('<div style="position:absolute;z-index:1000;padding:5px 10px;background-color:#fff;border:solid 2px #000;font-size:14px;pointer-events:none;display:none;"></div>');
-    tooltip.appendTo(map.getPanes().floatPane);
-    var bokjeingLayer = null;
     $('#bokjeingLayer').on('change', function() {
         this.blur();
+        var tooltip = $('<div style="position:absolute;z-index:1000;padding:5px 10px;background-color:#fff;border:solid 2px #000;font-size:14px;pointer-events:none;display:none;"></div>');
+        tooltip.appendTo(map.getPanes().floatPane);
+        var bokjeingLayer = null;
+        
         if (bokjeingLayer == null && $(this).prop('checked')) {
             $.ajax({
                 url: './data/bokjeong.json',
