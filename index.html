@@ -8,10 +8,10 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ZAooYirnD5HsX7SfbG4G&submodules=drawing,visualization"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
-    <script src="html2canvas/html2canvas.js"></script>
-    <link rel="stylesheet" type="text/css" href="docs/css/examples-base.css" />
+    <script src="./js/html2canvas/html2canvas.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
-    <link rel="icon" type="image/png" href="img/icon-60x60.png" />
+    <link rel="stylesheet" type="text/css" href="css/nmapv3/examples-base.css" />
+    <link rel="icon" type="image/png" href=".common/img/icon-60x60.png" />
     <!-- @category Map -->
     <style type="text/css">
     #wrap { display: inline-block; width: calc(100% - 303px); height: calc(100% - 0px); position: absolute; right: 0px;}
@@ -65,7 +65,7 @@
 <div id="heaerContainer">
     <div class="buttonGroup">
         <div id="titleContainer">
-            <img src="./img/ic_launcher.png" /> <span style="margin-left: 5px; color: white; ">복정동 생활지도</span><span style="color: white; margin-left: 5px; ">어썸 복정</span>
+            <img src="./common/img/ic_launcher.png" /> <span style="margin-left: 5px; color: white; ">복정동 생활지도</span><span style="color: white; margin-left: 5px; ">어썸 복정</span>
         </div>
         <button id="addConvenienceStore" class="ui inverted button"><i class="map marker alternate icon"></i>편의점</button>
         <button id="addSupermarket" class="ui inverted button"><i class="map marker alternate icon"></i>마트</button>
@@ -237,7 +237,7 @@
   </div>
   <div class="image content">
     <div class="ui medium image">
-      <img id="infoIcon" src="img/ic_launcher.png">
+      <img id="infoIcon">
     </div>
     <div class="description">
       <div class="ui header"></div>
@@ -252,7 +252,9 @@
     var markers = [];
     var infoWindows = [];
     var symbolMap = {
-    		'cart1': './img/cart-36-24.png'
+    		cart: './common/img/cart-36-24.png',
+    		empty: './common/img/store-64.png',
+    		vanagon: './common/img/vanagon-1919554_640.jpg'
 	};
     
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -563,7 +565,7 @@
                 position: position,
                 title: key,
                 icon: {
-                    url: 'img/sp_pins_spot_v3.png',
+                    url: 'common/img/sp_pins_spot_v3.png',
                     size: new naver.maps.Size(24, 37),
                     anchor: new naver.maps.Point(12, 37),
                     origin: new naver.maps.Point(MARKER_SPRITE_POSITION[key][0], MARKER_SPRITE_POSITION[key][1])
@@ -715,12 +717,12 @@
     $("#addSupermarket").on("click", function(e) {
     	removeMarkerAll();
         $.each(supermarketPoiArray, function(index, item) {
-        	var marker = addImageMarker(item.name, symbolMap.cart1, item.y, item.x);
+        	var marker = addImageMarker(item.name, symbolMap.cart, item.y, item.x);
             markers.push(marker);
             naver.maps.Event.addListener(marker, 'click', function() { 
                 $('.ui.tiny.modal').modal('show');
                 $('.ui.tiny.modal .header').html(item.name);
-                $('#infoIcon').attr('src', './img/image-2-64.png');
+                $('#infoIcon').attr('src', symbolMap.empty);
                 $("#infoAddress").html(item.address);
             });
         })
@@ -737,7 +739,7 @@
         this.blur();
         if (bokjeingLayer == null && $(this).prop('checked')) {
         	$.ajax({
-                url: 'docs/data/bokjeong.json',
+                url: './data/bokjeong.json',
                 success: function(geojson) {
                 	/* $('#bokjeingLayer').text("복정동 행정경계 OFF");
                 	$('#bokjeingLayer').prepend("<i class=\"map outline icon\"></i>"); */
@@ -874,7 +876,7 @@
     	this.blur();
     	var infoCard = "<div class='card'>";
         infoCard += "<div class='content'>"
-        infoCard += "<img class='right floated mini ui image' src='img/vanagon-1919554_640.jpg'>";
+        infoCard += "<img class='right floated mini ui image' src='" + symbolMap.vanagon + "'>";
         infoCard += "<div class='header'>";
         infoCard += "Elliot Fu";
         infoCard += "</div>";
