@@ -35,7 +35,7 @@ var labelMapTypeRegistry = new naver.maps.MapTypeRegistry({
     'label': labelMapType
 });
 var labelLayer = new naver.maps.Layer('label', labelMapTypeRegistry);
-
+var bokjeongLayer = null;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //+++ Map 초기화
