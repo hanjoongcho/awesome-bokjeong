@@ -167,9 +167,8 @@ function requestGeoJson(layer, jsonUrl, isVisible, callback) {
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //+++ Custom Function 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 var addConvenienceStorePoi = function(index, item, imageUrl, latlonArr) {
-    var content = "<div class='mapImageIcon'><img style='width: 25px; height: 25px;' src='" + imageUrl +  "'/></div>";
+	var content = "<div class='mapImageIcon'><img style='width: 25px; height: 25px;' src='" + imageUrl +  "'/></div>";
     var loc = new naver.maps.LatLng(item.y, item.x);
     var marker = new naver.maps.Marker({
             map: map,

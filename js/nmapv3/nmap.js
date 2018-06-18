@@ -11,7 +11,8 @@ var infoWindows = [];
 var symbolMap = {
         cart: './img/cart-36-24.png',
         empty: './img/store-64.png',
-        vanagon: './img/vanagon-1919554_640.jpg'
+        vanagon: './img/vanagon-1919554_640.jpg',
+        store64: './img/store-64.png'
 };
 
 

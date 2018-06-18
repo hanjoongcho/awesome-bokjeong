@@ -295,6 +295,7 @@
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $("#addConvenienceStore").on("click", function(e) {
         removeMarkerAll();
+        $('.ui.cards').empty();
         var latlonArr = [];
         $.each(cuPoiArray, function(index, item) {
             addConvenienceStorePoi(index, item, cuUrl, latlonArr);
@@ -322,12 +323,14 @@
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $("#addSupermarket").on("click", function(e) {
         removeMarkerAll();
+        $('.ui.cards').empty();
         var latlonArr = [];
         $.each(supermarketPoiArray, function(index, item) {
         	var latLon = new naver.maps.LatLng(item.y, item.x);
             var marker = addImageMarker(item.name, symbolMap.cart, latLon);
             markers.push(marker);
             latlonArr.push(latLon);
+            appendCard(item.name, item.address, symbolMap.store64, item.x, item.y);
             naver.maps.Event.addListener(marker, 'click', function() { 
                 $('.ui.tiny.modal').modal('show');
                 $('.ui.tiny.modal .header').html(item.name);
