@@ -5,14 +5,17 @@ var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=ht
 var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
 var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
 
+var drawingManager = null;
 var map = null;
 var markers = [];
 var infoWindows = [];
 var symbolMap = {
-        cart: './img/cart-36-24.png',
         empty: './img/store-64.png',
         vanagon: './img/vanagon-1919554_640.jpg',
-        store64: './img/store-64.png'
+        cart: './img/cart-36-24.png',
+        cart64: './img/cart-36-64.png',
+        beer: './img/beer-24.png', 
+        beer64: './img/beer-64.png'
 };
 
 
@@ -38,6 +41,7 @@ var labelMapTypeRegistry = new naver.maps.MapTypeRegistry({
 var labelLayer = new naver.maps.Layer('label', labelMapTypeRegistry);
 var bokjeongLayer = null;
 
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //+++ Map 초기화
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -60,6 +64,7 @@ $(function() {
 	map.setOptions("disableKineticPan", false);
 	map.setOptions("tileTransition", false);
 	labelLayer.setMap(map);
+	initDrawingManager();
 	
 	naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
 	    $('#latLon').html(map.getCenter().y + ", " + map.getCenter().x);

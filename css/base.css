@@ -18,7 +18,7 @@
   vertical-align: middle;
 }
 body { overflow:hidden; }
-#mainContainer { padding: 5px; height: calc(100% - 70px); }
+#mainContainer { padding: 1px; height: calc(100% - 70px); }
 #cardContainer { overflow: auto; height: 300px; width: 100%; position: absolute; bottom: 0px; }
 #map { width: calc(100% - 0px); height: calc(100% - 0px); }
 .buttonGroup { margin-bottom: 0px; text-align: right; }
@@ -42,4 +42,6 @@ body { overflow:hidden; }
   border-radius: 50%;
   behavior: url(PIE.htc); /* remove if you don't care about IE8 */
 }
+.accordionItem .ui.label { font-weight: normal; }
+.ui.inverted.button { font-size: 13px; }
  
