@@ -207,3 +207,8 @@ function getLatLngBounds(latlonArr) {
 		);
     return latLngBounds;
 }
+
+function resizeMap() {
+	 var size = new naver.maps.Size( $('#wrap').width(), $('#wrap').height());
+     map.setSize(size);
+}

@@ -178,7 +178,10 @@
             </div>
             <div id="map"> 
                 <div style="z-index:100; text-align:center; position: absolute; top: 10px; width: 100%;">
-                    <span id=latLon style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+                    <div id="latLonDiv">
+                        <span id="lat" style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+                        <span id=lon style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
+                    </div>
                 </div>
                 <div style="z-index:100; text-align:center; position: absolute; bottom: 20px; right: 20px;">
                     <span id=zoomLevel style="color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"></span>
@@ -398,16 +401,18 @@
     	    $('#lnb').css('display','none');
     	    $('#wrap').css('width', '100%');
     	    $('#toggleLnb').attr('fold', 'Y');
-    	    var size = new naver.maps.Size( $('#wrap').width(), $('#wrap').height());
-            map.setSize(size);
     	} else {
     	    $('#toggleLnb').children().css('transform', 'rotate(180deg)');
     	    $('#lnb').css('display','block');
             $('#wrap').css('width', 'calc(100% - 303px)');
     	    $('#toggleLnb').attr('fold', 'N');
     	}
+    	resizeMap();
     });
     
+    $( window ).resize(function() {
+    	resizeMap();
+    });
 </script>
 
 </body>

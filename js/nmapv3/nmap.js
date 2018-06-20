@@ -67,7 +67,8 @@ $(function() {
 	initDrawingManager();
 	
 	naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
-	    $('#latLon').html(map.getCenter().y + ", " + map.getCenter().x);
+		$('#lat').html(map.getCenter().y);
+		$('#lon').html(map.getCenter().x);
 	});
 	
 	naver.maps.Event.addListener(map, 'zoom_changed', function(zoom) {
