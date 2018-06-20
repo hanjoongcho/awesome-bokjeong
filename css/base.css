@@ -6,6 +6,11 @@
 }
  
 * { font-family: nanumgothic; }
+
+img {
+   vertical-align:middle;
+}
+
 #wrap { display: inline-block; width: calc(100% - 303px); height: calc(100% - 0px); position: absolute; right: 0px;}
 #wrap .buttons { position:absolute;top:0;left:0;z-index:1000;padding:5px; }
 #wrap .buttons .control-btn { margin:0 5px 5px 0; }
@@ -33,6 +38,7 @@ body { overflow:hidden; }
 .ui.modal>.content>.image+.description { width: 100%; }
 #cardContainer .ui.cards { margin: 0px; }
 #cardContainer .ui.cards>.card>.content>.header:not(.ui) { font-size: 1.0em; }
+#cardContainer .ui.cards>.card { margin: 2.5px 5px; }
 .ui.icon.button { padding: 3px 3px 3px 3px; margin-left: 5px; }
 .ui.medium.image { text-align: center; }
 .ui.medium.image img { display: inline-block; }
@@ -44,4 +50,14 @@ body { overflow:hidden; }
 }
 .accordionItem .ui.label { font-weight: normal; }
 .ui.inverted.button { font-size: 13px; }
- 
+#toggleLnb {
+   background: #FFFFFF;
+   display: inline-block;
+   position: absolute;
+   z-index: 100;
+   top: 50%;
+   padding: 10px 2px 10px 2px;
+}
+
+#toggleLnb img { margin-top: -3px; transform: rotate(180deg); width: 10px; cursor: pointer; }
+    
