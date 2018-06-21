@@ -14,8 +14,8 @@ function initDrawingManager() {
 	        naver.maps.drawing.DrawingMode.MARKER
 	    ],
 	    drawingControlOptions: {
-	        position: naver.maps.Position.TOP_LEFT,
-	        style: naver.maps.drawing.DrawingStyle.VERTICAL
+	        position: naver.maps.Position.TOP_RIGHT,
+	        style: naver.maps.drawing.DrawingStyle.HORIZONTAL
 	    },
 	    controlPointOptions: {
 	        anchorPointOptions: {

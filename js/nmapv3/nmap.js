@@ -67,6 +67,33 @@ $(function() {
 	initDrawingManager();
 	initTestFun();
 	
+	map.controls[naver.maps.Position.LEFT_TOP].push($("#minimap")[0]);
+	map.setOptions({
+	    scaleControl: true,
+	    logoControl: true,
+	});
+	var minimap = new naver.maps.Map('minimap', { //미니맵 지도를 생성합니다.
+	    bounds: map.getBounds(),
+	    scrollWheel: false,
+	    scaleControl: false,
+	    mapDataControl: false,
+	    logoControl: false
+	});
+	var semaphore = false;
+	naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
+	    if (semaphore) return;
+
+	    minimap.fitBounds(bounds);
+	});
+	naver.maps.Event.addListener(minimap, 'drag', function() {
+	    semaphore = true;
+	    map.panTo(minimap.getCenter());
+	    naver.maps.Event.once(map, 'idle', function() {
+	        semaphore = false;
+	    });
+
+	});
+	
 	naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
 		$('#lat').html(map.getCenter().y);
 		$('#lon').html(map.getCenter().x);
