@@ -35,55 +35,56 @@ MARKER_SPRITE_POSITION = {
     "I2": [MARKER_SPRITE_X_OFFSET*8, MARKER_SPRITE_Y_OFFSET*2]
 };
 
-$("#addMarker").on("click", function(e) {
-    var bounds = map.getBounds(),
-    southWest = bounds.getSW(),
-    northEast = bounds.getNE(),
-    lngSpan = northEast.lng() - southWest.lng(),
-    latSpan = northEast.lat() - southWest.lat();
-    
-    $(this).addClass('disabled');   
-     for (var key in MARKER_SPRITE_POSITION) {
-        var position = new naver.maps.LatLng(
-            southWest.lat() + latSpan * Math.random(),
-            southWest.lng() + lngSpan * Math.random());
-    
-        var marker = new naver.maps.Marker({
-            map: map,
-            position: position,
-            title: key,
-            icon: {
-                url: 'common/img/sp_pins_spot_v3.png',
-                size: new naver.maps.Size(24, 37),
-                anchor: new naver.maps.Point(12, 37),
-                origin: new naver.maps.Point(MARKER_SPRITE_POSITION[key][0], MARKER_SPRITE_POSITION[key][1])
-            },
-            zIndex: 100
-        });
-    
-        var infoWindow = new naver.maps.InfoWindow({
-            content: '<div style="width:170px;text-align:center;padding:10px 0px 10px 0px;">The Letter is <b>"'+ key.substr(0, 1) +'"</b>.</div>'
-        });
-    
-        markers.push(marker);
-        infoWindows.push(infoWindow);
-    };
-    
-    // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
-    function getClickHandler(seq) {
-        return function(e) {
-            var marker = markers[seq],
-                infoWindow = infoWindows[seq];
+function initTestFun() {
+	$("#addMarker").on("click", function(e) {
+	    var bounds = map.getBounds(),
+	    southWest = bounds.getSW(),
+	    northEast = bounds.getNE(),
+	    lngSpan = northEast.lng() - southWest.lng(),
+	    latSpan = northEast.lat() - southWest.lat();
+	    
+	    $(this).addClass('disabled');   
+	     for (var key in MARKER_SPRITE_POSITION) {
+	        var position = new naver.maps.LatLng(
+	            southWest.lat() + latSpan * Math.random(),
+	            southWest.lng() + lngSpan * Math.random());
+	    
+	        var marker = new naver.maps.Marker({
+	            map: map,
+	            position: position,
+	            title: key,
+	            icon: {
+	                url: 'img/sp_pins_spot_v3.png',
+	                size: new naver.maps.Size(24, 37),
+	                anchor: new naver.maps.Point(12, 37),
+	                origin: new naver.maps.Point(MARKER_SPRITE_POSITION[key][0], MARKER_SPRITE_POSITION[key][1])
+	            },
+	            zIndex: 100
+	        });
+	    
+	        var infoWindow = new naver.maps.InfoWindow({
+	            content: '<div style="width:170px;text-align:center;padding:10px 0px 10px 0px;">The Letter is <b>"'+ key.substr(0, 1) +'"</b>.</div>'
+	        });
+	    
+	        markers.push(marker);
+	        infoWindows.push(infoWindow);
+	        
+	        naver.maps.Event.addListener(marker, 'click', getClickHandler(infoWindow));
+	    };
+	    
+	    // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+	    function getClickHandler(infoWindow) {
+	        return function(e) {
+//	            var marker = markers[seq],
+//	                infoWindow = infoWindows[seq];
 
-            if (infoWindow.getMap()) {
-                infoWindow.close();
-            } else {
-                infoWindow.open(map, marker);
-            }
-        }
-    }
+	            if (infoWindow.getMap()) {
+	                infoWindow.close();
+	            } else {
+	                infoWindow.open(map, marker);
+	            }
+	        }
+	    }
+	});
+}
 
-    for (var i=0, ii=markers.length; i<ii; i++) {
-        naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
-    }
-});

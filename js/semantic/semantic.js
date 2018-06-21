@@ -13,7 +13,7 @@ function updateCardViewSize() {
 function appendCard(name, address, url, lon, lat) {
 	var infoCard = "<div class='card'>";
     infoCard += "<div class='content'>"
-    infoCard += "<img class='right floated mini ui image' src='" + url + "'>";
+    infoCard += "<img class='right floated mini ui image' src='" + url.replace('size=25x25', 'size=35x35') + "'>";
     infoCard += "<div class='header'>";
     infoCard += name;
     infoCard += "<button onclick='cardIconClick(this);' lat=" + lat + " lon=" + lon + " class='ui icon blue button latlon'><i class='map marker alternate icon'></i></button>";

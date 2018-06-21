@@ -65,6 +65,7 @@ $(function() {
 	map.setOptions("tileTransition", false);
 	labelLayer.setMap(map);
 	initDrawingManager();
+	initTestFun();
 	
 	naver.maps.Event.addListener(map, 'bounds_changed', function(bounds) {
 		$('#lat').html(map.getCenter().y);
