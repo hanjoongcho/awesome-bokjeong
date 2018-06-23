@@ -30,6 +30,11 @@ function appendCard(name, address, url, lon, lat) {
 	$('.ui.cards').append(infoCard);
 }
 
+function removeCard() {
+	$('.ui.cards').empty();
+}
+
+
 function updateMapSize() {
 	// $('#map').css('height', parseFloat($(document.body).css('height')) - parseFloat($('#heaerContainer').css('height')) - 12);
 }

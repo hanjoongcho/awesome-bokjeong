@@ -22,9 +22,10 @@ function addCircleSymbol(map, lat, lon) {
 	        style: "circle",
 	        strokeColor: '#ff0000',
 	        strokeStyle: 'solid',
-	        anchor: new naver.maps.Point(28, 28),
-	        strokeWeight: 2, radius: 26
-	    }
+	        anchor: new naver.maps.Point(20, 20),
+	        strokeWeight: 1, radius: 19
+	    },
+	    zIndex: 99
 	});
 }
 
@@ -34,15 +35,14 @@ function addImageMarker(title, imageUrl, lat, lon) {
 }
 
 function addImageMarker(title, imageUrl, latLon) {
-	var content = "<div class='mapImageIcon widePadding'><img style='width: 24px; height: 24px;' src='" + imageUrl +  "'/></div>";
+	var content = "<div class='mapImageIcon widePadding'><img style='width: 20px; height: 20px;' src='" + imageUrl +  "'/></div>";
     var marker = new naver.maps.Marker({
             map: map,
             position: latLon,
             title: title, 
             icon: {
                 content: content, 
-                size: new naver.maps.Size(25, 25),
-                anchor: new naver.maps.Point(20, 20)
+                anchor: new naver.maps.Point(16, 16)
             }, 
             zIndex: 100
         });
@@ -190,7 +190,7 @@ function requestGeoJson(layer, jsonUrl, isVisible, callback) {
 //+++ Custom Function 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 var addConvenienceStorePoi = function(index, item, imageUrl, latlonArr) {
-	var content = "<div class='mapImageIcon'><img style='width: 24px; height: 24px;' src='" + imageUrl +  "'/></div>";
+	var content = "<div class='mapImageIcon'><img style='width: 20px; height: 20px;' src='" + imageUrl +  "'/></div>";
     var loc = new naver.maps.LatLng(item.y, item.x);
     var marker = new naver.maps.Marker({
             map: map,
@@ -198,8 +198,7 @@ var addConvenienceStorePoi = function(index, item, imageUrl, latlonArr) {
             title: item.name,
             icon: {
                 content: content,
-                size: new naver.maps.Size(24, 24),
-                anchor: new naver.maps.Point(18, 18)
+                anchor: new naver.maps.Point(16, 16)
             },
             zIndex: 100
         });
