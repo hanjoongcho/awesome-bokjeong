@@ -17,7 +17,7 @@ var symbolMap = {
         beer: './img/beer-24.png', 
         beer64: './img/beer-64.png'
 };
-
+var forcusMarker;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //+++ Layer 초기화

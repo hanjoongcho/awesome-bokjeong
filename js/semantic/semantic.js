@@ -3,7 +3,8 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function cardIconClick(target) {
 	console.log($(target).attr('lat'), $(target).attr('lon'));
-	map.updateBy(naver.maps.LatLng(parseFloat($(target).attr('lat')), parseFloat($(target).attr('lon'))), 13)
+	map.updateBy(naver.maps.LatLng(parseFloat($(target).attr('lat')), parseFloat($(target).attr('lon'))), 13);
+	addCircleSymbol(map, parseFloat($(target).attr('lat')), parseFloat($(target).attr('lon')));
 }
 
 function updateCardViewSize() {
