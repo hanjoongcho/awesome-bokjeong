@@ -1,9 +1,9 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //+++  Define Global Variable
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
-var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
-var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=25x25&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
+var cuUrl = "https://search.pstatic.net/common/?type=ofullfill&size=30x30&src=http%3A%2F%2Fldb.phinf.naver.net%2F20150831_276%2F1441000171607H9qgJ_JPEG%2F146376578437799_0.jpg";
+var gsUrl = "https://search.pstatic.net/common/?type=ofullfill&size=30x30&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160729_12%2F14697916166913CnBg_JPEG%2Fgs25_image1.jpg";
+var sevenUrl = "https://search.pstatic.net/common/?type=ofullfill&size=30x30&src=http%3A%2F%2Fldb.phinf.naver.net%2F20160512_248%2F1463013758149jMIK0_JPEG%2F176462497257574_0.jpeg";
 
 var drawingManager = null;
 var map = null;
@@ -12,11 +12,17 @@ var infoWindows = [];
 var symbolMap = {
         empty: './img/store-64.png',
         vanagon: './img/vanagon-1919554_640.jpg',
-        cart: './img/cart-36-24.png',
-        cart64: './img/cart-36-64.png',
-        beer: './img/beer-24.png', 
-        beer64: './img/beer-64.png'
+        cart_56_24: './img/cart-56-24.png',
+        cart_56_32: './img/cart-56-32.png',
+        cart_56_64: './img/cart-56-64.png',
+        beer_24: './img/beer-24.png', 
+        beer_32: './img/beer-32.png',
+    	beer_64: './img/beer-64.png'
 };
+var emojiMap = {
+		chicken: '🍗',
+		cart: '🛒'
+}
 var forcusMarker;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

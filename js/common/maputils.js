@@ -22,20 +22,20 @@ function addCircleSymbol(map, lat, lon) {
 	        style: "circle",
 	        strokeColor: '#ff0000',
 	        strokeStyle: 'solid',
-	        anchor: new naver.maps.Point(20, 20),
-	        strokeWeight: 1, radius: 19
+	        anchor: new naver.maps.Point(22, 22),
+	        strokeWeight: 5, radius: 17
 	    },
 	    zIndex: 99
 	});
 }
 
-function addImageMarker(title, imageUrl, lat, lon) {
+function addImageMarker(title, emoji, lat, lon) {
 	var latLon = new naver.maps.LatLng(lat, lon);
-	return addImageMarker(title, imageUrl, latLon);
+	return addImageMarker(title, emoji, latLon);
 }
 
-function addImageMarker(title, imageUrl, latLon) {
-	var content = "<div class='mapImageIcon widePadding'><img style='width: 20px; height: 20px;' src='" + imageUrl +  "'/></div>";
+function addImageMarker(title, emoji, latLon) {
+	var content = "<div class='mapImageIcon emoji'>" + emoji + "</div>";
     var marker = new naver.maps.Marker({
             map: map,
             position: latLon,
@@ -204,12 +204,9 @@ var addConvenienceStorePoi = function(index, item, imageUrl, latlonArr) {
         });
     latlonArr.push(loc);
     markers.push(marker);
-    appendCard(item.name, item.address, imageUrl, item.x, item.y);
+    appendCardWithUrl(item.name, item.address, imageUrl, item.x, item.y);
     naver.maps.Event.addListener(marker, 'click', function() { 
-        $('.ui.tiny.modal').modal('show');
-        $('.ui.tiny.modal .header').html(item.name);
-        $('#infoIcon').attr('src', imageUrl.replace('size=25x25', 'size=100x100'));
-        $("#infoAddress").html(item.address);
+    	openInfoDialog(0, imageUrl, item, null);
     });
 }
 

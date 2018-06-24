@@ -32,7 +32,7 @@ body { overflow:hidden; }
 .btn100px { width: 120px; text-align: center; }
 .title.bold { font-weight: bold; }
 .ui.blue.label { width: 100%; margin-top: 10px; padding: 12px 15px 12px 15px; }
-#heaerContainer { height: 70px; line-height: 60px; vertical-align: middle; padding: 5px 15px 5px 15px; background-color: #558fed;}
+#heaerContainer { height: 70px; line-height: 60px; vertical-align: middle; padding: 5px 15px 5px 15px; background-color: #558fed; }
 #titleContainer { display: inline-block; float: left; }
 #contents { height: 100%; position: relative;}
 .ui.modal>.content>.image+.description { width: 100%; }
@@ -41,9 +41,11 @@ body { overflow:hidden; }
 #cardContainer .ui.cards>.card { margin: 2.5px 5px; }
 .ui.icon.button { padding: 3px 3px 3px 3px; margin-left: 5px; }
 .ui.medium.image { text-align: center; }
-.ui.medium.image img { display: inline-block; }
 .mapImageIcon { background: white; border: solid black 1px; padding: 5px; border-radius: 50%; line-height: 10px; }
-.mapImageIcon.widePadding { background: #558fed; padding: 5px; border: solid black 1px; line-height: 10px; }
+.mapImageIcon.emoji { /* background: #558fed; */ padding: 1px; border: solid black 1px; line-height: 28px; width: 28px; height: 28px; text-align: center; font-size: 16px; }
+.cardImg { float: right; background-color: #FFFFFF; border-radius: 10%; width: 40px; height: 40px; line-height: 40px; font-size: 25px; text-align: center; border: solid #000000 1px;}
+.cardImg img { background-color: white; margin-top: -5px; width: 30px; height: 30px; }
+#infoEmoji { font-size: 45px; }
 .circleBase {
   border-radius: 50%;
   behavior: url(PIE.htc); /* remove if you don't care about IE8 */

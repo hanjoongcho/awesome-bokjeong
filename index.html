@@ -202,6 +202,7 @@
   <div class="image content">
     <div class="ui medium image">
       <img id="infoIcon">
+      <span id='infoEmoji'></span>
     </div>
     <div class="description">
       <div class="ui header"></div>
@@ -335,15 +336,12 @@
         var latlonArr = [];
         $.each(supermarketPoiArray, function(index, item) {
         	var latLon = new naver.maps.LatLng(item.y, item.x);
-            var marker = addImageMarker(item.name, symbolMap.cart, latLon);
+            var marker = addImageMarker(item.name, emojiMap.cart, latLon);
             markers.push(marker);
             latlonArr.push(latLon);
-            appendCard(item.name, item.address, symbolMap.cart64, item.x, item.y);
+            appendCard(item.name, item.address, emojiMap.cart, item.x, item.y);
             naver.maps.Event.addListener(marker, 'click', function() { 
-                $('.ui.tiny.modal').modal('show');
-                $('.ui.tiny.modal .header').html(item.name);
-                $('#infoIcon').attr('src', symbolMap.cart64);
-                $("#infoAddress").html(item.address);
+            	openInfoDialog(1, null, item, emojiMap.cart);
             });
         });
         map.panToBounds(getLatLngBounds(latlonArr));
@@ -355,15 +353,12 @@
         var latlonArr = [];
         $.each(chickenPoiArray, function(index, item) {
         	var latLon = new naver.maps.LatLng(item.y, item.x);
-            var marker = addImageMarker(item.name, symbolMap.beer, latLon);
+            var marker = addImageMarker(item.name, emojiMap.chicken, latLon);
             markers.push(marker);
             latlonArr.push(latLon);
-            appendCard(item.name, item.address, symbolMap.beer64, item.x, item.y);
+            appendCard(item.name, item.address, emojiMap.chicken, item.x, item.y);
             naver.maps.Event.addListener(marker, 'click', function() { 
-                $('.ui.tiny.modal').modal('show');
-                $('.ui.tiny.modal .header').html(item.name);
-                $('#infoIcon').attr('src', symbolMap.beer64);
-                $("#infoAddress").html(item.address);
+            	openInfoDialog(1, null, item, emojiMap.chicken);
             });
         });
         map.panToBounds(getLatLngBounds(latlonArr));
