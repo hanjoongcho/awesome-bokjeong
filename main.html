@@ -7,107 +7,7 @@
 <title>어썸 복정</title>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ZAooYirnD5HsX7SfbG4G&submodules=geocoder"></script>
-
-<style type="text/css">
-  html, body {
-    overflow: hidden;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  
-  #wrap {
-    position: relative;
-    height: 100%;
-  }
-  
-  #header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 30;
-    width: 100%;
-    min-width: 980px;
-    height: 47px;
-    border-bottom: 1px solid #555;
-    background: #fff;
-  }
-  #container {
-    position: absolute;
-    top: 48px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 20;
-  }
-
-  #aside {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 3;
-    width: 402px;
-    border-right: 1px solid #a7a7a7;
-    background-color: #fff;
-    -webkit-transition: left 0.2s ease-out, opacity 0.3s ease-out;
-    -moz-transition: left 0.2s ease-out, opacity 0.3s ease-out;
-    opacity: 1;
-  }
-  
-  #nav {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 56px;
-    border-right: 1px solid #000;
-    background-color: #252525;
-  }
-  
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav_lst { margin-top: -1px; }
-  
-  .spm {
-    display: inline-block;
-    overflow: hidden;
-    width: 0;
-    height: 0;
-    background: url(https://ssl.pstatic.net/static/maps/img/sp_map_v49.png) no-repeat;
-    white-space: nowrap;
-    line-height: 999px;
-    vertical-align: top;
-  }
-  
-  .spm_nfw {
-    width: 57px;
-    height: 57px;
-    background-position: -61px -40px;
-  }
-  
-  .nav_lst .on .spm_nsch { background-position: 0px -102px; }
-  .spm_nsch {
-    width: 57px;
-    height: 57px;
-    background-position: 0px -40px;
-  }
-
-  #content {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 403px;
-    height: 100%;
-    background: #f1f1f1;
-    -webkit-transition: left 0.2s ease-out;
-  }
-</style>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
 <body>
 <div id="wrap" class="section">
@@ -118,6 +18,27 @@
         <ul class="nav_lst">
           <li class="on"><a href="#" class="spm spm_nsch "></a></li>
           <li><a href="#" class="spm spm_nfw"></a></li>
+        </ul>
+      </div>
+      <div id="panel" class="panel panel_main">
+        <div class=panel_top>
+          <div class="panel_main_top">
+            <h1 class="pmt_tit">
+              <a href="#" class="nclicks(lwc.gohere)">경기도 성남시 수정구 단대동</a>
+            </h1>
+            <a href="#" class="pmt_modify">접속위치수정</a>
+          </div>
+        </div>
+        <div class="panel_footer"></div>
+      </div>
+      <div id="aside_footer" class="aside_footer">
+        <ul class="afooter_lst">
+          <li class="legend"><a href="#" class="_legend_btn"><strong>지도범례</strong></a></li>
+          <li><a href="#" class="hdc_open _hdc_open_report">메뉴1</a></li>
+          <li><a href="#" class="hdc_open _hdc_open_report">메뉴2</a></li>
+          <li><a href="#" class="hdc_open _hdc_open_report">메뉴3</a></li>
+          <li><a href="#" class="hdc_open _hdc_open_report">메뉴4</a></li>
+          <li><a href="#" class="hdc_open _hdc_open_report">메뉴5</a></li>
         </ul>
       </div>
     </div>

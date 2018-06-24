@@ -1,0 +1,206 @@
+  html, body {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body { font-family: '돋움'; font-size: 12px; }
+  
+  h1, ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  
+  a, a:link { text-decoration: none; }
+  
+  #wrap {
+    position: relative;
+    height: 100%;
+  }
+  
+  #header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 30;
+    width: 100%;
+    min-width: 980px;
+    height: 47px;
+    border-bottom: 1px solid #555;
+    background: #fff;
+  }
+  #container {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+  }
+
+  #aside {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    width: 402px;
+    border-right: 1px solid #a7a7a7;
+    background-color: #fff;
+    -webkit-transition: left 0.2s ease-out, opacity 0.3s ease-out;
+    -moz-transition: left 0.2s ease-out, opacity 0.3s ease-out;
+    opacity: 1;
+  }
+  
+  #nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 56px;
+    border-right: 1px solid #000;
+    background-color: #252525;
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav_lst { margin-top: -1px; }
+  
+  .spm {
+    display: inline-block;
+    overflow: hidden;
+    width: 0;
+    height: 0;
+    background: url(https://ssl.pstatic.net/static/maps/img/sp_map_v49.png) no-repeat;
+    white-space: nowrap;
+    line-height: 999px;
+    vertical-align: top;
+  }
+  
+  .spm_nfw {
+    width: 57px;
+    height: 57px;
+    background-position: -61px -40px;
+  }
+  
+  .nav_lst .on .spm_nsch { background-position: 0px -102px; }
+  .spm_nsch {
+    width: 57px;
+    height: 57px;
+    background-position: 0px -40px;
+  }
+
+  #panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 29px;
+    left: 57px;
+    background-color: #fff;
+  }
+  
+  .panel_top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    height: 30px;
+    border-bottom: 1px solid #bcbcbc;
+    background-color: #fafafa;
+  }
+  
+  .panel_main_top {
+    position: relative;
+    width: 100%;
+    line-height: 17px;
+  }
+  
+  .panel_main_top a.pmt_modify {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    padding-right: 6px;
+    background: url(https://ssl.pstatic.net/static/maps/ux2013/sp_map_vertical_v4.png) no-repeat 100% -456px;
+    color: #666;
+    letter-spacing: -1px;
+  }
+
+  .panel_main_top .pmt_tit {
+    display: inline-block;
+    zoom: 1;
+    padding: 8px 0 0 14px;
+    font-size: 12px;
+    font-weight: normal;
+  }
+  
+  .panel_main .panel_footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 37px;
+    border-top: 1px solid #eaecec;
+  }
+
+  #aside_footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 57px;
+    z-index: 30;
+    height: 28px;
+    border-top: 1px solid #bcbcbc;
+    background: #fafafa;
+  }
+  
+  .aside_footer {
+    text-align: center;
+  }
+  
+  .afooter_lst {
+    display: inline-block;
+    zoom: 1;
+    padding: 5px 0 0;
+    text-align: left;
+    line-height: 18px;
+  }
+  
+  .afooter_lst > li {
+    position: relative;
+    float: left;
+    margin-left: 13px;
+    padding-left: 13px;
+    background: url(https://ssl.pstatic.net/static/maps/ux2013/sp_map_vertical_v4.png) no-repeat 0 -35px;
+    vertical-align: top;
+  }
+  
+  .afooter_lst > li.legend {
+    position: static; 
+    margin: 0; 
+    padding: 0; 
+    background: none; 
+  }
+
+  .afooter_lst > li > a {
+    display: block;
+    color: #666;
+    font-size: 11px;
+    letter-spacing: -1px;
+    padding-top: 1px;
+  }
+  
+  #content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 403px;
+    height: 100%;
+    background: #f1f1f1;
+    -webkit-transition: left 0.2s ease-out;
+  }
