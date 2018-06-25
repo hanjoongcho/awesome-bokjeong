@@ -11,12 +11,23 @@
 </head>
 <body>
 <div id="wrap" class="section">
-  <div id='header'></div>
+  <div id='header'>
+    <div class="sch">
+      <fieldset>
+        <span class="li">
+          <span class="ii_inner">
+            <input id="search-input" type="text" title="검색어 입력" class="input_act _search_input" autocomplete="off">
+          </span>
+        </span>
+        <button type="submit" class="spm spm_ssch nclicks(STA.go)">검색</button>
+      </fieldset>
+    </div>
+  </div>
   <div id="container">
     <div id="aside">
       <div id="nav">
         <ul class="nav_lst">
-          <li class="on"><a href="#" class="spm spm_nsch "></a></li>
+          <li class="on"><a href="#" class="spm spm_nsch nclicks(lmn.search)"></a></li>
           <li><a href="#" class="spm spm_nfw"></a></li>
         </ul>
       </div>
@@ -56,6 +67,20 @@
     zoomControlOptions : { 
       position : naver.maps.Position.TOP_RIGHT
     }
+  });
+  
+  $('.input_act').keydown(function(e) {
+	  if (event.which == 13) {
+		  $.each(e.currentTarget.classList, function(idx, className) {
+	      if (className == '_search_input') {
+	    	  $('button:submit.spm.spm_ssch').trigger('click');
+	      } 
+	    });
+	  }
+  });
+  
+  $('button:submit.spm.spm_ssch').on('click', function(e) {
+	  console.log('검색');
   });
 </script>
 </body>
