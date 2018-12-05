@@ -252,7 +252,7 @@
           ratio: 1,
           url: 'http://localhost:18081/geoserver/ex-pilot/wms',
           params: {'FORMAT': format,
-                   'VERSION': '1.1.1',  
+                   'VERSION': '1.1.1',
                 STYLES: '',
                 LAYERS: 'ex-pilot:MOCT_LINK',
           }
@@ -262,7 +262,7 @@
         visible: false,
         source: new ol.source.TileWMS({
           url: 'http://localhost:18081/geoserver/ex-pilot/wms',
-          params: {'FORMAT': format, 
+          params: {'FORMAT': format,
                    'VERSION': '1.1.1',
                    tiled: true,
                 STYLES: '',
@@ -440,6 +440,17 @@
           map.updateSize()
         }
 
+        $( window ).resize(function() { resizeMap(); });
+
+        function resizeMap() {
+            $('#map').width($('body').width());
+            map.updateSize();
+        }
+
+        $(function() {
+            resizeMap();
+            $('#tilingModeSelector').val('tiled').trigger('change');
+        });
     </script>
   </body>
 </html>
