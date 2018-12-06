@@ -91,7 +91,7 @@
             clear: both;
             position: relative;
             width: 570px;
-            height: 768px;
+            height: 500px;
             border: 1px solid black;
         }
         #wrapper {
@@ -129,7 +129,7 @@
     </style>
     <script src="http://localhost:18081/geoserver/openlayers3/ol.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
-   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4.js"></script>
     <title>OpenLayers map preview</title>
   </head>
   <body>
@@ -441,16 +441,34 @@
           map.updateSize()
         }
 
-        $( window ).resize(function() { resizeMap(); });
-
         function resizeMap() {
             $('#map').width($('body').width());
+            $('#nodelist').width($('body').width());
             map.updateSize();
         }
 
         $(function() {
             resizeMap();
             $('#tilingModeSelector').val('tiled').trigger('change');
+            $( window ).resize(function() { resizeMap(); });
+            proj4.defs([
+                [
+                  'EPSG:4326',
+                  '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees'],
+                [
+                  'EPSG:4269',
+                  '+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees'
+                ],
+                [
+                  "EPSG:3785",
+                  "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+                ],
+                [
+                  "EPSG:5179",
+                  "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+                ]
+            ]);
+            console.log(proj4(proj4('EPSG:5179'), proj4('EPSG:4326'), map.getView().getCenter()));
         });
       </script>
   </body>
