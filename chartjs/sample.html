@@ -1,0 +1,124 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+    <title>Chart.js</title>
+    <script type="text/javascript">
+    var myChart;
+    var destroyChart = function() {
+        myChart.destroy();
+    }
+    
+    var createPieChart = function() {
+        var ctx = $('#myChart');
+        var pieData = [{
+            value : 30,
+            color : "#F38630",
+            label : 'Sleep',
+            labelColor : 'white',
+            labelFontSize : '16'
+        },
+              {
+            value : 30,
+            color : "#F34353",
+            label : 'Sleep',
+            labelColor : 'white',
+            labelFontSize : '16'
+        }];
+        myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["눈", "맑음", "비", "안개", "바람"],
+                datasets: [{
+                    label: '날씨별 발생 빈도수',
+                    data: [12, 19, 3, 5, 32],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                onClick: function(evt) { 
+                    var activePoints = myChart.getElementsAtEvent(evt);
+                    if (activePoints.length > 0 ) {
+                        console.log(activePoints[0]._index);
+                    } 
+                }  
+            }
+        });
+    }
+    
+    var createBarChart = function() {
+        var ctx = $('#myChart');
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["눈", "맑음", "비", "안개", "바람"],
+                datasets: [{
+                    label: '날씨별 발생 빈도수',
+                    data: [12, 19, 3, 5, 32],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                },
+                onClick: function(evt) { 
+                    var activePoints = myChart.getElementsAtEvent(evt);
+                    if (activePoints.length > 0 ) {
+                        console.log(activePoints[0]._model.label);
+                    } 
+                }  
+            }
+        }); 
+    }
+    
+    $(function() {
+        
+    });
+    </script>
+  </head>
+  <body>
+    <button onclick="createBarChart();">Bar Chart</button>
+    <button onclick="createPieChart()">Pie Chart</button>
+    <button onclick="destroyChart();">Clear</button>
+    <div style="width: 600px; height: 500px;">
+        <canvas id="myChart"></canvas>
+    </div>
+  </body>
+</html>
