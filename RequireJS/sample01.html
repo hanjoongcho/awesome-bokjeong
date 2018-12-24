@@ -1,0 +1,86 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4.js"></script>
+    <script type="text/javascript">
+    
+    //--------------------------------------------------//
+    //-- Class처럼 사용하기 
+    //--------------------------------------------------//
+    var Foo = (function () {  
+        var NAME = 'Foo';
+
+        // 생성자 함수
+        function Foo() {
+            this.i = 0;
+        }
+
+        Foo.prototype.getClassName = function () {
+            return NAME;
+        };
+
+        Foo.prototype.increase = function () {
+            this.i++;
+        };
+
+        Foo.prototype.decrease = function () {
+            this.i--;
+        };
+
+        return Foo; 
+    }());
+
+    var fooObject = new Foo();  
+    console.log(fooObject);
+    
+    //--------------------------------------------------//
+    //-- Closure를 이용하여 모듈화 하기
+    //--------------------------------------------------//
+    var foo = (function () {  
+        var i = 0;
+
+        function init() {
+            reset();
+        }
+
+        function reset() {
+            i = 0;
+        }
+
+        function increase() {
+            i++;
+        }
+
+        function decrease() {
+            i--;
+        }
+
+        function get() {
+          return i;
+        }
+
+        return {
+            init: init,
+            increase: increase,
+            decrease: decrease,
+            get: get
+        };
+    }());
+
+    foo.increase();  
+    console.log(foo.get()); // 1  
+    foo.decrease();  
+    console.log(foo.get()); // 0
+
+    console.log(foo.i); // undefined  
+    foo.reset(); // Error
+    
+    </script>
+    <title>sample01-Closure</title>
+</head>
+<body>
+    
+</body>
+</html>
