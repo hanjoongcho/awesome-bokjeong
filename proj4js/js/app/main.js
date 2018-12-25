@@ -12,5 +12,7 @@ define(['jquery', 'app/Transformation'], function (jquery, Transformation) {
       $('input').eq(0).val(point4326[0])
       $('input').eq(1).val(point4326[1])
     });
+
+    console.log(Transformation.getDistanceFromLatLonInKm(37, 127, 37, 127.1));
 //return jquery.noConflict( true );
 });

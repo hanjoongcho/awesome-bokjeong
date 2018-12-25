@@ -1,0 +1,28 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <script src="../js/lib/geodesy/1.1.3/latlon-spherical.js"></script>
+    <script src="../js/lib/geodesy/1.1.3/dms.js"></script>
+    <title>geodesy</title>
+    <script type="text/javascript">
+    var distanceTo = function() {
+      var p1 = new LatLon(parseFloat($('input').eq(0).val()), parseFloat($('input').eq(1).val()));
+      var p2 = new LatLon(parseFloat($('input').eq(2).val()), parseFloat($('input').eq(3).val()));
+      $('#console').append(p1.distanceTo(p2) + '<br/>');
+    }
+    </script>
+  </head>
+  <body>
+    <div id='toolsDiv'>
+      <span>latitude1</span><input type='text' value='37.12345' />
+      <span>longitude1</span><input type='text' value='127.12345' /><br />
+      <span>latitude2</span><input type='text' value='37.12345' />
+      <span>longitude2</span><input type='text'  value='127.22345' /><br />
+      <button onclick='distanceTo();'>distanceTo</button>
+    </div>
+    <div id='console'>
+    </div>
+  </body>
+</html>
