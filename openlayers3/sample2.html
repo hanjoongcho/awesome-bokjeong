@@ -1,0 +1,46 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/3.20.1/ol.css" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/3.20.1/ol.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <title>OpenLayers map preview</title>
+  </head>
+  <body>
+    <div id="map">
+    </div>
+    <script type="text/javascript">
+    /* var options = {
+        controls: [],
+        projection: new ol.proj.Projection("EPSG:900913"),
+        displayProjection: new ol.proj.Projection("EPSG:4326"),
+        units: "m",
+        controls : [],
+        numZoomLevels:21,
+        maxResolution: 156543.0339,
+        maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+    }; */
+    
+    var map = new ol.Map({
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.XYZ({
+                    url: 'http://xdworld.vworld.kr:8080/2d/Base/service/{z}/{x}/{y}.png',
+                    projection: 'EPSG:900913'
+                })
+              })
+        ],
+        target: 'map',
+        view: new ol.View({
+            center: ol.proj.fromLonLat([127.12345, 36.12345]),
+            zoom: 17,
+            minZoom: 0,
+            maxZoom: 20,
+            maxResolution: 156543.0339,
+        }),
+        
+      });
+    </script>
+  </body>
+</html>
