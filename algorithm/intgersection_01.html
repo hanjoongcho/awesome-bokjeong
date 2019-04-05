@@ -1,0 +1,147 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <title>2차원 화면좌표 공간연산 알고리즘</title>
+    <style type="text/css">
+    div {
+       font-size: 30px;
+    }
+    </style>
+    <script type="text/javascript">
+    
+    var prop = {
+        cicleCenterX: 200,
+        cicleCenterY: 200,
+        circleRadius: 150,
+        sectorSAngel: 0,
+        sectorEAngel: 90,
+    }
+    
+    function draw() {
+        var canvas = document.getElementById('canvas');
+        canvas.width = 600;
+        canvas.height = 600;
+        
+        // Circle Sector 0 ~ 90
+        var ctx = canvas.getContext('2d');
+        ctx.moveTo(prop.cicleCenterX, prop.cicleCenterY);
+        ctx.arc(prop.cicleCenterX, prop.cicleCenterY, prop.circleRadius, (Math.PI/180)*(-90 + prop.sectorSAngel), (Math.PI/180)*(-90 + prop.sectorEAngel), false);
+        ctx.closePath();
+        ctx.stroke();
+        
+        // Circle Sector 90 ~180
+        drawCircleSector(ctx, 90, 180);
+        
+        // draw text
+        ctx.font = "30px Arial";
+        ctx.fillText("0 ~ 90", 225, 143);
+        ctx.fillText("90 ~ 0", 225, 243);
+    }
+    
+    function drawCircleSector(ctx, sAngle, eAngle) {
+        ctx.moveTo(prop.cicleCenterX, prop.cicleCenterY);
+        ctx.arc(prop.cicleCenterX, prop.cicleCenterY, prop.circleRadius, (Math.PI/180)*(-90 + sAngle), (Math.PI/180)*(-90 + eAngle), false);
+        ctx.closePath();
+        ctx.stroke();
+    }
+    
+    function degreesToRadians(degrees) {
+      var pi = Math.PI;
+      return degrees * (pi/180);
+    }
+    
+    function radiansToDegrees(radians) {
+      var pi = Math.PI;
+      return radians * (180/pi);
+    }
+    
+    function checkPoint(radius, x, y, startAngle, endAngle) { 
+        var isCollision = false; 
+              
+        // calculate endAngle 
+        // var endAngle = 360/percent + startAngle; 
+        //console.log(startAngle, endAngle);
+        
+        var sDegree = startAngle
+        var eDegree = endAngle
+        
+        // Calculate polar co-ordinates 
+        var polarradius = Math.sqrt(x*x+y*y); 
+        //var Angle = Math.atan(y/x);
+        var Angle = Math.atan(y/x)
+        
+        // Check whether polarradius is 
+        // less then radius of circle 
+        // or not and Angle is between 
+        // startAngle and endAngle 
+        // or not
+        //console.log(Angle, sDegree, eDegree, polarradius)
+        
+        var sectorDegree = 0;
+        if (x > 0 && y > 0) {         // Quadrant 1
+            sectorDegree = 90 - radiansToDegrees(Angle)
+        } else if (x < 0 && y > 0) {  // Quadrant 2
+            sectorDegree = (radiansToDegrees(Angle) * -1) + 270
+        } else if (x < 0 && y < 0) {  // Quadrant 3
+            sectorDegree = 90 - radiansToDegrees(Angle) + 180
+        } else if (x > 0 && y < 0) {  // Quadrant 4                    
+            sectorDegree = (radiansToDegrees(Angle) * -1) + 90
+        }
+        
+        //console.log(sectorDegree, radiansToDegrees(Angle))
+        
+        if (sectorDegree >= sDegree && sectorDegree <= eDegree && polarradius < radius) {
+            // console.log("Point"+"("+x+","+y+")"+" exist in the circle sector\n");
+            isCollision = true;
+        } else {
+            //console.log("Point"+"("+x+","+y+")"+" does not exist in the circle sector\n"); 
+        }
+        
+        return isCollision;
+    } 
+    
+    var updateMessage = function(pointX, pointY, message) {
+        $('#mouseX').html('mouseX: ' + pointX)
+        $('#mouseY').html('mouseY: ' + pointY)
+        $('#message').html(message)
+    }
+    
+    $(function() {
+        draw();
+        
+        $('#canvas').on('click',function(e) {
+            var height = document.getElementById('canvas').height;
+            //console.log('click point: ', e.offsetX, e.offsetY);
+            var flipY = height - e.offsetY;
+            var distanceX = e.offsetX - prop.cicleCenterX;
+            var distanceY = prop.cicleCenterY - e.offsetY;
+            //console.log('offset from circle center: ', distanceX, distanceY);
+            //console.log(checkPoint(prop.circleRadius, distanceX, distanceY, 0, 90)); 
+             if (checkPoint(prop.circleRadius, distanceX, distanceY, 0, 90)) {
+                 updateMessage(e.offsetX, e.offsetY, 'sector 0 ~ 90')
+            } else if (checkPoint(prop.circleRadius, distanceX, distanceY, 90, 180)) {
+                console.log('click circle sector 90 ~ 180', e.offsetX, e.offsetY)
+                updateMessage(e.offsetX, e.offsetY, 'sector 90 ~ 180')
+            } else {
+                updateMessage(e.offsetX, e.offsetY, 'outside circle')
+            }  
+        });
+    });
+    
+    </script>
+  </head>
+  <body>
+    <pre>
+       Circle and Sector collision
+               아래 링크의 샘플코드를 일부변경함
+       Reference Link:
+          https://www.geeksforgeeks.org/check-whether-point-exists-circle-sector-not/
+    </pre>
+    <div id="mouseX">mouseX: 0</div>
+    <div id="mouseY">mouseY: 0</div>
+    <div id="message">click canvas!!!</div>
+    <canvas id='canvas' style="border: solid black 1px; width: 600px; height: 600px;"></canvas>
+  </body>
+</html>
