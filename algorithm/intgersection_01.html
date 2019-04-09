@@ -12,7 +12,7 @@
     <script type="text/javascript">
     
     var prop = {
-        cicleCenterX: 200,
+        cicleCenterX: 300,
         cicleCenterY: 200,
         circleRadius: 150,
         sectorSAngel: 0,
@@ -33,11 +33,21 @@
         
         // Circle Sector 90 ~180
         drawCircleSector(ctx, 90, 180);
+        drawCircleSector(ctx, 180, 270);
+        drawCircleSector(ctx, 270, 360);
+        
         
         // draw text
-        ctx.font = "30px Arial";
-        ctx.fillText("0 ~ 90", 225, 143);
-        ctx.fillText("90 ~ 0", 225, 243);
+        ctx.font = "20px Arial";
+        ctx.fillText("0 ~ 90", 325, 163);
+        ctx.fillText("90 ~ 180", 325, 243);
+        ctx.fillText("180 ~ 270", 185, 243);
+        ctx.fillText("270 ~ 360", 185, 163);
+        ctx.font = "15px Arial";
+        ctx.fillText("0 radian", 460, 200);
+        ctx.fillText("π/2 radian", 300, 40);
+        ctx.fillText("2π/2 radian", 60, 200);
+        ctx.fillText("3π/2 radian", 300, 370);
     }
     
     function drawCircleSector(ctx, sAngle, eAngle) {
@@ -71,7 +81,7 @@
         var polarradius = Math.sqrt(x*x+y*y); 
         //var Angle = Math.atan(y/x);
         var Angle = Math.atan(y/x)
-        
+        console.log(Math.atan2(y,x))
         // Check whether polarradius is 
         // less then radius of circle 
         // or not and Angle is between 
@@ -122,8 +132,11 @@
              if (checkPoint(prop.circleRadius, distanceX, distanceY, 0, 90)) {
                  updateMessage(e.offsetX, e.offsetY, 'sector 0 ~ 90')
             } else if (checkPoint(prop.circleRadius, distanceX, distanceY, 90, 180)) {
-                console.log('click circle sector 90 ~ 180', e.offsetX, e.offsetY)
                 updateMessage(e.offsetX, e.offsetY, 'sector 90 ~ 180')
+            } else if (checkPoint(prop.circleRadius, distanceX, distanceY, 180, 270)) {
+                updateMessage(e.offsetX, e.offsetY, 'sector 180 ~ 270')
+            } else if (checkPoint(prop.circleRadius, distanceX, distanceY, 270, 360)) {
+                updateMessage(e.offsetX, e.offsetY, 'sector 270 ~ 360')
             } else {
                 updateMessage(e.offsetX, e.offsetY, 'outside circle')
             }  
