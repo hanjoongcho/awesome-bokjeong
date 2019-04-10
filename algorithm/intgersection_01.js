@@ -99,15 +99,26 @@ function checkPoint(radius, x, y, startAngle, endAngle) {
     $('#pointOrigin').html('Click Point(Circle origin): ' + positionFromOriginX + ',' + positionFromOriginY);
 
     // 마우스 클릭 위치 베어링으로 그리드 크기만큼 라인 그리기
-    /*var offsetX = Math.cos(angle) * prop.gridSize;
+    var offsetX = Math.cos(angle) * prop.gridSize;
     var offsetY = Math.sin(angle) * prop.gridSize;
+    if (x > 0 && y > 0) {
+        offsetY *= -1
+    } else if (x < 0 && y < 0) {
+        offsetX *= -1
+    } else if (x < 0 && y > 0) {
+        offsetX *= -1
+    } else {
+        offsetY *= -1
+    }
+    
+    console.log(offsetX, offsetY)
     ctx.beginPath();
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'rgb(0, 0, 255)';
     console.log(x, y)
     ctx.moveTo(prop.cicleCenterX + x, prop.cicleCenterY - y);
-    ctx.lineTo(prop.cicleCenterX + x + offsetX, prop.cicleCenterY - y - offsetY);
-    ctx.stroke();*/
+    ctx.lineTo(prop.cicleCenterX + x + offsetX, prop.cicleCenterY - y + offsetY);
+    ctx.stroke();
     
     var sectorDegree = 0;
     if (x > 0 && y > 0) {         // Quadrant 1
