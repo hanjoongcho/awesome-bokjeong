@@ -5,7 +5,8 @@ var prop = {
     sectorSAngel: 0,
     sectorEAngel: 90,
     gridSize: 50,
-    canvas: {width: 600, height: 600}
+    canvas: {width: 600, height: 600},
+    quadrant: 0 /*1 ~ 4*/
 }
 
 var ctx;
@@ -82,67 +83,6 @@ function radiansToDegrees(radians) {
     return radians * (180/Math.PI);
 }
 
-function checkPoint(radius, x, y, startAngle, endAngle) { 
-    var isCollision = false; 
-    var sDegree = startAngle
-    var eDegree = endAngle
-    
-    var polarradius = Math.sqrt(x*x + y*y);
-    var tangent = y/x;
-    var angle = Math.atan(tangent);
-    var positionFromOriginX = Math.cos(angle)*polarradius;
-    var positionFromOriginY = Math.sin(angle)*polarradius;
-    
-    $('#tan').html('tan: ' + tangent);
-    $('#cotangent').html('cotangent(radian): ' + angle);
-    $('#cotangentD').html('cotangent(degree): ' + radiansToDegrees(angle));
-    $('#pointOrigin').html('Click Point(Circle origin): ' + positionFromOriginX + ',' + positionFromOriginY);
-
-    // 마우스 클릭 위치 베어링으로 그리드 크기만큼 라인 그리기
-    var offsetX = Math.cos(angle) * prop.gridSize;
-    var offsetY = Math.sin(angle) * prop.gridSize;
-    if (x > 0 && y > 0) {
-        offsetY *= -1
-    } else if (x < 0 && y < 0) {
-        offsetX *= -1
-    } else if (x < 0 && y > 0) {
-        offsetX *= -1
-    } else {
-        offsetY *= -1
-    }
-    
-    console.log(offsetX, offsetY)
-    ctx.beginPath();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgb(0, 0, 255)';
-    console.log(x, y)
-    ctx.moveTo(prop.cicleCenterX + x, prop.cicleCenterY - y);
-    ctx.lineTo(prop.cicleCenterX + x + offsetX, prop.cicleCenterY - y + offsetY);
-    ctx.stroke();
-    
-    var sectorDegree = 0;
-    if (x > 0 && y > 0) {         // Quadrant 1
-        sectorDegree = 90 - radiansToDegrees(angle)
-    } else if (x < 0 && y > 0) {  // Quadrant 2
-        sectorDegree = (radiansToDegrees(angle) * -1) + 270
-    } else if (x < 0 && y < 0) {  // Quadrant 3
-        sectorDegree = 90 - radiansToDegrees(angle) + 180
-    } else if (x > 0 && y < 0) {  // Quadrant 4                    
-        sectorDegree = (radiansToDegrees(angle) * -1) + 90
-    }
-    
-    if (sectorDegree >= sDegree && sectorDegree <= eDegree && polarradius < radius) {
-        isCollision = true;
-    }
-    
-    return isCollision;
-} 
-
-var updateMessage = function(pointX, pointY, message) {
-    $('#point').html('Click Point(Canvas): ' + pointX + ', ' + pointY)
-    $('#message').html(message)
-}
-
 $(function() {
     init();
     
@@ -155,17 +95,26 @@ $(function() {
         var distanceX = e.offsetX - prop.cicleCenterX;
         var distanceY = prop.cicleCenterY - e.offsetY;
         
-        if (checkPoint(prop.circleRadius, distanceX, distanceY, 0, 90)) {
-            updateMessage(e.offsetX, e.offsetY, 'sector 0 ~ 90')
-        } else if (checkPoint(prop.circleRadius, distanceX, distanceY, 90, 180)) {
-            updateMessage(e.offsetX, e.offsetY, 'sector 90 ~ 180')
-        } else if (checkPoint(prop.circleRadius, distanceX, distanceY, 180, 270)) {
-            updateMessage(e.offsetX, e.offsetY, 'sector 180 ~ 270')
-        } else if (checkPoint(prop.circleRadius, distanceX, distanceY, 270, 360)) {
-            updateMessage(e.offsetX, e.offsetY, 'sector 270 ~ 360')
+        // 1 ~ 4사분면 중 어디에 속하는지 확인
+        var arcTangent = Math.atan2(distanceY, distanceX);
+        if (arcTangent >= 0 && arcTangent < Math.PI / 2) {
+            prop.quadrant = 1
+        } else if (arcTangent >= Math.PI / 2 && arcTangent < Math.PI) {
+            prop.quadrant = 2
+        } else if (arcTangent * -1 >= Math.PI / 2 && arcTangent * -1 < Math.PI) {
+            prop.quadrant = 3
         } else {
-            updateMessage(e.offsetX, e.offsetY, 'outside circle')
+            prop.quadrant = 4
         }
+        console.log(prop.quadrant + '사분면 클릭')
+        
+        // 원점과 클릭 포인트 사이의 거리를 계산
+        var distanceFromOrigin = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+        console.log('원점으로부터의 거리' + distanceFromOrigin);
+        
+        // 4개 섹션과의 출돌 검사
+        var isCollision = distanceFromOrigin <= prop.circleRadius ? true : false;  
+        console.log(isCollision);
         
         // 원점에서 ~ 클릭포인트 라인그리기
         ctx.beginPath();
@@ -174,5 +123,43 @@ $(function() {
         ctx.moveTo(prop.cicleCenterX, prop.cicleCenterY);
         ctx.lineTo(e.offsetX, e.offsetY);
         ctx.stroke();
+        
+        // 마우스 클릭 위치 베어링으로 그리드 크기만큼 라인 그리기
+        var moveX = Math.cos(arcTangent) * prop.gridSize;
+        var moveY = Math.sin(arcTangent) * prop.gridSize * -1;
+        
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgb(0, 0, 255)';
+        ctx.moveTo(e.offsetX, e.offsetY);
+        ctx.lineTo(e.offsetX + moveX, e.offsetY + moveY);
+        ctx.stroke();
+        
+        // 클릭지점 포인트 그리기
+        ctx.beginPath();
+        ctx.arc(e.offsetX, e.offsetY, 2, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(0, 255, 0, 1)';
+        ctx.fill();
+        
+        // 충돌검사 결과 출력
+        $('#point').html('Click Point(Canvas): ' + e.offsetX + ', ' + e.offsetY);
+        if (isCollision) {
+            $('#message').html(prop.quadrant + '사분면 Sector와 충돌함');
+        } else {
+            $('#message').html(prop.quadrant + '사분면 Sector를  벗어남');
+        }
+
+        // tangent 및 arc tangent 출력
+        var tangent = distanceY/distanceX;
+        var angle = Math.atan(tangent);
+        $('#tan').html('tan: ' + tangent);
+        $('#cotangent').html('cotangent(radian): ' + angle);
+        $('#cotangentD').html('cotangent(degree): ' + radiansToDegrees(angle));
+        $('#cotangent2').html('cotangent2(radian): ' + Math.atan2(distanceY, distanceX));
+        
+        // 원점으로부터의 클릭 포인트 출력
+        var positionFromOriginX = Math.cos(angle)*distanceFromOrigin;
+        var positionFromOriginY = Math.sin(angle)*distanceFromOrigin;
+        $('#pointOrigin').html('Click Point(Circle origin): ' + positionFromOriginX + ',' + positionFromOriginY);
     });
 });
