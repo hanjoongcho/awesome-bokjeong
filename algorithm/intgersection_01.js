@@ -5,7 +5,7 @@ var prop = {
     sectorSAngel: 0,
     sectorEAngel: 90,
     gridSize: 50,
-    canvas: {width: 600, height: 600},
+    canvas: {width: 600, height: 500},
     quadrant: 0 /*1 ~ 4*/
 }
 
@@ -110,7 +110,7 @@ $(function() {
         
         // 원점과 클릭 포인트 사이의 거리를 계산
         var distanceFromOrigin = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
-        console.log('원점으로부터의 거리' + distanceFromOrigin);
+        $('#distanceFromOrigin').html('원점으로부터의 거리:(px): ' + distanceFromOrigin);
         
         // 4개 섹션과의 출돌 검사
         var isCollision = distanceFromOrigin <= prop.circleRadius ? true : false;  
@@ -125,15 +125,14 @@ $(function() {
         ctx.stroke();
         
         // 마우스 클릭 위치 베어링으로 그리드 크기만큼 라인 그리기
-        var moveX = Math.cos(arcTangent) * prop.gridSize;
-        var moveY = Math.sin(arcTangent) * prop.gridSize * -1;
-        
-        ctx.beginPath();
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = 'rgb(0, 0, 255)';
-        ctx.moveTo(e.offsetX, e.offsetY);
-        ctx.lineTo(e.offsetX + moveX, e.offsetY + moveY);
-        ctx.stroke();
+//        var moveX = Math.cos(arcTangent) * prop.gridSize;
+//        var moveY = Math.sin(arcTangent) * prop.gridSize * -1;
+//        ctx.beginPath();
+//        ctx.lineWidth = 1;
+//        ctx.strokeStyle = 'rgb(0, 0, 255)';
+//        ctx.moveTo(e.offsetX, e.offsetY);
+//        ctx.lineTo(e.offsetX + moveX, e.offsetY + moveY);
+//        ctx.stroke();
         
         // 클릭지점 포인트 그리기
         ctx.beginPath();

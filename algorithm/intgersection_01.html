@@ -7,16 +7,12 @@
     <title>2차원 화면좌표 공간연산 알고리즘</title>
     <style type="text/css">
     div {
-       font-size: 20px;
+       font-size: 15px;
     }
     </style>
   </head>
   <body>
-    <pre>
-       Circle and Sector collision
-       Reference Link:
-          https://www.geeksforgeeks.org/check-whether-point-exists-circle-sector-not/
-    </pre>
+    <h1>원과 포인트 충돌 검사</h1>
     <div id="point">Click Point(Canvas): 0, 0</div>
     <div id="pointOrigin">Click Point(Circle origin): 0, 0</div>
     <div id="tan">tan: 0</div>
@@ -24,6 +20,12 @@
     <div id="cotangentD">cotangent(degree): 0</div>
     <div id="cotangent2">cotangent2(radian): 0</div>
     <div id="message">충돌하는 Sector 없음</div>
-    <canvas id='canvas' style="border: solid black 1px; width: 600px; height: 600px;"></canvas>
+    <div id="distanceFromOrigin">원점으로부터의 거리:(px): 0</div>
+    <canvas id='canvas' style="border: solid black 1px; width: 600px; height: 500px;"></canvas>
+    <pre>
+       Circle and Sector collision
+       Reference Link:
+          https://www.geeksforgeeks.org/check-whether-point-exists-circle-sector-not/
+    </pre>
   </body>
 </html>
