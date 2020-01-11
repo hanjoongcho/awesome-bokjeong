@@ -79,9 +79,10 @@
                 controller: db,
                 pagerContainer: "#externalPager",
                 fields: [
+                    { name: "RowManager", title: "Row Manager", type: "rowManager", width: 250, columnIndex: 0 },
                     { name: "Age", title: "Number", type: "number", width: 50 },
-                    { name: "Address", title: "Text", type: "text", width: 200 },
-                    { name: "Name", title: "BootStrap CardView", type: "cardViewField", width: 150, columnIndex: 2 },
+                    { name: "Address", title: "Text", type: "text" },
+                    { name: "Name", title: "BootStrap CardView", type: "cardView", width: 150, columnIndex: 3 },
                     { name: "Country", title: "Select Box", type: "select", items: db.countries, valueField: "Id", textField: "Name" },
                     { name: "Married", title: "Check Box", type: "checkbox", sorting: false }
                 ],
@@ -89,7 +90,10 @@
                     console.log($("#jsGrid").jsGrid("rowByItem", result.item))
                     console.log(result)
                     $("#jsGrid").jsGrid("editItem", result.item);
-                    if (window.columnIndex) $('.jsgrid-edit-row').find('input').eq(columnIndex).focus()
+                    if (window.columnIndex || window.columnIndex === 0) {
+                        console.log($('.jsgrid-edit-row').find('textarea, input'))
+                        $('.jsgrid-edit-row').find('textarea, input').eq(columnIndex).focus()
+                    }
                 }
             });
 
