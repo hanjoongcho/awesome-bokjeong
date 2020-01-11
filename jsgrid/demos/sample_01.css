@@ -6,6 +6,14 @@
 
 html {
     height: 100%;
+    /* scrollbar-base-color: #000; */
+    scrollbar-face-color: #000;
+    /* scrollbar-3dlight-color: #000; */
+    /* scrollbar-highlight-color: #000; */
+    scrollbar-track-color: #FFFFFF;
+    scrollbar-arrow-color: #FFFFFF;
+    /* scrollbar-shadow-color: #000; */
+    /* scrollbar-dark-shadow-color: #000; */
 }
 
 body {
@@ -80,3 +88,9 @@ iframe[name='demo'] {
     height: 100%;
     border: none;
 }
+
+::-webkit-scrollbar{width: 8px;}
+::-webkit-scrollbar-track {background-color:#f1f1f1;}
+::-webkit-scrollbar-thumb {background-color:#7e7e78; border-radius: 10px;}
+::-webkit-scrollbar-thumb:hover {background: #555;}
+::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment { width:0px;height:0px;background:#f1f1f1; } 
