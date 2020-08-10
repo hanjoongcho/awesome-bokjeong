@@ -94,6 +94,9 @@
                         console.log($('.jsgrid-edit-row').find('textarea, input'))
                         $('.jsgrid-edit-row').find('textarea, input').eq(columnIndex).focus()
                     }
+                },
+                onDataLoaded: function(e) {
+                    console.log('onDataLoaded', e)
                 }
             });
 
